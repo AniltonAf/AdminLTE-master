@@ -1,0 +1,332 @@
+<?php
+
+	$action= filter_input(INPUT_POST, 'action');
+
+	require 'sql.php';
+	$data = new Data();
+	//defenir fuso horairio para definir hora com php
+	date_default_timezone_set("Atlantic/Cape_Verde");
+	
+	switch ($action) {
+
+		case 'list': //listar os perfil utilizadores
+			 
+			 $response = $data->list();
+
+			 echo json_encode($response);
+
+			break;
+
+		case 'delete': //apagar perfil utilizadores
+
+			$id=filter_input(INPUT_POST, 'id');
+			$estado=0;
+			$delete_ut=date('d-m-y h:i:s');
+			$response=$data->delete($id,$estado,$delete_ut);
+
+			echo json_encode($response);
+
+			break;
+			
+		case 'addForm': //apresentar formulario registo de gerador
+			$grupo=$data->listGrup();
+			//require '../config.php';
+?>
+
+			<div class="retorno"></div>
+			<form name='register'>
+				<div class="row">
+					<div class="col-sm-6">
+					<div class="form-group">
+			                <label>Modelo</label>
+			                <input type="text" class="form-control" name="modelo" placeholder="Inserir Modelo" required>
+			            </div>
+			            <div class="form-group">
+			                <label>Fabricante</label>
+			                <input type="text" class="form-control" name="fabricante" placeholder="Inserir Fabricante" required>
+			            </div>
+			            <div class="form-group">
+			                <label>Descrição</label>
+			                <input type="text" class="form-control" name="descricao" placeholder="Inserir Descrição" required>
+			            </div>
+			            <div class="form-group">
+			                <label>Grupo</label>
+			                <select class="form-control" name="id_grupo">
+			                	<option>Selecione</option>
+			                	<?php		                		
+			                		
+			                		foreach($grupo as $line){
+			                			echo '<option value="'.$line["id"].'">'.$line["nome"].'</option>';
+			                		}
+			                	?>
+			                </select>
+			            </div>
+
+					</div>
+					<div class="col-sm-6">
+			            <div class="form-group">
+			                <label>Potência(KW)</label>
+			                <input type="text" class="form-control" name="potencia" placeholder="Inserir Potencia(KW)" not required>
+			            <div class="form-group">
+			                <label>Horas de trabalho</label>
+			                <input type="text" class="form-control" name="hora_trabalho" placeholder="Inserir Horas de trabalho" required>
+			            </div>
+			            <div class="form-group">
+			                <label>Endereço IP</label>
+			                <input type="text" class="form-control" name="ip" placeholder="Inserir Endereço IP" required>
+			            <div class="form-group">
+			                <label>Data ultima manutenção</label>
+			                <input type="date" class="form-control" name="data_manutencao" placeholder="Inserir Data Ultima Manutenção" required>
+			            </div>
+					</div>
+				</div>
+	              	            
+	             <button type="submit" class="btn btn-primary">Registar</button>
+	            
+	        </form>
+		
+<?php	
+			break;
+
+		case 'register':
+
+				$modelo=filter_input(INPUT_POST, 'modelo');
+				$fabricante=filter_input(INPUT_POST, 'fabricante');
+				$descricao=filter_input(INPUT_POST, 'descricao');
+				$potencia=filter_input(INPUT_POST, 'potencia');
+				$hora_trabalho=filter_input(INPUT_POST, 'hora_trabalho');
+				$ip=filter_input(INPUT_POST, 'ip');
+				$data_manutencao=filter_input(INPUT_POST, 'data_manutencao');
+				$id_grupo=filter_input(INPUT_POST, 'id_grupo');
+				$create_ut=date('d-m-y h:i:s');
+				$estado=1;
+				$response=$data->register($modelo,$fabricante,$descricao,$potencia,$hora_trabalho,$ip,$data_manutencao,$id_grupo,$estado,$create_ut);
+
+				echo json_encode($response);
+
+				break;
+
+
+case 'detailForm':
+
+			$id=filter_input(INPUT_POST, 'id');
+
+			$response=$data->getItem($id);
+			$response=$response[0];
+
+			$grupo=$data->listGrup();
+			//require '../config.php';
+?>
+
+			<div class="retorno"></div>
+			<form name='edit'>
+				<div class="row">
+					<div class="col-sm-6">
+						
+			            <div class="form-group">
+			                <label>Modelo</label>
+			                <input disabled type="text" class="form-control" value="<?php echo $response['modelo']; ?>" name="modelo" placeholder="Inserir Modelo" required>
+			            </div>
+			            <div class="form-group">
+			                <label>Fabricante</label>
+			                <input disabled type="text" class="form-control" value="<?php echo $response['fabricante']; ?>"name="fabricante" placeholder="Inserir Fabricante" required>
+			            </div>
+			            <div class="form-group">
+			                <label>Descrição</label>
+			                <input disabled type="text" class="form-control" value="<?php echo $response['descricao']; ?>" name="descricao" placeholder="Inserir Descrição" required>
+			            </div>
+			            <div class="form-group">
+			                <label>Grupo</label>
+			                <select disabled class="form-control" value="<?php echo $response['id_grupo']; ?>"name="id_grupo">
+			                	<option>Selecione</option>
+								<?php		                		
+			                		
+			                		foreach($grupo as $line){
+			                			$select= ($line['id']==$response['id_grupo'])?'selected':'';
+
+			                			echo '<option value="'.$line["id"].'" '.$select.'>'.$line["nome"].'</option>';
+			                		}
+								?>
+			                </select>
+			            </div>
+
+					</div>
+					<div class="col-sm-6">
+			            <div class="form-group">
+			                <label>Potência(KW)</label>
+			                <input disabled type="text" class="form-control" value="<?php echo $response['potencia']; ?>" name="potencia" placeholder="Inserir Potencia(KW)" not required>
+			            <div class="form-group">
+			                <label>Horas de trabalho</label>
+			                <input  disabled type="text" class="form-control" value="<?php echo $response['hora_trabalho']; ?>" name="hora_trabalho" placeholder="Inserir Horas de trabalho" required>
+			            </div>
+			            <div class="form-group">
+			                <label>Endereço IP</label>
+			                <input disabled type="text" class="form-control" value="<?php echo $response['ip']; ?>" name="ip" placeholder="Inserir Endereço IP" required>
+			            <div class="form-group">
+			                <label>Data ultima manutenção</label>
+			                <input disabled type="date" class="form-control" value="<?php echo $response['data_manutencao']; ?>" name="data_manutencao" placeholder="Inserir Data Ultima Manutenção" required>
+			            </div>
+					</div>
+				</div>
+
+				<input type="hidden" name="id" value="<?php echo $response['id']; ?>">
+	            
+	        </form>
+		
+<?php	
+			break;
+
+
+		case 'editForm':
+
+			$id=filter_input(INPUT_POST, 'id');
+
+			$response=$data->getItem($id);
+			$response=$response[0];
+
+			$grupo=$data->listGrup();
+			//require '../config.php';
+?>
+
+			<div class="retorno"></div>
+			<form name='edit'>
+				<div class="row">
+					<div class="col-sm-6">
+						
+			            <div class="form-group">
+			                <label>Modelo</label>
+			                <input type="text" class="form-control" value="<?php echo $response['modelo']; ?>" name="modelo" placeholder="Inserir Modelo" required>
+			            </div>
+			            <div class="form-group">
+			                <label>Fabricante</label>
+			                <input type="text" class="form-control" value="<?php echo $response['fabricante']; ?>"name="fabricante" placeholder="Inserir Fabricante" required>
+			            </div>
+			            <div class="form-group">
+			                <label>Descrição</label>
+			                <input type="text" class="form-control" value="<?php echo $response['descricao']; ?>" name="descricao" placeholder="Inserir Descrição" required>
+			            </div>
+			            <div class="form-group">
+			                <label>Grupo</label>
+			                <select class="form-control" value="<?php echo $response['id_grupo']; ?>"name="id_grupo">
+			                	<option>Selecione</option>
+								<?php		                		
+			                		
+			                		foreach($grupo as $line){
+			                			$select= ($line['id']==$response['id_grupo'])?'selected':'';
+
+			                			echo '<option value="'.$line["id"].'" '.$select.'>'.$line["nome"].'</option>';
+			                		}
+								?>
+			                </select>
+			            </div>
+
+					</div>
+					<div class="col-sm-6">
+			            <div class="form-group">
+			                <label>Potência(KW)</label>
+			                <input type="text" class="form-control" value="<?php echo $response['potencia']; ?>" name="potencia" placeholder="Inserir Potencia(KW)" not required>
+			            <div class="form-group">
+			                <label>Horas de trabalho</label>
+			                <input type="text" class="form-control" value="<?php echo $response['hora_trabalho']; ?>" name="hora_trabalho" placeholder="Inserir Horas de trabalho" required>
+			            </div>
+			            <div class="form-group">
+			                <label>Endereço IP</label>
+			                <input type="text" class="form-control" value="<?php echo $response['ip']; ?>" name="ip" placeholder="Inserir Endereço IP" required>
+			            <div class="form-group">
+			                <label>Data ultima manutenção</label>
+			                <input type="date" class="form-control" value="<?php echo $response['data_manutencao']; ?>" name="data_manutencao" placeholder="Inserir Data Ultima Manutenção" required>
+			            </div>
+					</div>
+				</div>
+
+				<input type="hidden" name="id" value="<?php echo $response['id']; ?>">
+	              	            
+	             <button type="submit" class="btn btn-primary">Registar</button>
+	            
+	        </form>
+		
+<?php	
+			break;
+
+
+		case 'permitionForm':
+
+			$id_perfil=filter_input(INPUT_POST, 'id');
+
+			$response=$data->listPermition($id_perfil);
+
+			echo '<form name="permition" id-perfil="'.$id_perfil.'">';
+			echo '<div class="retorno"></div>';
+				foreach ($response as $line) {
+
+					$isCheck=$line['permissao']? 'checked':'';
+
+					echo '
+						<div class="form-check">
+						  <input name="'.$line['id'].'" class="form-check-input" '. $isCheck .'  type="checkbox">
+						  <label class="form-check-label" for="defaultCheck1">
+						    '.$line['descrisao'].'
+						  </label>
+						</div>
+					';
+				}
+			echo '<br><button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-upload"></i> Atualizar</button></div>';
+
+			echo '</form>';
+
+?>
+			
+			
+		
+<?php	
+			break;
+
+		case 'edit':
+			
+				$modelo=filter_input(INPUT_POST, 'modelo');
+				$fabricante=filter_input(INPUT_POST, 'fabricante');
+				$descricao=filter_input(INPUT_POST, 'descricao');
+				$potencia=filter_input(INPUT_POST, 'potencia');
+				$hora_trabalho=filter_input(INPUT_POST, 'hora_trabalho');
+				$ip=filter_input(INPUT_POST, 'ip');
+				$data_manutencao=filter_input(INPUT_POST, 'data_manutencao');
+				$id_grupo=filter_input(INPUT_POST, 'id_grupo');
+				$id=filter_input(INPUT_POST, 'id');
+
+				$response=$data->edit($modelo,$fabricante,$descricao,$potencia,$hora_trabalho,$ip,$data_manutencao,$id_grupo,$id);
+
+				echo json_encode($response);
+
+				break;	
+
+		case 'permissao':
+				$res=json_decode(filter_input(INPUT_POST,'data'),true);
+				$id_perfil=$res['perfil'];
+				$permissoes=$res['permissao'];
+
+				$response=$data->deletePermissao($id_perfil);
+
+				$result=[
+					'status'=>false
+				];
+
+				if($response){
+
+					$result['status']=$response;
+
+					foreach ($permissoes as $permissao) {
+						$id_per=$permissao['name'];
+						$response=$data->addPermissao($id_perfil,$id_per);
+						$result['status']=$response;
+					}
+				}
+				
+				echo json_encode($result);
+				break;	
+
+		default:
+			# code...
+			break;
+	}
+
+?>
