@@ -106,26 +106,22 @@
 <?php	
 			break;
 
-		case 'userForm':
-
-			$id_perfil=filter_input(INPUT_POST, 'id');
-
-			$response=$data->listPermition($id_perfil);
-
+		case 'userForm':	
+			$id_grupo=filter_input(INPUT_POST, 'id_grupo');
 ?>
 			<div class="row">
             <div class="col-12">            
               <div class="card">
               <!-- /.card-header -->
               <div class="card-body">
-                <button class="btn btn-sm btn-primary" id="btnAdd" style="float: left; margin-right: 40px">Adicionar</button>
-                <table id="datatable" class="table table-bordered ">
+                <button class="btn btn-sm btn-primary" data-id="<?php echo $id_grupo; ?>" id="btnAdd" style="float: left; margin-right: 40px">Adicionar</button>
+                <table id="tableUser" class="table table-bordered ">
                   <thead>
                     <tr>
                       <th>Foto</th>
                       <th>Nome</th>
                       <th>Departamento</th>
-                      <th></th>
+                      <th>Remover</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -143,6 +139,44 @@
 <?php	
 			break;
 
+		case 'addUserForm': //apresentar formulario de grupo
+
+		$id_grupo=filter_input(INPUT_POST, 'id_grupo');
+		$response=$data->listUserDesponivel($id_grupo);
+?>
+
+			<div class="retorno"></div>
+			<form name='registerUser'>
+	            <div class="form-group">
+	                <label>Nome utilizador</label>
+	                <select class="form-control" name="id_utilizador" required>
+	                	<option>Selecione</option>
+	                	<?php 
+	                		foreach ($response as $line) {
+	                			echo '<option value="'.$line['id'].'">'.$line['nome'].'</option>';
+	                		}
+	                	?>
+	                </select>
+	            </div>
+
+	            <input type="hidden" name="id_grupo" value="<?php echo $id_grupo; ?>">
+	            
+	            <button type="submit" class="btn btn-primary">Registar</button>
+	            
+	        </form>
+		
+<?php	
+			break;
+
+
+		case 'listUser':
+			$id_grupo=filter_input(INPUT_POST, 'id_grupo');
+
+			$response=$data->listUser($id_grupo);
+
+			echo json_encode($response);
+			break;
+
 		case 'edit':
 				$id=filter_input(INPUT_POST, 'id');
 				$nome=filter_input(INPUT_POST, 'nome');
@@ -155,30 +189,25 @@
 
 				break;	
 
-		case 'permissao':
-				$res=json_decode(filter_input(INPUT_POST,'data'),true);
-				$id_perfil=$res['perfil'];
-				$permissoes=$res['permissao'];
+		case 'registerUser':
 
-				$response=$data->deletePermissao($id_perfil);
+				$id_grupo=filter_input(INPUT_POST, 'id_grupo');
+				$id_utilizador=filter_input(INPUT_POST, 'id_utilizador');
+				$response=$data->registerUser($id_grupo,$id_utilizador);
 
-				$result=[
-					'status'=>false
-				];
-
-				if($response){
-
-					$result['status']=$response;
-
-					foreach ($permissoes as $permissao) {
-						$id_per=$permissao['name'];
-						$response=$data->addPermissao($id_perfil,$id_per);
-						$result['status']=$response;
-					}
-				}
+				echo json_encode($response);
 				
-				echo json_encode($result);
-				break;	
+				break;
+
+		case 'deleteUser': //apagar grupo
+
+			$id_utilizador=filter_input(INPUT_POST, 'id_utilizador');
+			$id_grupo=filter_input(INPUT_POST, 'id_grupo');
+			$response=$data->deleteUser($id_utilizador,$id_grupo);
+
+			echo json_encode($response);
+
+			break;
 
 		default:
 			# code...

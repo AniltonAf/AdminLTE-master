@@ -50,7 +50,7 @@
 			                <input type="text" class="form-control" name="descricao" placeholder="Inserir Descrição" required>
 			            </div>
 			            <div class="form-group">
-			                <label>Grupo</label>
+			                <label>Unidade Organica</label>
 			                <select class="form-control" name="id_grupo">
 			                	<option>Selecione</option>
 			                	<?php		                		
@@ -136,7 +136,7 @@ case 'detailForm':
 			                <input disabled type="text" class="form-control" value="<?php echo $response['descricao']; ?>" name="descricao" placeholder="Inserir Descrição" required>
 			            </div>
 			            <div class="form-group">
-			                <label>Grupo</label>
+			                <label>Unidade Organica</label>
 			                <select disabled class="form-control" value="<?php echo $response['id_grupo']; ?>"name="id_grupo">
 			                	<option>Selecione</option>
 								<?php		                		
@@ -206,7 +206,7 @@ case 'detailForm':
 			                <input type="text" class="form-control" value="<?php echo $response['descricao']; ?>" name="descricao" placeholder="Inserir Descrição" required>
 			            </div>
 			            <div class="form-group">
-			                <label>Grupo</label>
+			                <label>Unidade Organica</label>
 			                <select class="form-control" value="<?php echo $response['id_grupo']; ?>"name="id_grupo">
 			                	<option>Selecione</option>
 								<?php		                		

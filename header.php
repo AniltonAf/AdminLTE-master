@@ -4,6 +4,9 @@
 
     require 'backend/enviroment/db_connection.php';
 
+
+    if(!isset($_SESSION['caixa_monitorizacao_use']))  header('Location: login.php');
+
     $database = new DbConnection();
 
     $a=3;
@@ -15,6 +18,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Monitorização Gerador V1.0</title>
+  <link rel="shortcut icon" href="dist/img/CaixaLogo.png" >
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -39,8 +43,9 @@
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
 </head>
 <!--<body class="hold-transition sidebar-mini layout-fixed"> -->
-<body class="sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed sidebar-collapse" style="height: auto;">
-<div class="wrapper">
+<body class="sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed sidebar-collapse" style="height: auto;min-height: 100%;">
+<div class="wrapper">  
+
 
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">

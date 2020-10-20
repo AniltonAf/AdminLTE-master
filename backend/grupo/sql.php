@@ -139,14 +139,31 @@ Class Data extends DbConnection{
 		return $response;
 	}
 
-	// função para listar as permissao
-	public function listPermition($id_perfil){
+	// função para listar as utilizador
+	public function listUser($id_grupo){
 		$estado=1;
 		try{
 
-			$res = $this->db->prepare('SELECT p.id,p.nome,p.descrisao, IF((SELECT pp.id FROM grupo as pp where pp.id_per=p.id and pp.id_perf_util=:id_perfil),true,false) as permissao FROM `permissoes` as p order by p.nome asc');
+			$res = $this->db->prepare('SELECT * FROM grupo_acesso as g join utilizador as u on u.id=g.id_utilizador WHERE id_grupo=:id_grupo');
 			
-			$res->bindValue(':id_perfil',$id_perfil);
+			$res->bindValue(':id_grupo',$id_grupo);
+			
+			$res->execute();
+
+			return $this->data($res);			
+
+		}catch(PDOException $e){
+				echo $e->getMessage();
+		}
+	}
+
+	public function listUserDesponivel($id_grupo){
+		$estado=1;
+		try{
+
+			$res = $this->db->prepare('SELECT * FROM utilizador WHERE id NOT IN (SELECT id_utilizador FROM grupo_acesso where id_grupo=:id_grupo) and estado=1');
+			
+			$res->bindValue(':id_grupo',$id_grupo);
 			
 			$res->execute();
 
@@ -175,23 +192,45 @@ Class Data extends DbConnection{
 		}
 	}
 
-	// função para atribuir permissao
-	public function addPermissao($id_perfil,$id_per){
-		
+	// função para registar novos utilizadores
+	public function registerUser($id_grupo,$id_utilizador)
+	{
+		$response=array();
 		try{
 
-			$res = $this->db->prepare("INSERT INTO grupo (id_perf_util,id_per) VALUES (:id_perfil,:id_per)");
+			$res = $this->db->prepare('INSERT INTO grupo_acesso (id_grupo,id_utilizador) VALUES (:id_grupo,:id_utilizador)');
 
-			$res->bindValue(':id_perfil',$id_perfil);
-			$res->bindValue(':id_per',$id_per);
+			$res->bindValue(':id_grupo',$id_grupo);
+			$res->bindValue(':id_utilizador',$id_utilizador);
 
 			$res->execute();
 
-			return true;		
+			$response['status']=true;		
 
 		}catch(PDOException $e){
-			return false;
+			$response['status']=false;
 		}
+		return $response;
+	}
+
+	// função para deletar utilizadores
+	public function deleteUser($id_utilizador,$id_grupo){
+		$response=array();
+		try{
+
+			$res = $this->db->prepare('DELETE FROM grupo_acesso WHERE id_grupo=:id_grupo and id_utilizador=:id_utilizador');
+
+			$res->bindValue(':id_utilizador',$id_utilizador);
+			$res->bindValue(':id_grupo',$id_grupo);
+
+			$res->execute();
+
+			$response['status']=true;		
+
+		}catch(PDOException $e){
+			$response['status']=false;
+		}
+		return $response;
 	}
 
 }

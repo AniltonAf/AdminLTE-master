@@ -47,7 +47,7 @@
                       <th>Modelo</th>
                       <th>Fabricante</th>
                       <th>Descrição</th>
-                      <th>Grupo</th>
+                      <th>Unidade Organica</th>
                       <th>Ações</th>
                     </tr>
                   </thead>
