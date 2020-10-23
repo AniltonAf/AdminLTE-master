@@ -5,7 +5,7 @@
     require 'backend/enviroment/db_connection.php';
 
 
-    if(!isset($_SESSION['caixa_monitorizacao_use']))  header('Location: login.php');
+    //if(!isset($_SESSION['caixa_monitorizacao_use']))  header('Location: login.php');
 
     $database = new DbConnection();
 

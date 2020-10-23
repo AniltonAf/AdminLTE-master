@@ -24,13 +24,14 @@ Class Data extends DbConnection{
 		return $data;
 	}
 
-	public function list(){
+	public function login($username,$password){
 		$estado=1;
 		try{
 
-			$res = $this->db->prepare('SELECT * FROM utilizador WHERE estado=:estado');
+			$res = $this->db->prepare('SELECT id FROM utilizador WHERE username=:username AND password=:password AND estado=1');
 			
-			$res->bindValue(':estado',$estado);
+			$res->bindValue(':username',$username);
+			$res->bindValue(':password',hash('sha256', $password));
 			
 			$res->execute();
 
