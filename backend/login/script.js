@@ -7,9 +7,7 @@ $(document).ready(function(){
 	var controller_url="backend/login/controller.php";
 
 
-
-
-	//evento submit form register
+	//evento submit form login
 	$('form[name="login"]').on('submit',function(e){
 		e.preventDefault();
 		var form=$(this);
@@ -31,22 +29,24 @@ $(document).ready(function(){
 
 
 				button.attr('disabled',false);
+				//console.log(res);	
+				response=JSON.parse(res);
 
-				console.log(res)
-
-				/*
-				response= JSON.parse(res);
 
 				if(response.status){
-					getMessage('success','Login efetuado');
-					getAll();
+					getMessage('success',response.message);
+					window.location.href='./index.php';
+
 				}else{
-					getMessage('danger',response.message);
-				}*/
+					getMessage('danger', response.message);					
+					
+				}
 			}
 
 		})
 		return false;
+
+
 	})
 
    function getMessage(type,message){
@@ -58,6 +58,4 @@ $(document).ready(function(){
    	 	$('.retorno').html('');
    	 },4000)
    }
-
-
 });

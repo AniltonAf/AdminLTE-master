@@ -2,14 +2,39 @@
 
     session_start();
 
-    require 'backend/enviroment/db_connection.php';
+  require 'backend/enviroment/db_connection.php';
 
+  if(isset($_GET['logout']) && $_GET['logout']==true){
+      session_unset();
+      session_destroy();
+   }
+  
+  if(!isset($_SESSION['caixa_monitorizacao']))  header('Location: login.php');
 
-    //if(!isset($_SESSION['caixa_monitorizacao_use']))  header('Location: login.php');
 
     $database = new DbConnection();
 
-    $a=3;
+  function hasRoles($array){
+
+    
+
+    foreach ($array as $requireRole) {
+      $exist=false;
+      foreach ($_SESSION['caixa_monitorizacao']['permissoes'] as $myRole) {
+
+        if(strcmp($requireRole, $myRole['nome'])==0){
+          $exist=true;
+          break;
+        }
+
+      }
+
+      if(!$exist) return false;
+    }
+
+    return true;
+    
+  }
 ?>
 
 <!DOCTYPE html>
@@ -85,14 +110,15 @@
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
-          <img src="./dist/img/user2-160x160.jpg" style="max-height: 25px; border-radius: 50%"> User Admin
+          <img src="data:image/png;base64,<?php echo $_SESSION['caixa_monitorizacao']['user']['foto']?>" style="max-height: 25px; border-radius: 50%"> 
+          <?php echo $_SESSION['caixa_monitorizacao']['user']['nome']?>
         </a>
         <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
           <a href="#" class="dropdown-item">
             <i class="fas fa-user mr-2"></i> Ver Perfil
           </a>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
+          <a href="?logout=true" class="dropdown-item">
             <i class="fas fa-sign-in mr-2"></i> Logout
           </a>
         </div>
@@ -136,7 +162,7 @@
               </li>
               </ul>
           </li>
-          <?php if($a==3){?>     
+          <?php if(hasRoles(['utilizadores'])){?>     
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
@@ -146,28 +172,32 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              <?php if(hasRoles(['utilizadores_utilizador'])){?>
               <li class="nav-item">
                 <a href="utilizador.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Utilizadores</p>
                 </a>
               </li>
+              <?php }?>
            <!--   <li class="nav-item">
                 <a href="permissoes.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Permissões</p>
                 </a>
               </li>-->
+              <?php if(hasRoles(['utilizadores_perfil'])){?>
               <li class="nav-item">
                 <a href="perfil_utilizador.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Perfil Utilizador</p>
                 </a>
               </li>
+              <?php }?>
             </ul>
           </li>
          <?php }?>
-          
+          <?php if(hasRoles(['grupo'])){?> 
           <li class="nav-item">
             <a href="grupo.php" class="nav-link">
               <i class="nav-icon far fa-image"></i>
@@ -175,8 +205,9 @@
                 Grupo
               </p>
             </a>
-          </li> 
-
+          </li>
+          <?php }?> 
+          <?php if(hasRoles(['equipamentos'])){?>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
@@ -186,14 +217,18 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              <?php if(hasRoles(['equipamentos_gerador'])){?>
               <li class="nav-item">
                 <a href="gerador.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Gerador</p>
                 </a>
               </li>
+              <?php }?> 
             </ul>
           </li>
+          <?php }?> 
+          <?php if(hasRoles(['reporte'])){?>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
@@ -219,6 +254,7 @@
               </li>
             </ul>
           </li>
+          <?php }?>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

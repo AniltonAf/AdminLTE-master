@@ -27,7 +27,7 @@
 
       <form name="login" method="post">
         <div class="input-group mb-3">
-          <input type="text" class="form-control" name="username" placeholder="Nome Utilizador">
+          <input type="text" class="form-control" required name="username" placeholder="Nome Utilizador">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -35,7 +35,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" name="password" placeholder="Palavra-passe">
+          <input type="password" class="form-control" required name="password" placeholder="Palavra-passe">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -47,7 +47,7 @@
             <div class="icheck-primary">
               <input type="checkbox" name="remember" id="remember">
               <label for="remember">
-                Lembrar Me
+                Lembrar-me
               </label>
             </div>
           </div>
@@ -62,8 +62,9 @@
       <!-- /.social-auth-links -->
 
       <p class="mb-1">
-        <a href="forgot-password.html">Esqueci palavra-passe</a>
+        <a href="forgot-password.html">Esqueceu a palavra-passe</a>
       </p>
+      <div class="retorno"></div>
     </div>
     <!-- /.login-card-body -->
   </div>

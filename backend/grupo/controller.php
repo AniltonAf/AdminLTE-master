@@ -1,3 +1,13 @@
+
+<?php
+//require('header.php');
+//if(!hasRoles(['grupo','grupo_adicionar'])){
+  //echo "<script> window.location.href='./404.php'; </script>";
+//}
+
+?>
+
+
 <?php
 
 	$action= filter_input(INPUT_POST, 'action');
@@ -31,7 +41,6 @@
 			
 		case 'addForm': //apresentar formulario de grupo
 ?>
-
 			<div class="retorno"></div>
 			<form name='register'>
 	            <div class="card-body">
@@ -70,6 +79,8 @@
 				break;
 
 		case 'editForm':
+		if(hasRoles(['grupo_editar'])){
+			}
 
 			$id=filter_input(INPUT_POST, 'id');
 

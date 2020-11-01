@@ -1,4 +1,11 @@
-<?php  require('header.php') ?>
+<?php  
+
+require('header.php');
+if(!hasRoles(['utilizadores','utilizadores_utilizador','utilizadores_utilizador_adicionar'])){
+  echo "<script> window.location.href='./404.php'; </script>";
+}
+
+?>
   <style type="text/css">
     .btn-action{
       margin:0px 5px 0px 0px;
@@ -13,7 +20,8 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Utilizador</h1>
+            <h1 class="m-0 text-dark">Utilizador
+            </h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -39,7 +47,9 @@
               <div class="card">
               <!-- /.card-header -->
               <div class="card-body">
+                <?php if(hasRoles(['utilizadores_utilizador_adicionar'])){?>
                 <button class="btn btn-sm btn-primary" id="btnAdd" style="float: left; margin-right: 40px">Adicionar</button>
+                 <?php }?>
                 <table id="datatable" class="table table-bordered ">
                   <thead>
                     <tr>

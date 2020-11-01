@@ -1,4 +1,9 @@
-<?php  require('header.php') ?>
+<?php  require('header.php');
+if(!hasRoles(['grupo','grupo_adicionar'])){
+  echo "<script> window.location.href='./404.php'; </script>";
+}
+
+?>
   <style type="text/css">
     .btn-action{
       margin:0px 5px 0px 0px;
@@ -39,7 +44,9 @@
               <div class="card">
               <!-- /.card-header -->
               <div class="card-body">
+                <?php if(hasRoles(['grupo_adicionar'])){?>
                 <button class="btn btn-sm btn-primary" id="btnAdd" style="float: left; margin-right: 40px">Adicionar</button>
+                 <?php }?>
                 <table id="datatable" class="table table-bordered ">
                   <thead>
                     <tr>

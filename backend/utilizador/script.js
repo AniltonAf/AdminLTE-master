@@ -1,3 +1,5 @@
+
+
 var $ = jQuery.noConflict ();
 
 $(document).ready(function(){
@@ -74,7 +76,7 @@ $(document).ready(function(){
 					getMessage('success','Perfil Utilizador Registado');
 					getAll();
 				}else{
-					getMessage('danger',response.message);
+					getMessage('danger','Erro registro perfil utilizador');
 				}
 			}
 
@@ -121,7 +123,7 @@ $(document).ready(function(){
 					getMessage('success','Perfil Utilizador Editado');
 					getAll();
 				}else{
-					getMessage('danger',response.message);
+					getMessage('danger','Erro edição perfil utilizador');
 				}
 			}
 
