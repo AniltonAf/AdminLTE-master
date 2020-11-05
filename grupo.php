@@ -1,4 +1,7 @@
-<?php  require('header.php');
+<?php  
+require('header.php');
+//require('backend/enviroment/function.php');
+
 if(!hasRoles(['grupo','grupo_adicionar'])){
   echo "<script> window.location.href='./404.php'; </script>";
 }

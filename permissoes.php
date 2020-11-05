@@ -1,4 +1,7 @@
-<?php  require('header.php') ?>
+<?php  
+require('header.php') 
+//require('backend/enviroment/function.php');
+?>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">

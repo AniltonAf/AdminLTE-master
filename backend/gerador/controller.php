@@ -3,17 +3,35 @@
 	$action= filter_input(INPUT_POST, 'action');
 
 	require 'sql.php';
+		require '../enviroment/function.php';
 	$data = new Data();
 	//defenir fuso horairio para definir hora com php
 	date_default_timezone_set("Atlantic/Cape_Verde");
+	session_start();
 	
 	switch ($action) {
 
 		case 'list': //listar os perfil utilizadores
-			 
-			 $response = $data->list();
-
-			 echo json_encode($response);
+			$response = $data->list();
+			$text='';
+			foreach ($response as $item) {
+				$text.='<tr>';
+				//$text.='<td><img style="max-height:30px;boder-radius:50%" src="data:image/png;base64,'.$item['foto'].'"></td>';
+				$text.='<td>'.$item['modelo'].'</td>';
+				$text.='<td>'.$item['fabricante'].'</td>';
+				$text.='<td>'.$item['descricao'].'</td>';
+				$text.='<td>'.$item['nome'].'</td>';
+				$text.='<td>';
+				if(hasRoles(['equipamentos_gerador_detalhes'])) //Verificação de permissão de acesso ao botão
+					$text.='<button id="btn-detail" data-id="'.$item['id'].'" class="btn btn-sm btn-action btn-info"><i class="fa fa-info"></i></button>';
+				if(hasRoles(['equipamentos_gerador_editar']))
+					$text.='<button id="btn-edit" data-id="'.$item['id'].'" class="btn btn-sm btn-action btn-warning"><i class="fa fa-edit"></i></button>';
+				if(hasRoles(['equipamentos_gerador_eliminar']))
+					$text.='<button id="btn-delete" data-id="'.$item['id'].'" class="btn btn-sm btn-action btn-danger"><i class="fa fa-trash"></i></button>';
+				$text.='</td>';
+				$text.='</tr>';
+			}
+			echo $text;
 
 			break;
 

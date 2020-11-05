@@ -1,30 +1,76 @@
-
-<?php
-//require('header.php');
-//if(!hasRoles(['grupo','grupo_adicionar'])){
-  //echo "<script> window.location.href='./404.php'; </script>";
-//}
-
-?>
-
-
 <?php
 
 	$action= filter_input(INPUT_POST, 'action');
 
 	require 'sql.php';
+	require '../enviroment/function.php';
 	$data = new Data();
 	//defenir fuso horairio para definir hora com php
 	date_default_timezone_set("Atlantic/Cape_Verde");
+
+	session_start();
 	
 	//
 	switch ($action) {
 
 		case 'list': //listar grupos
-			 
-			 $response = $data->list();
+		 	$response = $data->list();
+			$text='';
+			 foreach ($response as $item) {
+				$text.='<tr>';
+				$text.='<td>'.$item['nome'].'</td>';
+				$text.='<td>'.$item['local'].'</td>';
+				$text.='<td>'.$item['descricao'].'</td>';
+				$text.='<td>';
+				if(hasRoles(['grupo_editar']))
+					$text.='<button id="btn-edit" data-id="'.$item['id'].'" class="btn btn-sm btn-action btn-warning"><i class="fa fa-edit"></i></button>';
+				if(hasRoles(['grupo_eliminar']))
+					$text.='<button id="btn-delete" data-id="'.$item['id'].'" class="btn btn-sm btn-action btn-danger"><i class="fa fa-trash"></i></button>';
+				if(hasRoles(['grupo_ver_utilizador']))
+					$text.='<button id="btn-addutilizador" data-id="'.$item['id'].'" class="btn btn-sm btn-action btn-primary"><i class="fa fa-users"></i></button>';
+				$text.='</td>';
+				$text.='</tr>';
 
-			 echo json_encode($response);
+			}
+			echo $text;
+
+
+/*  
+ $response = $data->list();
+			 $text='';
+			 foreach ($response as $item) {
+			 	$text.='<tr>';
+				$text.='<td>'.$item['nome'].'</td>';
+				$text.='<td>'.$item['descricao'].'</td>';
+				$text.='<td>';
+
+
+				if(hasRoles(['utilizadores_perfil_editar']))
+					$text.='<button id="btn-edit" data-id="'.$item['id'].'" class="btn btn-sm btn-action btn-warning"><i class="fa fa-edit"></i></button>';
+
+				if(hasRoles(['utilizadores_perfil_eliminar']))
+					$text.='<button id="btn-delete" data-id="'.$item['id'].'" class="btn btn-sm btn-action btn-danger"><i class="fa fa-trash"></i></button>';
+
+				if(hasRoles(['utilizadores_perfil_permissoes']))
+					$text.='<button id="btn-permissao" data-id="'.$item['id'].'" class="btn btn-sm btn-action btn-primary"><i class="fa fa-unlock"></i></button>';
+				$text.='</td>';
+				$text.='</tr>';
+			 }
+
+			 echo $text;
+
+
+ */
+
+
+
+
+
+
+
+
+
+
 
 			break;
 
@@ -79,8 +125,6 @@
 				break;
 
 		case 'editForm':
-		if(hasRoles(['grupo_editar'])){
-			}
 
 			$id=filter_input(INPUT_POST, 'id');
 
@@ -125,6 +169,7 @@
               <div class="card">
               <!-- /.card-header -->
               <div class="card-body">
+              <?php if(hasRoles(['grupo_ver_utilizador_adicionar'])) ?>
                 <button class="btn btn-sm btn-primary" data-id="<?php echo $id_grupo; ?>" id="btnAdd" style="float: left; margin-right: 40px">Adicionar</button>
                 <table id="tableUser" class="table table-bordered ">
                   <thead>
@@ -181,11 +226,29 @@
 
 
 		case 'listUser':
-			$id_grupo=filter_input(INPUT_POST, 'id_grupo');
+			/*$id_grupo=filter_input(INPUT_POST, 'id_grupo');
 
 			$response=$data->listUser($id_grupo);
 
-			echo json_encode($response);
+			echo json_encode($response);*/
+			$id_grupo=filter_input(INPUT_POST, 'id_grupo');
+
+			$response=$data->listUser($id_grupo);
+			$text='';
+			foreach ($response as $item) {
+				$text.='<tr>';
+				$text.='<td><img style="max-height:30px;boder-radius:50%" src="data:image/png;base64,'.$item['foto'].'"></td>';
+				$text.='<td>'.$item['nome'].'</td>';
+				$text.='<td>'.$item['departamento'].'</td>';
+				$text.='<td>';
+				if(hasRoles(['grupo_ver_utilizador_eliminar']))
+				$text.='<button id="btn-delete-user" data-id="'.$item['id'].'" class="btn btn-sm btn-action btn-danger"><i class="fa fa-trash"></i></button>';
+				$text.='</td>';
+				$text.='</tr>';
+			}
+
+				echo $text;
+
 			break;
 
 		case 'edit':

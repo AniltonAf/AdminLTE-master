@@ -181,7 +181,7 @@ $(document).ready(function(){
     function getAll(){
     	$.post(controller_url,{action:'list'}, function(retorno){
     		datatable.DataTable().destroy()
-			var data=JSON.parse(retorno);
+	/*		var data=JSON.parse(retorno);
 			$estado= 1;
 			var text="";
 			data.forEach(function(item){
@@ -201,9 +201,9 @@ $(document).ready(function(){
 				text+='<button id="btn-delete" data-id="'+item.id+'" class="btn btn-sm btn-action btn-danger"><i class="fa fa-trash"></i></button>';
 				text+='</td>';
 				text+='</tr>';
-				})
+				})*/
 
-			bodyTable.html(text);
+			bodyTable.html(retorno);
 
 			
 			datatable.DataTable({

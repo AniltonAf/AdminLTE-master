@@ -3,6 +3,7 @@
     session_start();
 
   require 'backend/enviroment/db_connection.php';
+  require 'backend/enviroment/function.php';
 
   if(isset($_GET['logout']) && $_GET['logout']==true){
       session_unset();
@@ -14,7 +15,7 @@
 
     $database = new DbConnection();
 
-  function hasRoles($array){
+ /* function hasRoles($array){
 
     
 
@@ -34,7 +35,7 @@
 
     return true;
     
-  }
+  }*/
 ?>
 
 <!DOCTYPE html>

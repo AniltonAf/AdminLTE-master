@@ -1,5 +1,7 @@
 <?php  
 require('header.php');
+//require('backend/enviroment/function.php');
+
 if(!hasRoles(['equipamentos','equipamentos_gerador','equipamentos_gerador_adicionar'])){
     echo "<script> window.location.href='./404.php'; </script>";
 }
@@ -50,7 +52,7 @@ if(!hasRoles(['equipamentos','equipamentos_gerador','equipamentos_gerador_adicio
                 <table id="datatable" class="table table-bordered ">
                   <thead>
                     <tr>
-                      <th>Foto</th>
+                      <!--<th>Foto</th>  -->
                       <th>Modelo</th>
                       <th>Fabricante</th>
                       <th>Descrição</th>

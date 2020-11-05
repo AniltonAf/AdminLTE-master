@@ -3,9 +3,14 @@
 	$action= filter_input(INPUT_POST, 'action');
 
 	require 'sql.php';
+	require '../enviroment/function.php';
 	$data = new Data();
 	//defenir fuso horairio para definir hora com php
 	date_default_timezone_set("Atlantic/Cape_Verde");
+
+
+
+	session_start();
 	
 	//
 	switch ($action) {
@@ -13,8 +18,26 @@
 		case 'list': //listar os perfil utilizadores
 			 
 			 $response = $data->list();
+			 $text='';
+			 foreach ($response as $item) {
+			 	$text.='<tr>';
+				$text.='<td>'.$item['nome'].'</td>';
+				$text.='<td>'.$item['descricao'].'</td>';
+				$text.='<td>';
 
-			 echo json_encode($response);
+				if(hasRoles(['utilizadores_perfil_editar']))
+					$text.='<button id="btn-edit" data-id="'.$item['id'].'" class="btn btn-sm btn-action btn-warning"><i class="fa fa-edit"></i></button>';
+
+				if(hasRoles(['utilizadores_perfil_eliminar']))
+					$text.='<button id="btn-delete" data-id="'.$item['id'].'" class="btn btn-sm btn-action btn-danger"><i class="fa fa-trash"></i></button>';
+
+				if(hasRoles(['utilizadores_perfil_permissoes']))
+					$text.='<button id="btn-permissao" data-id="'.$item['id'].'" class="btn btn-sm btn-action btn-primary"><i class="fa fa-unlock"></i></button>';
+				$text.='</td>';
+				$text.='</tr>';
+			 }
+
+			 echo $text;
 
 			break;
 

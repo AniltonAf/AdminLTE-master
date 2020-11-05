@@ -1,5 +1,7 @@
 <?php  
 require('header.php');
+//require('backend/enviroment/function.php');
+
 if(!hasRoles(['utilizadores','utilizadores_perfil'])){
   echo "<script> window.location.href='./404.php'; </script>";
 }

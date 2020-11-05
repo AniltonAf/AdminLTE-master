@@ -220,24 +220,9 @@ $(document).ready(function(){
     function getAll(){
     	$.post(controller_url,{action:'list'}, function(retorno){
     		datatable.DataTable().destroy()
-			var data=JSON.parse(retorno);
 			$estado= 1;
-			var text="";
-			data.forEach(function(item){
-				text+='<tr>';
-				text+='<td>'+item.nome+'</td>';
-				text+='<td>'+item.local+'</td>';
-				text+='<td>'+item.descricao+'</td>';
-				text+='<td>';
-				text+='<button id="btn-edit" data-id="'+item.id+'" class="btn btn-sm btn-action btn-warning"><i class="fa fa-edit"></i></button>';
-				text+='<button id="btn-delete" data-id="'+item.id+'" class="btn btn-sm btn-action btn-danger"><i class="fa fa-trash"></i></button>';
-				text+='<button id="btn-addutilizador" data-id="'+item.id+'" class="btn btn-sm btn-action btn-primary"><i class="fa fa-users"></i></button>';
-				text+='</td>';
-				text+='</tr>';
-				})
 
-			bodyTable.html(text);
-
+			bodyTable.html(retorno);
 			
 			datatable.DataTable({
 		      "responsive": true,
@@ -279,7 +264,7 @@ $(document).ready(function(){
 
 		$.post(controller_url,{action:'listUser',id_grupo:id_grupo}, function(retorno){
 			table.DataTable().destroy()
-			var data=JSON.parse(retorno);
+	/*		var data=JSON.parse(retorno);
 			var text="";
 			data.forEach(function(item){
 				text+='<tr>';
@@ -290,9 +275,10 @@ $(document).ready(function(){
 				text+='<button id="btn-delete-user" data-id="'+item.id+'" class="btn btn-sm btn-action btn-danger"><i class="fa fa-trash"></i></button>';
 				text+='</td>';
 				text+='</tr>';
-				})
+				*/
+				
 
-			body.html(text);
+			body.html(retorno);
 
 			
 			table.DataTable({

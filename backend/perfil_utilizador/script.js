@@ -166,9 +166,8 @@ $(document).ready(function(){
     function getAll(){
     	$.post(controller_url,{action:'list'}, function(retorno){
     		datatable.DataTable().destroy()
-			var data=JSON.parse(retorno);
 			$estado= 1;
-			var text="";
+			/*var text="";
 			data.forEach(function(item){
 				text+='<tr>';
 				text+='<td>'+item.nome+'</td>';
@@ -179,9 +178,9 @@ $(document).ready(function(){
 				text+='<button id="btn-permissao" data-id="'+item.id+'" class="btn btn-sm btn-action btn-primary"><i class="fa fa-unlock"></i></button>';
 				text+='</td>';
 				text+='</tr>';
-				})
+				})*/
 
-			bodyTable.html(text);
+			bodyTable.html(retorno);
 
 			
 			datatable.DataTable({
