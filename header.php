@@ -15,27 +15,6 @@
 
     $database = new DbConnection();
 
- /* function hasRoles($array){
-
-    
-
-    foreach ($array as $requireRole) {
-      $exist=false;
-      foreach ($_SESSION['caixa_monitorizacao']['permissoes'] as $myRole) {
-
-        if(strcmp($requireRole, $myRole['nome'])==0){
-          $exist=true;
-          break;
-        }
-
-      }
-
-      if(!$exist) return false;
-    }
-
-    return true;
-    
-  }*/
 ?>
 
 <!DOCTYPE html>
@@ -181,12 +160,6 @@
                 </a>
               </li>
               <?php }?>
-           <!--   <li class="nav-item">
-                <a href="permissoes.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Permissões</p>
-                </a>
-              </li>-->
               <?php if(hasRoles(['utilizadores_perfil'])){?>
               <li class="nav-item">
                 <a href="perfil_utilizador.php" class="nav-link">
@@ -256,6 +229,16 @@
             </ul>
           </li>
           <?php }?>
+          <!--<?php// if(hasRoles(['reporte'])){?>  -->
+          <li class="nav-item">
+            <a href="config.php" class="nav-link">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                Configurações
+              </p>
+            </a>
+          </li>
+                  <!-- <?php //}?>   -->
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
