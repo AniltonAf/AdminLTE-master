@@ -50,7 +50,7 @@ switch ($action) {
 				<div class="col-md-4">
 
 					<div class="form-group">
-						<label>Tipo de Segurançã</label>
+						<label>Tipo de Segurança</label>
 						<select class="form-control" value="<?php echo $response['smtp_security']; ?>" name="smtp_security">
 							<option value="ssl" <?php $select = $response['smtp_security'] == 'ssl' ? 'selected' : '';
 												echo $select;  ?>>SSL</option>
@@ -86,6 +86,32 @@ switch ($action) {
 		echo json_encode($response);
 
 		break;
+
+
+		case 'testeemail':
+
+			$response = $data->list();
+			$response = $response[0];
+
+			$emailde = filter_input(INPUT_POST, 'emailde');
+			$emailpara = filter_input(INPUT_POST, 'emailpara');
+
+			$host = $response['host'];;
+			$username = $response['username'];
+			$smtp_auth = $response['smtp_auth'];;
+			$port = $response['port'];;
+			$password = $response['password'];;
+			$ativo = $response['ativo'];;
+			$smtp_security = $response['smtp_security'];;
+			
+			testemail($host,$username,$smtp_auth,$port,$password,$ativo,$smtp_security,$emailde,$emailpara);
+
+			//echo json_encode($response);
+	
+			break;
+	
+
+
 
 	default:
 		# code...

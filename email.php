@@ -44,13 +44,13 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Email De:</label>
-                  <input type="email" class="form-control" required>
+                  <input type="email" name="emailde" class="form-control" required>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Email Para:</label>
-                  <input type="email" class="form-control" required>
+                  <input type="email" name="emailpara" class="form-control" required>
                 </div>
               </div>
               <div class="col-md-4">

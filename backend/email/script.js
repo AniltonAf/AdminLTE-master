@@ -13,7 +13,7 @@ $(document).ready(function () {
 
 	//evento submit form register
 	$('form[name="emailForm"]').on('submit', function () {
-
+	
 		var form = $(this);
 		var button = form.find(':button');
 		$.ajax({
@@ -39,6 +39,33 @@ $(document).ready(function () {
 		return false;
 	})
 
+		//evento submit form teste envio email
+		$('form[name="testeForm"]').on('submit', function () {
+	 		//alert("olaa");
+			var form = $(this);
+			var button = form.find(':button');
+			$.ajax({
+				url: controller_url,
+				type: 'POST',
+				data: 'action=testeemail&' + form.serialize(),
+				beforeSend: function () {
+					button.attr('disabled', true);
+				},
+				success: function (res) {
+					button.attr('disabled', false);
+					response = JSON.parse(res);
+	/*
+					if (response.status) {
+						getMessage('success', 'Configuração de email atualizadas');
+						getAll();
+					} else {
+						getMessage('danger', 'Erro ao configurar');
+					}*/
+				}
+	
+			})
+			return false;
+		})
 
 
 

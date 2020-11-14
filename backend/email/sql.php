@@ -44,43 +44,8 @@ class Data extends DbConnection
 		}
 	}
 
-	// função para registar novos utilizadores
-	public function register($nome, $numero_funcionario, $departamento, $funcao, $email, $telefone, $id_perfil_permission, $password, $username, $foto, $estado, $create_ut)
-	{
-		$response = array();
-		try {
-
-			$res = $this->db->prepare('INSERT INTO utilizador (nome,numero_funcionario,departamento,funcao,email,telefone,id_perfil_permission,password,username,foto,estado,create_ut) VALUES (:nome,:numero_funcionario,:departamento,:funcao,:email,:telefone,:id_perfil_permission,:password,:username,:foto,:estado,:create_ut)');
-
-			$res->bindValue(':nome', $nome);
-			$res->bindValue(':numero_funcionario', $numero_funcionario);
-			$res->bindValue(':departamento', $departamento);
-			$res->bindValue(':funcao', $funcao);
-			$res->bindValue(':email', $email);
-			$res->bindValue(':telefone', $telefone);
-			$res->bindValue(':id_perfil_permission', $id_perfil_permission);
-			$res->bindValue(':password', $password);
-			$res->bindValue(':username', $username);
-			$res->bindValue(':foto', $foto);
-			$res->bindValue(':estado', $estado);
-			$res->bindValue(':create_ut', $create_ut);
-
-			$res->execute();
-
-			$response['status'] = true;
-		} catch (PDOException $e) {
-			//echo $e->getMessage();
-			$message = 'Erro ao registar utilizador';
-			if (strpos($e->getMessage(), 'Duplicate') >= 0) {
-				$text = explode("'", $e->getMessage());
-				$message = $text[3] . " '" . $text[1] . "' já existe";
-			}
-			$response['status'] = false;
-			$response['message'] = $message;
-		}
-		return $response;
-	}
-	// função para editar utilizadores
+	
+	// função para atualizar configurações Email
 	public function update($host, $username, $smtp_auth, $port, $password, $ativo, $smtp_security)
 	{
 		$response = array();
@@ -88,8 +53,6 @@ class Data extends DbConnection
 			$this->db->query("DELETE FROM email_server");
 			
 			$res = $this->db->prepare('INSERT INTO email_server (host,username,smtp_auth,port,password,ativo,smtp_security) VALUES (:host,:username,:smtp_auth,:port,:password,:ativo,:smtp_security)');
-
-
 
 			$res->bindValue(':host', $host);
 			$res->bindValue(':username', $username);
@@ -109,20 +72,9 @@ class Data extends DbConnection
 		return $response;
 	}
 
-	public function listPermition($id_perfil)
-	{
-		$estado = 1;
-		try {
 
-			$res = $this->db->prepare('SELECT p.id,p.nome,p.descrisao, IF((SELECT pp.id FROM perfil_permissao as pp where pp.id_per=p.id and pp.id_perf_util=:id_perfil),true,false) as permissao FROM `permissoes` as p order by p.nome asc');
 
-			$res->bindValue(':id_perfil', $id_perfil);
 
-			$res->execute();
 
-			return $this->data($res);
-		} catch (PDOException $e) {
-			echo $e->getMessage();
-		}
-	}
+
 }

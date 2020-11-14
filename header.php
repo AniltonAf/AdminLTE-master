@@ -248,9 +248,17 @@
             </ul>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="mqtt.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>MQTT</p>
+                </a>
+              </li>
+            </ul>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>SMS</p>
                 </a>
               </li>
             </ul>
