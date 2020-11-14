@@ -229,16 +229,33 @@
             </ul>
           </li>
           <?php }?>
-          <!--<?php// if(hasRoles(['reporte'])){?>  -->
+          <?php //if(hasRoles(['reporte'])){?>
           <li class="nav-item">
-            <a href="config.php" class="nav-link">
-              <i class="nav-icon fas fa-users"></i>
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-wrench"></i>
               <p>
                 Configurações
+                <i class="right fas fa-angle-left"></i>
               </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="email.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Email</p>
+                </a>
+              </li>
+            </ul>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>MQTT</p>
+                </a>
+              </li>
+            </ul>
           </li>
-                  <!-- <?php //}?>   -->
+          <?php //}?>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
