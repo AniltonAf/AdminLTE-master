@@ -1,19 +1,12 @@
 <?php 
 
-
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
-require 'plugins/phpmailer/src/Exception.php';
-require 'plugins/phpmailer/src/PHPMailer.php';
-require 'plugins/phpmailer/src/SMTP.php';
-
 
 
 function hasRoles($array){
 
     
-
     foreach ($array as $requireRole) {
       $exist=false;
       foreach ($_SESSION['caixa_monitorizacao']['permissoes'] as $myRole) {
@@ -36,36 +29,56 @@ function hasRoles($array){
 
 function testemail($host,$username,$smtp_auth,$port,$password,$ativo,$smtp_security,$emailde,$emailpara){
 
+//function testemail($host,$username,$port,$password,$smtp_security,$emailde,$emailpara){
+
+  var_dump($host);
+  var_dump($username);
+  var_dump($port);
+  var_dump($password);
+  var_dump($smtp_security);
+  var_dump($smtp_auth);
+  var_dump($ativo);
+  var_dump($emailde);
+  var_dump($emailpara);
 
     $mail = new PHPMailer;
     $mail->isSMTP();
     $mail->Host = $host;
-    $mail->SMTPAuth =$smtp_auth;
+    $mail->SMTPAuth =true;
     $mail->SMTPSecure = $smtp_security;
     $mail->Username = $username;
     $mail->Password = $password;
     $mail->Port = $port;
-    $mail->SMTPKeepAlive = $ativo;
+    $mail->SMTPKeepAlive = true;
 
+/*
+    $mail = new PHPMailer;
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+    $mail->SMTPSecure = 'tls';
+    $mail->Username = 'geradorcaixa@gmail.com';
+    $mail->Password = 'geradorcaixa20.';
+    $mail->Port = 587;
+    $mail->SMTPKeepAlive = true;
+*/
     $mail->setFrom('geradorcaixa@gmail.com','Sistema Monitorizacao');
 
-    $mail->addAddress($emailde, $emailpara);
+    //$mail->addAddress($emailde, $emailpara);
+    $mail->addAddress($username, 'aniltonafortes@gmail.com');
 
     $mail->isHTML(true);
-    $mail->Subject = 'Assunto do email';
+    $mail->Subject = 'Teste Comunicação E-mail';
     $mail->Body    = 'Este é o conteúdo da mensagem em <b>HTML!</b>';
     $mail->AltBody = 'Para visualizar essa mensagem acesse http://site.com.br/mail';
 
     if(!$mail->send()) {
-        echo 'Não foi possível enviar a mensagem.<br>';
-        echo 'Erro: ' . $mail->ErrorInfo;
+      $response['status'] = false;
     } else {
-        echo 'Mensagem enviada.';
+      $response['status'] = true;
     }
 
-
-
-
+    return $response;
   
 }
 

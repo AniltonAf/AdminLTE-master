@@ -2,12 +2,8 @@
 
 $action = filter_input(INPUT_POST, 'action');
 require 'sql.php';
-require '../enviroment/function.php';
+//require '../enviroment/function.php';
 
-//requisitos para envio de email
-require '../../plugins/phpmailer/src/Exception.php';
-require '../../plugins/phpmailer/src/PHPMailer.php';
-require '../../plugins/phpmailer/src/SMTP.php';
 
 $data = new Data();
 //defenir fuso horairio para definir hora com php
@@ -26,8 +22,8 @@ switch ($action) {
 			<div class="row">
 				<div class="col-md-4">
 					<div class="form-group">
-						<label>Host/Servidor</label>
-						<input type="text" value="<?php echo $response['host']; ?>" name="host" class="form-control" placeholder="Introduzir Host/Servidor" required>
+						<label>Servidor</label>
+						<input type="text" value="<?php echo $response['server_mqtt']; ?>" name="server_mqtt" class="form-control" placeholder="Introduzir endereço Servidor" required>
 					</div>
 					<div class="form-group">
 						<label>Nome de utilizador</label>
@@ -35,14 +31,14 @@ switch ($action) {
 					</div>
 					<div class="checkbox">
 						<label>
-							<input type="checkbox" value="<?php echo $response['smtp_auth']; ?>" <?php echo $response['smtp_auth']? 'checked':''; ?> name="smtp_auth"> Autenticação
+							<input type="checkbox" value="<?php echo $response['ativo_ws']; ?>" <?php echo $response['ativo_ws']? 'checked':''; ?> name="ativo_ws"> Ativo WS
 						</label>
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div class="form-group">
-						<label>Porta Servidor</label>
-						<input type="number" value="<?php echo $response['port']; ?>" name="port" class="form-control" placeholder="Introduzir Porta" required>
+						<label>Porta WS</label>
+						<input type="number" value="<?php echo $response['port_ws']; ?>" name="port_ws" class="form-control" placeholder="Introduzir Porta WS" required>
 					</div>
 					<div class="form-group">
 						<label>Palavra-passe</label>
@@ -50,24 +46,16 @@ switch ($action) {
 					</div>
 					<div class="checkbox">
 						<label>
-							<input type="checkbox" value="<?php echo $response['ativo']; ?>" <?php echo $response['ativo']? 'checked':''; ?> name="ativo"> Ativo
+							<input type="checkbox" value="<?php echo $response['ativo_mqtt']; ?>" <?php echo $response['ativo_mqtt']? 'checked':''; ?> name="ativo_mqtt"> Ativo MQTT
 						</label>
 					</div>
 				</div>
 				<div class="col-md-4">
-
 					<div class="form-group">
-						<label>Tipo de Segurança</label>
-						<select class="form-control" value="<?php echo $response['smtp_security']; ?>" name="smtp_security">
-							<option value="ssl" <?php $select = $response['smtp_security'] == 'ssl' ? 'selected' : '';
-												echo $select;  ?>>SSL</option>
-							<option value="tls" <?php $select = $response['smtp_security'] == 'tls' ? 'selected' : '';
-												echo $select;  ?>>TLS</option>
-							<option value="" <?php $select = $response['smtp_security'] == '' ? 'selected' : '';
-												echo $select;  ?>>Nenhuma</option>
-						</select>
+							<label>Porta MQTT</label>
+							<input type="number" value="<?php echo $response['port_mqtt']; ?>" name="port_mqtt" class="form-control" placeholder="Introduzir Porta MQTT" required>
+						</div>
 					</div>
-				</div>
 			</div>
 		</div>
 		<!-- /.card-body -->
@@ -89,7 +77,7 @@ switch ($action) {
 		$password = filter_input(INPUT_POST, 'password');
 		$ativo = filter_input(INPUT_POST, 'ativo')?filter_input(INPUT_POST, 'ativo'):0;
 		$smtp_security = filter_input(INPUT_POST, 'smtp_security');
-		$response = $data->update($host, $username, $smtp_auth, $port, $password, $ativo, $smtp_security);
+		$response = $data->update($server_mqtt, $username, $port_mqtt, $port_ws, $password, $ativo_ws, $port_mqtt);
 
 		
 		echo json_encode($response);

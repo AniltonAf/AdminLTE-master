@@ -4,17 +4,17 @@ var $ = jQuery.noConflict();
 
 $(document).ready(function () {
 
-	var controller_url = "backend/email/controller.php";
+	var controller_url = "backend/mqtt/controller.php";
 
 
 
 	getAll();
 
-	formTestEmail();
+	//formTestEmail();
 
 
 	//evento submit form register
-	$('form[name="emailForm"]').on('submit', function () {
+	$('form[name="mqttForm"]').on('submit', function () {
 	
 		var form = $(this);
 		var button = form.find(':button');
@@ -30,37 +30,16 @@ $(document).ready(function () {
 				response = JSON.parse(res);
 
 				if (response.status) {
-					getMessage('success', 'Configuração de email atualizadas');
+					getMessage('success', 'Configurações do servidor MQTT foram atualizados');
 					getAll();
 				} else {
-					getMessage('danger', 'Erro ao configurar');
+					getMessage('danger', 'Erro ao atualizar');
 				}
 			}
 
 		})
 		return false;
 	})
-
-		$('form[name="testeForm"]').on('submit', function () {
-	 		
-			var form = $(this);
-			var button = form.find(':button');
-			
-			$.post(controller_url,{action:'envioemail'},function(res){
-				console.log(res);
-				//response = JSON.parse(res);
-				//if (response.status) {
-				if (res) {
-						getMessage('success', 'Teste E-mail realizado com sucesso');
-						
-				} else {
-						getMessage('danger', 'Erro teste envio de E-mail');
-				}
-			})
-
-
-			return false;
-		})
 
 
 
@@ -76,14 +55,14 @@ $(document).ready(function () {
 
 	function getAll() {
 		$.post(controller_url, { action: 'form' }, function (retorno) {
-			$('form[name="emailForm"]').html(retorno)
+			$('form[name="mqttForm"]').html(retorno);
 		})
 	}
-
+/*
 	function formTestEmail() {
 		$.post(controller_url, { action: 'formtest' }, function (retorno) {
 			$('form[name="testeForm"]').html(retorno)
 		})
-	}
+	}*/
 
 });
