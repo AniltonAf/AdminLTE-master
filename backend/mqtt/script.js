@@ -10,9 +10,6 @@ $(document).ready(function () {
 
 	getAll();
 
-	//formTestEmail();
-
-
 	//evento submit form register
 	$('form[name="mqttForm"]').on('submit', function () {
 	
@@ -58,11 +55,6 @@ $(document).ready(function () {
 			$('form[name="mqttForm"]').html(retorno);
 		})
 	}
-/*
-	function formTestEmail() {
-		$.post(controller_url, { action: 'formtest' }, function (retorno) {
-			$('form[name="testeForm"]').html(retorno)
-		})
-	}*/
+
 
 });

@@ -46,13 +46,13 @@ class Data extends DbConnection
 
 	
 	// função para atualizar configurações Email
-	public function update($server_mqtt, $username, $port_mqtt, $port_ws, $password, $ativo_ws, $port_mqtt)
+	public function update($server_mqtt, $username, $port_mqtt, $port_ws, $password, $ativo_ws, $ativo_mqtt)
 	{
 		$response = array();
 		try {
 			$this->db->query("DELETE FROM mqtt_server");
 			
-			$res = $this->db->prepare('INSERT INTO mqtt_server (server_mqtt,username,port_mqtt,port_ws,password,ativo_ws,port_mqtt) VALUES (:server_mqtt,:username,:port_mqtt,:port_ws,:password,:ativo_ws,:port_mqtt)');
+			$res = $this->db->prepare('INSERT INTO mqtt_server (server_mqtt,username,port_mqtt,port_ws,password,ativo_ws,ativo_mqtt) VALUES (:server_mqtt,:username,:port_mqtt,:port_ws,:password,:ativo_ws,:ativo_mqtt)');
 
 			$res->bindValue(':server_mqtt', $server_mqtt);
 			$res->bindValue(':username', $username);
@@ -60,7 +60,7 @@ class Data extends DbConnection
 			$res->bindValue(':port_ws', $port_ws);
 			$res->bindValue(':password', $password);
 			$res->bindValue(':ativo_ws', $ativo_ws);
-			$res->bindValue(':port_mqtt', $port_mqtt);
+			$res->bindValue(':ativo_mqtt', $ativo_mqtt);
 
 			$res->execute();
 

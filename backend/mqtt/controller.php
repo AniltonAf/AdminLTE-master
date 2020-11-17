@@ -31,7 +31,7 @@ switch ($action) {
 					</div>
 					<div class="checkbox">
 						<label>
-							<input type="checkbox" value="<?php echo $response['ativo_ws']; ?>" <?php echo $response['ativo_ws']? 'checked':''; ?> name="ativo_ws"> Ativo WS
+							<input type="checkbox" value="<?php echo $response['ativo_ws']; ?>" <?php echo $response['ativo_ws']? 'checked':''; ?> name="ativo_ws"> WS Ativo
 						</label>
 					</div>
 				</div>
@@ -46,7 +46,7 @@ switch ($action) {
 					</div>
 					<div class="checkbox">
 						<label>
-							<input type="checkbox" value="<?php echo $response['ativo_mqtt']; ?>" <?php echo $response['ativo_mqtt']? 'checked':''; ?> name="ativo_mqtt"> Ativo MQTT
+							<input type="checkbox" value="<?php echo $response['ativo_mqtt']; ?>" <?php echo $response['ativo_mqtt']? 'checked':''; ?> name="ativo_mqtt"> MQTT Ativo
 						</label>
 					</div>
 				</div>
@@ -70,13 +70,13 @@ switch ($action) {
 
 
 	case 'update':
-		$host = filter_input(INPUT_POST, 'host');
+		$server_mqtt = filter_input(INPUT_POST, 'server_mqtt');
 		$username = filter_input(INPUT_POST, 'username');
-		$smtp_auth = filter_input(INPUT_POST, 'smtp_auth')?filter_input(INPUT_POST, 'smtp_auth'):0;
-		$port = filter_input(INPUT_POST, 'port');
+		$port_mqtt = filter_input(INPUT_POST, 'port_mqtt')?filter_input(INPUT_POST, 'port_mqtt'):0;
+		$port_ws = filter_input(INPUT_POST, 'port_ws');
 		$password = filter_input(INPUT_POST, 'password');
-		$ativo = filter_input(INPUT_POST, 'ativo')?filter_input(INPUT_POST, 'ativo'):0;
-		$smtp_security = filter_input(INPUT_POST, 'smtp_security');
+		$ativo_ws = filter_input(INPUT_POST, 'ativo_ws')?filter_input(INPUT_POST, 'ativo_ws'):0;
+		$port_mqtt = filter_input(INPUT_POST, 'port_mqtt');
 		$response = $data->update($server_mqtt, $username, $port_mqtt, $port_ws, $password, $ativo_ws, $port_mqtt);
 
 		
