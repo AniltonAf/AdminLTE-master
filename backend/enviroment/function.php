@@ -1,4 +1,5 @@
 <?php 
+declare(strict_types=1);
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -81,6 +82,34 @@ function testemail($host,$username,$smtp_auth,$port,$password,$ativo,$smtp_secur
     return $response;
   
 }
+
+
+
+  function smssend($accountsid, $authtoken, $ativo, $numberfrom, $numberto, $menssagem)){
+
+    $twilioAccountSid = $accountsid;
+    $twilioAuthToken = $authtoken;
+
+    $fromNumber = $numberfrom;
+    $receptores = $numberto;
+
+    $message = $menssagem;
+
+    if($ativo){
+      foreach($receptores as $toNumber){
+
+        $client = new Twilio\Rest\Client($twilioAccountSid, $twilioAuthToken);
+    
+        $message = $client->messages->create($toNumber,['from' => $fromNumber,'body' => $message]);
+    
+        unset($toNumber);
+      }
+      $response['status'] = false;
+    else{
+      $response['status'] = true;
+    }
+
+  }
 
 
 
