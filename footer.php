@@ -51,8 +51,8 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <!--script src="dist/js/pages/dashboard.js"></script-->
 
-
-
+<!-- MapBox  -->
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
 
 <!-- DataTables -->
 <script src="plugins/datatables/jquery.dataTables.min.js"></script>

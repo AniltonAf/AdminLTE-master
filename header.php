@@ -25,6 +25,9 @@
   <title>Monitorização Gerador V1.0</title>
   <link rel="shortcut icon" href="dist/img/CaixaLogo.png" >
 
+  <!-- MapBox  -->
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -46,6 +49,18 @@
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+
+  <style>
+        #map {
+            position: relative;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 800px;
+            height: 550px;
+        }
+    </style>
+
 </head>
 <!--<body class="hold-transition sidebar-mini layout-fixed"> -->
 <body class="sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed sidebar-collapse" style="height: auto;min-height: 100%;">

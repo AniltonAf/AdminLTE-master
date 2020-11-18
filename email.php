@@ -31,20 +31,10 @@
 
       <div class="card card-primary">
         <!-- form start -->
-        <div class="retorno">
-          <form name="emailForm">
+        <div class="retorno"></div>
+        <form name="emailForm">
 
           </form>
-        </div>
-      </div>
-    
-   
-      <div class="card card-primary">
-        <div class="retorno">
-          <form name="formtest">
-           
-          </form>
-        </div>
       </div>
 
 

@@ -28,148 +28,103 @@
 ==================== START CODE WHERE
 ====================================================================================-->
 
- <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <!-- Info boxes -->
-        <div class="row">
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box">
-              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-play"></i></span>
+    <!-- Main content -->
+        <section class="content">
+          <div class="container-fluid">
+            <!-- Info boxes -->
+            <div class="row">
+              <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                  <span class="info-box-icon bg-success elevation-1"><i class="fas fa-play"></i></span>
 
-              <div class="info-box-content">
-                <span class="info-box-text">Geradores ON</span>
-                <span class="info-box-number">
-                  10
-                  <small>%</small>
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box">
-              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-stop"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">Geradores OFF</span>
-                <span class="info-box-number">
-                  10
-                  <small>%</small>
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-
-          <!-- /.col -->
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-warning  elevation-1"><i class="fas fa-warning"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">Avarias Gerador</span>
-                <span class="info-box-number">41,410</span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-
-          <!-- fix for small devices only -->
-          <div class="clearfix hidden-md-up"></div>
-
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-warning  elevation-1"><i class="fas fa-shopping-cart"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">Avarias Rede Publica</span>
-                <span class="info-box-number">760</span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-          
-
-
-
-
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Browser Usage</h3>
-
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-8">
-                    <div class="chart-responsive">
-                      <canvas id="pieChart" height="150"></canvas>
-                    </div>
-                    <!-- ./chart-responsive -->
+                  <div class="info-box-content">
+                    <span class="info-box-text">Geradores ON</span>
+                    <span class="info-box-number">
+                      10
+                      <small>%</small>
+                    </span>
                   </div>
-                  <!-- /.col -->
-                  <div class="col-md-4">
-                    <ul class="chart-legend clearfix">
-                      <li><i class="far fa-circle text-danger"></i> Chrome</li>
-                      <li><i class="far fa-circle text-success"></i> IE</li>
-                      <li><i class="far fa-circle text-warning"></i> FireFox</li>
-                      <li><i class="far fa-circle text-info"></i> Safari</li>
-                      <li><i class="far fa-circle text-primary"></i> Opera</li>
-                      <li><i class="far fa-circle text-secondary"></i> Navigator</li>
-                    </ul>
-                  </div>
-                  <!-- /.col -->
+                  <!-- /.info-box-content -->
                 </div>
-                <!-- /.row -->
+                <!-- /.info-box -->
               </div>
-              <!-- /.card-body -->
-              <div class="card-footer bg-white p-0">
-                <ul class="nav nav-pills flex-column">
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      United States of America
-                      <span class="float-right text-danger">
-                        <i class="fas fa-arrow-down text-sm"></i>
-                        12%</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      India
-                      <span class="float-right text-success">
-                        <i class="fas fa-arrow-up text-sm"></i> 4%
-                      </span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      China
-                      <span class="float-right text-warning">
-                        <i class="fas fa-arrow-left text-sm"></i> 0%
-                      </span>
-                    </a>
-                  </li>
-                </ul>
+
+              <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                  <span class="info-box-icon bg-info elevation-1"><i class="fas fa-stop"></i></span>
+
+                  <div class="info-box-content">
+                    <span class="info-box-text">Geradores OFF</span>
+                    <span class="info-box-number">
+                      10
+                      <small>%</small>
+                    </span>
+                  </div>
+                  <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
               </div>
-              <!-- /.footer -->
-            </div>
-            <!-- /.card -->
+
+              <!-- /.col -->
+              <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                  <span class="info-box-icon bg-warning  elevation-1"><i class="fas fa-warning"></i></span>
+
+                  <div class="info-box-content">
+                    <span class="info-box-text">Avarias Gerador</span>
+                    <span class="info-box-number">41,410</span>
+                  </div>
+                  <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+              </div>
+              <!-- /.col -->
+
+              <!-- fix for small devices only -->
+              <div class="clearfix hidden-md-up"></div>
+
+              <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                  <span class="info-box-icon bg-warning  elevation-1"><i class="fas fa-shopping-cart"></i></span>
+
+                  <div class="info-box-content">
+                    <span class="info-box-text">Avarias Rede Publica</span>
+                    <span class="info-box-number">760</span>
+                  </div>
+                  <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+              </div>
+              <!-- /.col -->
+              
+              <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+              <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+
+
+
+                  <div id="map"></div>
+                    <script>
+                        // TO MAKE THE MAP APPEAR YOU MUST
+                        // ADD YOUR ACCESS TOKEN FROM
+                        // https://account.mapbox.com
+                        mapboxgl.accessToken = 'pk.eyJ1IjoiaXZhbmlsZG9lZSIsImEiOiJja2hmYWwxcWkwYWptMnhwYzk2c3lmNWJxIn0.MG7-GSqPrk3JCepjLMSB9Q';
+                        var map = new mapboxgl.Map({
+                            container: 'map', // container id
+                            style: 'mapbox://styles/mapbox/streets-v11', // style URL
+                            center: [-23.664849, 15.882756], // starting position [lng, lat]
+                            zoom: 7 // starting zoom
+                        });
+                        var marker = new mapboxgl.Marker()
+                            .setLngLat([-23.664849, 15.882756])
+                            .addTo(map)
+                    </script>
+
+
+
+                  </div>
+                  <!-- /.footer -->
+                </div>
+                <!-- /.card -->
 
 
 

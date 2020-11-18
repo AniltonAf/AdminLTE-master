@@ -4,10 +4,7 @@ $action = filter_input(INPUT_POST, 'action');
 require 'sql.php';
 require '../enviroment/function.php';
 
-//requisitos para envio de email
-require '../../plugins/phpmailer/src/Exception.php';
-require '../../plugins/phpmailer/src/PHPMailer.php';
-require '../../plugins/phpmailer/src/SMTP.php';
+
 
 $data = new Data();
 //defenir fuso horairio para definir hora com php
@@ -19,7 +16,20 @@ switch ($action) {
 	case 'form':
 
 		$response = $data->list();
-		$response = $response[0];
+
+		if(!$response){
+			$response=[
+				"host"=>"",
+				"username"=>"",
+				"smtp_auth"=>false,
+				"port"=>"",
+				"password"=>"",
+				"ativo"=>false,
+				"smtp_security"=>"",
+			];
+		}else{
+			$response = $response[0];
+		}
 
 ?>
 		<div class="card-body">
@@ -35,7 +45,7 @@ switch ($action) {
 					</div>
 					<div class="checkbox">
 						<label>
-							<input type="checkbox" value="<?php echo $response['smtp_auth']; ?>" <?php echo $response['smtp_auth']? 'checked':''; ?> name="smtp_auth"> Autenticação
+							<input type="checkbox" <?php echo $response['smtp_auth']? 'checked':''; ?> name="smtp_auth"> Autenticação
 						</label>
 					</div>
 				</div>
@@ -50,7 +60,7 @@ switch ($action) {
 					</div>
 					<div class="checkbox">
 						<label>
-							<input type="checkbox" value="<?php echo $response['ativo']; ?>" <?php echo $response['ativo']? 'checked':''; ?> name="ativo"> Ativo
+							<input type="checkbox" <?php echo $response['ativo']? 'checked':''; ?> name="ativo"> Ativo
 						</label>
 					</div>
 				</div>
@@ -72,7 +82,8 @@ switch ($action) {
 		</div>
 		<!-- /.card-body -->
 		<div class="card-footer">
-			<button type="submit" class="btn btn-primary">Gravar</button>
+			<button type="submit" id="btnTest" class="btn btn-primary">Testar Conexão</button>
+			<button type="submit" id="btnGravar" class="btn btn-primary">Gravar</button>
 		</div>
 
 	
@@ -84,10 +95,10 @@ switch ($action) {
 	case 'update':
 		$host = filter_input(INPUT_POST, 'host');
 		$username = filter_input(INPUT_POST, 'username');
-		$smtp_auth = filter_input(INPUT_POST, 'smtp_auth')?filter_input(INPUT_POST, 'smtp_auth'):0;
+		$smtp_auth = filter_input(INPUT_POST, 'smtp_auth')?1:0;
 		$port = filter_input(INPUT_POST, 'port');
 		$password = filter_input(INPUT_POST, 'password');
-		$ativo = filter_input(INPUT_POST, 'ativo')?filter_input(INPUT_POST, 'ativo'):0;
+		$ativo = filter_input(INPUT_POST, 'ativo')?1:0;
 		$smtp_security = filter_input(INPUT_POST, 'smtp_security');
 		$response = $data->update($host, $username, $smtp_auth, $port, $password, $ativo, $smtp_security);
 
@@ -95,53 +106,6 @@ switch ($action) {
 		echo json_encode($response);
 
 		break;
-
-		case 'formtest';
-?>
-			<div class="card-body">
-				<div class="row">
-					<div class="col-md-4">
-						<div class="form-group">
-						<label>Email Para:</label>
-						<input type="email" class="form-control" name="emailpara" placeholder="Inserir e-mail teste" required>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-						<label></label><br>
-						<button type="submit" class="btn btn-primary">Testar Conexão</button>
-						</div>
-					</div>
-				</div>
-			</div>
-	  	  
-<?php
-		break;
-
-		case 'envioemail':
-
-			$response = $data->list();
-			$response = $response[0];
-
-			$emailde = filter_input(INPUT_POST, 'emailde');
-			$emailpara = filter_input(INPUT_POST, 'emailpara');
-
-			$host = $response['host'];;
-			$username = $response['username'];
-			$smtp_auth = $response['smtp_auth'];;
-			$port = $response['port'];;
-			$password = $response['password'];;
-			$ativo = $response['ativo'];;
-			$smtp_security = $response['smtp_security'];;
-			
-			$response = testemail($host,$username,$smtp_auth,$port,$password,$ativo,$smtp_security,$emailde,$emailpara);
-
-			echo json_encode($response);
-	
-		break;
-	
-
-
 
 	default:
 		# code...

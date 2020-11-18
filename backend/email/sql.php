@@ -1,6 +1,6 @@
 <?php
 
-require '../enviroment/db_connection.php';
+require  $_SERVER['DOCUMENT_ROOT'].'/AdminLTE-master/backend/enviroment/db_connection.php';
 
 
 

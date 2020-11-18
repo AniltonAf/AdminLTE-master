@@ -1,8 +1,7 @@
 <?php 
 declare(strict_types=1);
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+
 
 
 function hasRoles($array){
@@ -28,7 +27,7 @@ function hasRoles($array){
 
 
 
-function testemail($host,$username,$smtp_auth,$port,$password,$ativo,$smtp_security,$emailde,$emailpara){
+/*function testemail($host,$username,$smtp_auth,$port,$password,$ativo,$smtp_security,$emailde,$emailpara){
 
 //function testemail($host,$username,$port,$password,$smtp_security,$emailde,$emailpara){
 
@@ -62,7 +61,7 @@ function testemail($host,$username,$smtp_auth,$port,$password,$ativo,$smtp_secur
     $mail->Password = 'geradorcaixa20.';
     $mail->Port = 587;
     $mail->SMTPKeepAlive = true;
-*/
+
     $mail->setFrom('geradorcaixa@gmail.com','Sistema Monitorizacao');
 
     //$mail->addAddress($emailde, $emailpara);
@@ -85,7 +84,7 @@ function testemail($host,$username,$smtp_auth,$port,$password,$ativo,$smtp_secur
 
 
 
-  function smssend($accountsid, $authtoken, $ativo, $numberfrom, $numberto, $menssagem)){
+  function smssend($accountsid, $authtoken, $ativo, $numberfrom, $numberto, $menssagem){
 
     $twilioAccountSid = $accountsid;
     $twilioAuthToken = $authtoken;
@@ -105,12 +104,12 @@ function testemail($host,$username,$smtp_auth,$port,$password,$ativo,$smtp_secur
         unset($toNumber);
       }
       $response['status'] = false;
-    else{
-      $response['status'] = true;
+    } else {
+        $response['status'] = true;
     }
 
   }
 
-
+*/
 
 ?>
