@@ -18,7 +18,18 @@ switch ($action) {
 	case 'form':
 
 		$response = $data->list();
-		$response = $response[0];
+
+		if(!$response){
+			$response=[
+				"provedor"=>"",
+				"accountsid"=>"",
+				"numberfrom"=>"",
+				"authtoken"=>"",
+				"ativo"=>false,
+				];
+		}else{
+			$response = $response[0];
+		}
 
 ?>
 		<div class="card-body">
@@ -26,33 +37,34 @@ switch ($action) {
 				<div class="col-md-4">
 					<div class="form-group">
 						<label>Provedor do serviço</label>
-						<input type="text" value="<?php echo $response['provedor']; ?>" name="host" class="form-control" placeholder="Introduzir Provedor" required>
+						<input type="text" value="<?php echo $response['provedor']; ?>" name="provedor" class="form-control" placeholder="Introduzir Provedor" required>
 					</div>
 					<div class="form-group">
 						<label>Conta SID</label>
-						<input type="text" value="<?php echo $response['accountsid']; ?>" name="username" class="form-control" placeholder="Introduzir Conta SID" required>
+						<input type="text" value="<?php echo $response['accountsid']; ?>" name="accountsid" class="form-control" placeholder="Introduzir Conta SID" required>
 					</div>
 					<div class="checkbox">
 						<label>
-							<input type="checkbox" value="<?php echo $response['ativo']; ?>" <?php echo $response['ativo']? 'checked':''; ?> name="ativo"> Ativo
+							<input type="checkbox" <?php echo $response['ativo']? 'checked':''; ?> name="ativo"> Ativo
 						</label>
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div class="form-group">
 						<label>Numero de Envio</label>
-						<input type="text" value="<?php echo $response['numberfrom']; ?>" name="port" class="form-control" placeholder="Introduzir Numero" required>
+						<input type="text" value="<?php echo $response['numberfrom']; ?>" name="numberfrom" class="form-control" placeholder="Introduzir Numero" required>
 					</div>
 					<div class="form-group">
 						<label>Autenticação Token</label>
-						<input type="authtoken" value="<?php echo $response['authtoken']; ?>" name="password" class="form-control" placeholder="Introduzir Autenticação Token" required>
+						<input type="authtoken" value="<?php echo $response['authtoken']; ?>" name="authtoken" class="form-control" placeholder="Introduzir Autenticação Token" required>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!-- /.card-body -->
 		<div class="card-footer">
-			<button type="submit" class="btn btn-primary">Gravar</button>
+			<button type="submit" id="btnTest" class="btn btn-primary">Testar Envio SMS</button>
+			<button type="submit" id="btnGravar" class="btn btn-primary">Gravar</button>
 		</div>
 
 	
@@ -64,7 +76,7 @@ switch ($action) {
 	case 'update':
 		$accountsid = filter_input(INPUT_POST, 'accountsid');
 		$authtoken = filter_input(INPUT_POST, 'authtoken');
-		$ativo = filter_input(INPUT_POST, 'ativo')?filter_input(INPUT_POST, 'ativo'):0;
+		$ativo = filter_input(INPUT_POST, 'ativo')?1:0;
 		$numberfrom = filter_input(INPUT_POST, 'numberfrom');
 		$provedor = filter_input(INPUT_POST, 'provedor');
 
@@ -75,32 +87,7 @@ switch ($action) {
 
 		break;
 
-		case 'formtest';
-?>
-			<div class="card-body">
-				<div class="row">
-					<div class="col-md-4">
-						<div class="form-group">
-						<label>Numero Destino:</label>
-						<input type="text" class="form-control" name="numberto" placeholder="Inserir numero de teste" required>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-						<label>Mensagem</label>
-						<input type="text" class="form-control" name="menssagem" placeholder="Inserir numero de teste" required>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-						<label></label><br>
-						<button type="submit" class="btn btn-primary">Testar Conexão</button>
-						</div>
-					</div>
-				</div>
-			</div>
-	  	  
-<?php
+
 		break;
 
 		case 'envioemail':

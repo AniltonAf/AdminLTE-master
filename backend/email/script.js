@@ -14,9 +14,6 @@ $(document).ready(function () {
 	var btnClick;
 
 
-	
-
-
 	//evento submit form register
 	$('form[name="emailForm"]').on('submit', function () {
 
@@ -43,8 +40,9 @@ $(document).ready(function () {
 						getMessage('danger', 'Erro ao configurar');
 					}
 				}
-	
+				
 			})
+			return false;
 		}
 
 		else if(btnClick==='btnTest'){
@@ -69,9 +67,6 @@ $(document).ready(function () {
 			})
 		}
 
-
-
-		
 		return false;
 	})
 

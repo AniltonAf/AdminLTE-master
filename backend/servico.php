@@ -1,16 +1,27 @@
 <?php
+declare(strict_types=1);//SMS
 
 $action = filter_input(INPUT_POST, 'action');
 
 /****Bibliotecas */
+use Twilio\Rest\Client;
+use Twilio\Exceptions\TwilioException;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
+//require '../vendor/autoload.php';
+//use Twilio\Rest\Client;
+
 require '../plugins/phpmailer/src/Exception.php';
 require '../plugins/phpmailer/src/PHPMailer.php';
 require '../plugins/phpmailer/src/SMTP.php';
+require '../plugins/twilio/src/Twilio/autoload.php';
+
+//sms
+//require '../vendor/autoload.php';
+
 
 switch ($action) {
 
@@ -84,7 +95,18 @@ switch ($action) {
 
 
     case 'terminal':
-        
+
+    break;
+
+
+    case 'send_sms';
+
+        /***Credencias envio*/
+        $users = json_decode(filter_input(INPUT_POST, 'users'),true);
+        $mensagem = filter_input(INPUT_POST, 'mensagem');
+
+        send_sms($users, $mensagem);
+
     break;
 
     default:
@@ -147,3 +169,48 @@ function send_email($users,$assunto,$mensagem){
 
     echo json_encode($reponse);
 }
+
+function send_sms($users, $mensagem){
+    require 'sms/sql.php';
+    
+           
+    try{
+        $data = new Data();
+        $server = $data->list();
+        $server = $server[0];
+
+        $response=[
+            "status"=>false,
+            "message"=>""
+        ];
+
+        if(!$server['ativo']){
+            $response["message"]="O serviço de SMS encontra-se desativado";
+            echo json_encode($response);
+            return false;
+        }
+
+        $twilioAccountSid = $server['accountsid'];
+        $twilioAuthToken = $server['authtoken'];
+        $fromNumber = $server['numberfrom'];
+
+        
+
+        foreach($users as $user){
+
+            $client = new Client($twilioAccountSid, $twilioAuthToken);
+        
+            $message = $client->messages->create($user['numero'],['from' => $fromNumber,'body' => $mensagem]);
+        }
+
+        $response['status']=true;
+        $response['message']="Mensagem enviada";
+    }catch(TwilioException $e){
+        $response['message']="Erro ao enviar Mensagem";
+        $response['codigo']=$e->getCode();
+        $response['erro_message']=$e->getMessage();
+    }
+    
+    echo json_encode($response);
+}
+

@@ -28,23 +28,13 @@
       <!-- ===============================================================================
 ==================== START CODE WHERE
 ====================================================================================-->
-
+    
       <div class="card card-primary">
         <!-- form start -->
-        <div class="retorno">
-          <form name="smsForm">
+        <div class="retorno"></div>
+        <form name="smsForm">
 
           </form>
-        </div>
-      </div>
-    
-   
-      <div class="card card-primary">
-        <div class="retorno">
-          <form name="formtest">
-           
-          </form>
-        </div>
       </div>
 
 
