@@ -50,16 +50,6 @@
   <!-- summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
 
-  <style>
-        #map {
-            position: relative;
-            left: 10px;
-            top: 0;
-            bottom: 0;
-            width: 800px;
-            height: 550px;
-        }
-    </style>
 
 </head>
 <!--<body class="hold-transition sidebar-mini layout-fixed"> -->

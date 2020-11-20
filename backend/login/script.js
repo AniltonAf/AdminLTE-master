@@ -4,7 +4,7 @@ $(document).ready(function(){
 
 
 
-	var controller_url="backend/login/controller.php";
+	var controller_url="backend/login/controller";
 
 
 	//evento submit form login
@@ -35,7 +35,7 @@ $(document).ready(function(){
 
 				if(response.status){
 					getMessage('success',response.message);
-					window.location.href='./index.php';
+					window.location.href='./index';
 
 				}else{
 					getMessage('danger', response.message);					

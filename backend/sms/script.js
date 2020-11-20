@@ -4,8 +4,11 @@ var $ = jQuery.noConflict();
 
 $(document).ready(function () {
 
-	var controller_url = "backend/sms/controller.php";
+	let controller_url = "backend/sms/controller";
 
+	let modalTest=$('#modalTeste');
+
+	let corpoTest=modalTest.find('.modal-body');
 
 
 	getAll();
@@ -43,29 +46,39 @@ $(document).ready(function () {
 		}
 
 		else if(btnClick==='btnTest'){
-			$.ajax({
-				url: 'backend/servico.php',
-				type: 'POST',
-				data: 'action=test_sms&' + form.serialize(),
-				beforeSend: function () {
-					button.attr('disabled', true);
-				},
-				success: function (res) {
-					button.attr('disabled', false);
-					response = JSON.parse(res);
-		
-					if (response.status) {
-						getMessage('success', response.message);
-					} else {
-						getMessage('danger', response.message);
 
-					}
-				}
-		
+			$.post(controller_url,{action:'formTeste'},function(response){
+				corpoTest.html(response);
+				modalTest.modal({backdrop:false})
 			})
 		}
 		return false;
 
+	})
+
+	modalTest.on('submit','form[name=teste]', function(){
+		let form=$(this);
+		let data= form.serializeArray();
+
+
+		let users=[
+			{
+				nome: "Teste SMS",
+				numero: data[0].value,
+			}
+		]
+
+		let mensagem= data[1].value;
+
+		$.post('./backend/servico',{action:'send_sms',users: JSON.stringify(users),mensagem:mensagem},function(response){
+			response=JSON.parse(response);
+
+			let status= response.status? 'success':'danger';
+
+			getMessageSMS(status,response.message);
+		})
+
+		return false;
 	})
 
 /*
@@ -100,6 +113,16 @@ $(document).ready(function () {
 
 		setTimeout(function () {
 			$('.retorno').html('');
+		}, 4000)
+	}
+
+	function getMessageSMS(type, message) {
+		var text = '<div class="alert alert-sm alert-' + type + '" style="padding:4px">' + message + '</div>';
+
+		$('.retornoSms').html(text);
+
+		setTimeout(function () {
+			$('.retornoSms').html('');
 		}, 4000)
 	}
 

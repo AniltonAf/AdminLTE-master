@@ -8,7 +8,7 @@ $(document).ready(function(){
 
 	var bodyTable= datatable.find('tbody');
 
-	var controller_url="backend/utilizador/controller.php";
+	var controller_url="backend/utilizador/controller";
 
 	//listar items
 	getAll();

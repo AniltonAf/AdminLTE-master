@@ -124,6 +124,8 @@ function send_email($users,$assunto,$mensagem){
     $server = $data->list();
     $server = $server[0];
 
+
+
     $response=[
         "status"=>false,
         "message"=>""

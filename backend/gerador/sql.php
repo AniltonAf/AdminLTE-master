@@ -74,6 +74,22 @@ Class Data extends DbConnection{
 		}
 	}
 
+	public function getConfig($id){
+		try{
+
+			$res = $this->db->prepare('SELECT * FROM gerador_config WHERE gerador_id=:id');
+
+			$res->bindValue(':id',$id);
+
+			$res->execute();
+
+			return $this->data($res);			
+
+		}catch(PDOException $e){
+				echo $e->getMessage();
+		}
+	}
+
 	// função para deletar utilizadores
 	public function delete($id,$estado,$delete_ut){
 		$response=array();
@@ -96,19 +112,22 @@ Class Data extends DbConnection{
 	}
 
 	// função para registar novos gerador
-	public function register($modelo,$fabricante,$descricao,$potencia,$hora_trabalho,$ip,$data_manutencao,$id_grupo,$estado,$create_ut){
+	public function register($modelo,$fabricante,$descricao,$potencia,$hora_trabalho,$data_manutencao,$id_grupo,$estado,$create_ut){
 		
 		$response=array();
 		try{
 
-			$res = $this->db->prepare('INSERT INTO gerador (modelo,fabricante,descricao,potencia,hora_trabalho,ip,data_manutencao,estado,id_grupo,create_ut) VALUES (:modelo,:fabricante,:descricao,:potencia,:hora_trabalho,:ip,:data_manutencao,:estado,:id_grupo,:create_ut)');
+			$id=md5(microtime());
+			$key_auth=hash("sha256",microtime());
 
+			$res = $this->db->prepare('INSERT INTO gerador (id,modelo,fabricante,descricao,potencia,hora_trabalho,data_manutencao,estado,id_grupo,create_ut) VALUES (:id,:modelo,:fabricante,:descricao,:potencia,:hora_trabalho,:data_manutencao,:estado,:id_grupo,:create_ut)');
+
+			$res->bindValue(':id',$id);
 			$res->bindValue(':modelo',$modelo);
 			$res->bindValue(':fabricante',$fabricante);
 			$res->bindValue(':descricao',$descricao);
 			$res->bindValue(':potencia',$potencia);
 			$res->bindValue(':hora_trabalho',$hora_trabalho);
-			$res->bindValue(':ip',$ip);
 			$res->bindValue(':data_manutencao',$data_manutencao);
 			$res->bindValue(':estado',$estado);
 			$res->bindValue(':id_grupo',$id_grupo);
@@ -116,7 +135,15 @@ Class Data extends DbConnection{
 
 			$res->execute();
 
-			$response['status']=true;	
+			$response['status']=true;
+			
+			$resConfig = $this->db->prepare('INSERT INTO gerador_config (gerador_id,key_auth) VALUES (:gerador_id,:key_auth)');
+			$resConfig->bindValue(':gerador_id',$id);
+			$resConfig->bindValue(':key_auth',$key_auth);
+
+			$resConfig->execute();
+
+			$response['status']=true;
 
 
 		}catch(PDOException $e){

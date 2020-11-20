@@ -6,7 +6,7 @@ $(document).ready(function(){
 
 	var bodyTable= datatable.find('tbody');
 
-	var controller_url="backend/gerador/controller.php";
+	var controller_url="backend/gerador/controller";
 
 	//listar items
 	getAll();
@@ -61,6 +61,18 @@ $(document).ready(function(){
 			modal.modal();
 		})
 
+	})
+
+	//evento de click editar
+	bodyTable.on('click','#btn-config',function(){
+		var id=$(this).attr('data-id');
+		var modal=$('#modalAdd');
+		var body= modal.find('.modal-body');
+
+		$.post(controller_url,{action:'configPage',id:id},function(response){
+			body.html(response);
+			modal.modal();
+		})
 	})
 
 	//evento de click editar

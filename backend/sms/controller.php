@@ -87,28 +87,22 @@ switch ($action) {
 
 		break;
 
-
-		break;
-
-		case 'envioemail':
-
-			$response = $data->list();
-			$response = $response[0];
-
-			$numberto = filter_input(INPUT_POST, 'numberto');
-			$menssagem = filter_input(INPUT_POST, 'menssagem');
-
-			$accountsid = filter_input(INPUT_POST, 'accountsid');
-			$authtoken = filter_input(INPUT_POST, 'authtoken');
-			$ativo = filter_input(INPUT_POST, 'ativo')?filter_input(INPUT_POST, 'ativo'):0;
-			$numberfrom = filter_input(INPUT_POST, 'numberfrom');
-			$provedor = filter_input(INPUT_POST, 'provedor');
-	
-			$response = smssend($accountsid, $authtoken, $ativo, $numberfrom, $numberto, $menssagem);
-
-			echo json_encode($response);
-	
-		break;
+	case 'formTeste':
+?>
+	<form name="teste">
+		<div class="retornoSms"></div>
+		<div class="form-group">
+		<label>Número telefone</label>
+		<input type="text" class="form-control" name="telefone" required>
+		</div>
+		<div class="form-group">
+		<label>Mensagem</label>
+		<textarea name="mensagem" rows="5" class="form-control" required></textarea>
+		</div>
+		<button class="btn btn-sm btn-primary" type="submit">Testar</button>
+	</form>
+<?php
+	break;
 	
 
 

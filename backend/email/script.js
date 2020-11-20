@@ -4,7 +4,7 @@ var $ = jQuery.noConflict();
 
 $(document).ready(function () {
 
-	var controller_url = "backend/email/controller.php";
+	var controller_url = "backend/email/controller";
 
 
 
@@ -47,7 +47,7 @@ $(document).ready(function () {
 
 		else if(btnClick==='btnTest'){
 			$.ajax({
-				url: 'backend/servico.php',
+				url: 'backend/servico',
 				type: 'POST',
 				data: 'action=test_email&' + form.serialize(),
 				beforeSend: function () {

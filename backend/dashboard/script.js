@@ -6,7 +6,7 @@ $(document).ready(function(){
 
 	var bodyTable= datatable.find('tbody');
 
-	var controller_url="backend/gerador/controller.php";
+	var controller_url="backend/gerador/controller";
 
 	
 

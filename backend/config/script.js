@@ -6,7 +6,7 @@ $(document).ready(function(){
 
 	var bodyTable= datatable.find('tbody');
 
-	var controller_url="backend/config/controller.php";
+	var controller_url="backend/config/controller";
 
 	//listar items
 	getAll();

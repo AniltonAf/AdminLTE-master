@@ -1,0 +1,7 @@
+{
+    "gerador_id":"xxxxxxxxxxxxxxxxxxxxxxxxx",
+    "key_auth":"xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "gerador_status": true,
+    "avariado": false,
+    "rede_publica":false
+}
