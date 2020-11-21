@@ -8,7 +8,7 @@ require '../enviroment/function.php';
 //require ('vendor/autoload.php');
 
 
-$data = new Data();
+$data = new SMS();
 //defenir fuso horairio para definir hora com php
 date_default_timezone_set("Atlantic/Cape_Verde");
 

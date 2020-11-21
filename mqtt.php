@@ -26,16 +26,15 @@
       <div class="container-fluid">
 
 <!-- ===============================================================================
-==================== START CODE WHERE
+                           START CODE WHERE
 ====================================================================================-->
 
         <div class="card card-primary">
           <!-- form start -->
-          <div class="retorno">
+          <div class="retorno"></div>
             <form name="mqttForm">
 
             </form>
-          </div>
         </div>
 
 

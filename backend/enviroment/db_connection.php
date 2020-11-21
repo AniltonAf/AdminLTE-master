@@ -35,6 +35,8 @@
 			$this->connect();
 			return $this->db;
 		}
+
+		
 	}
 
 ?>

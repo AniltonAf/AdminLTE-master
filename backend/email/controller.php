@@ -6,7 +6,7 @@ require '../enviroment/function.php';
 
 
 
-$data = new Data();
+$data = new EMAIL();
 //defenir fuso horairio para definir hora com php
 date_default_timezone_set("Atlantic/Cape_Verde");
 

@@ -1,10 +1,10 @@
 <?php
 
-require  $_SERVER['DOCUMENT_ROOT'].'/AdminLTE-master/backend/enviroment/db_connection.php';
+if(!isset($_POST['gerador_status'])) require  $_SERVER['DOCUMENT_ROOT'].'/backend/enviroment/db_connection.php';
 
 
 
-class Data extends DbConnection
+class EMAIL extends DbConnection
 {
 
 	private $db;

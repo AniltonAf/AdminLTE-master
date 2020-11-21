@@ -122,7 +122,7 @@ switch ($action) {
 			$ativo = $response['ativo'];;
 			$smtp_security = $response['smtp_security'];;
 			
-			$response = testemail($host,$username,$smtp_auth,$port,$password,$ativo,$smtp_security,$emailde,$emailpara);
+			//$response = testemail($host,$username,$smtp_auth,$port,$password,$ativo,$smtp_security,$emailde,$emailpara);
 
 			echo json_encode($response);
 	
