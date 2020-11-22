@@ -9,6 +9,7 @@ Class geradorAPI extends DbConnection{
 
     private $gerador_id;
 
+   
     private $gerador;
 
     private $users;
@@ -34,22 +35,51 @@ Class geradorAPI extends DbConnection{
                 $gerador_status=$this->existeCampo('gerador_status');
                 $avariado=$this->existeCampo('avariado');
                 $rede_publica=$this->existeCampo('rede_publica');
+                $power_edificio=$this->existeCampo('power_edificio');
+                $power_RP=$this->existeCampo('power_RP');
 
-                $message='teste';
+                $messagem_email='teste email';
+                $messagem_sms='teste sms';
                 $assunto='teste';
 
-                if($avariado){
-                    $message="O ";
-                }
-
                 $this->gerador=$this->getGerador();
+                $this->grupo=$this->getGrupo($this->gerador['id_grupo']);
                 $this->users=$this->getUsers($this->gerador['id_grupo']);  
                 $gerador_id = $this->gerador['id'];     
-                $key_auth = $key_auth = $_SERVER['PHP_AUTH_PW'];  
-                //var_dump( $key_auth );
+                $key_auth = $key_auth = $_SERVER['PHP_AUTH_PW']; 
+                  
+                /*// Condições para envio de alertas Avaria Gerador
+                if($avariado and (!$gerador_status or $gerador_status)){ //
+                    $assunto='Avaria Gerador';
+                    var_export($assunto);
+                    $messagem_sms = ''.$this->gerador['descricao'].' em avaria, por favor verificar';
+                    $messagem_email=''.$this->gerador['descricao'].' em avaria, por favor deslocar ao gerador para a devida identificação da avaria';
+                    send_sms($this->users, $messagem_sms);
+                    send_email($this->users,$assunto,$messagem_email);
+                    
+                }
 
-                //send_email($this->users,$assunto,$message);
-                //send_sms($this->users, $message);
+                // Condições para envio de alertas Avaria QT
+                if(($gerador_status or !$rede_publica) and !$power_edificio and $power_RP){
+                    $assunto='Avaria Quadro Transferencia';
+                    var_export($assunto);
+                    $messagem_sms = 'A Agênca'.$this->grupo['nome'].' com QT em avaria, por favor verificar';
+                    $messagem_email='A Agênca'.$this->grupo['nome'].' sem energia, avaria no Quadro de transferência, por favor Verificar';
+                    send_sms($this->users, $messagem_sms);
+                    send_email($this->users,$assunto,$messagem_email);
+                    
+                }
+
+                // Condições para envio de alertas na Avaria Rede Publica
+                if($rede_publica and  $power_RP){
+                    $assunto='Avaria Rede Publica';
+                    var_export($assunto);
+                    $messagem_sms = 'Na Agênca'.$this->grupo['nome'].' avaria na rede de fornecimento de energia';
+                    $messagem_email='Na Agênca'.$this->grupo['nome'].' avaria na rede de fornecimento de energia, por favor Verificar';
+                    send_sms($this->users, $messagem_sms);
+                    send_email($this->users,$assunto,$messagem_email);
+                }*/
+                                    
                 $this->updateGeradorConfig($gerador_id,$key_auth,$gerador_status,$avariado,$rede_publica);
              
                 $this->historial_gerador($gerador_id,$gerador_status,$avariado,$rede_publica);
@@ -140,6 +170,28 @@ Class geradorAPI extends DbConnection{
 
     }
 
+    function getGrupo($id_grupo){     
+
+        try{
+
+            $res = $this->db->prepare('SELECT nome FROM grupo WHERE id=:id_grupo');
+            
+            $res->bindValue(':id_grupo',$id_grupo);
+            
+            $res->execute();
+           
+            $line =$res->fetch(PDO::FETCH_ASSOC);
+            
+            return $line;
+
+		}catch(PDOException $e){
+				echo $e->getMessage();
+		}
+
+    }
+
+
+
 
     function getUsers($id_grupo){
         try{
@@ -149,7 +201,7 @@ Class geradorAPI extends DbConnection{
             $res->bindValue(':id_grupo',$id_grupo);
 
             $res->execute();
-            
+                        
             return $this->data($res);
 
 		}catch(PDOException $e){
@@ -196,7 +248,7 @@ Class geradorAPI extends DbConnection{
     function historial_gerador($gerador_id,$gerador_status,$avariado,$rede_publica){
         $response = array();
         try{
-            $res = $this->db->prepare('INSERT INTO gerador_historico (gerador_id,key_auth,gerador_status,avariado,rede_publica) VALUES (:gerador_id,:key_auth,:gerador_status,:avariado,:rede_publica)');
+            $res = $this->db->prepare('INSERT INTO gerador_historico (gerador_id,gerador_status,avariado,rede_publica) VALUES (:gerador_id,:gerador_status,:avariado,:rede_publica)');
             
             $res->bindValue(':gerador_id',$gerador_id);
             $res->bindValue(':gerador_status',$gerador_status);

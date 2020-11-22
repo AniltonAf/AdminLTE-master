@@ -12,15 +12,34 @@ session_start();
 switch ($action) {
 
 	case 'list': //listar os perfil utilizadores
+
+
+
+
+
 		$response = $data->list();
 		$text = '';
 		foreach ($response as $item) {
+			$responseconfig = $data->getConfig($item['id']);
+			$responseconfig = $responseconfig[0];
+			if ($responseconfig["avariado"] == null) {
+				$estado= '<div class="badge badge-sm badge-warning">Não configurado</div>';
+			}
+			elseif ($responseconfig["avariado"] == 1) {
+				$estado= '<div class="badge badge-sm badge-danger">Avariado</div>';
+			}elseif ($responseconfig["gerador_status"]) {
+				$estado= '<div class="badge badge-sm badge-success">Funcional</div>';
+			}else {
+				$estado= '<div class="badge badge-sm badge-info">Desligado</div>';
+			}
+
 			$text .= '<tr>';
 			//$text.='<td><img style="max-height:30px;boder-radius:50%" src="data:image/png;base64,'.$item['foto'].'"></td>';
 			$text .= '<td>' . $item['modelo'] . '</td>';
 			$text .= '<td>' . $item['fabricante'] . '</td>';
 			$text .= '<td>' . $item['descricao'] . '</td>';
 			$text .= '<td>' . $item['nome'] . '</td>';
+			$text .= '<td>' .$estado. '</td>';
 			$text .= '<td>';
 			if (hasRoles(['equipamentos_gerador_detalhes'])) //Verificação de permissão de acesso ao botão
 				$text .= '<button id="btn-detail" data-id="' . $item['id'] . '" class="btn btn-sm btn-action btn-info"><i class="fa fa-eye"></i></button>';

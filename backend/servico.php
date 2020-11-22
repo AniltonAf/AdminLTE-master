@@ -31,9 +31,9 @@ switch ($action) {
 
         $users = json_decode(filter_input(INPUT_POST, 'users'),true);
         $assunto= filter_input(INPUT_POST, 'assunto');
-        $mensagem=filter_input(INPUT_POST, 'mensagem');
+        $message_email=filter_input(INPUT_POST, 'mensagem_email');
         
-        send_email($users,$assunto,$mensagem);
+        send_email($users,$assunto,$message_email);
     break;
 
 
@@ -46,9 +46,9 @@ switch ($action) {
 
         /***Credencias envio*/
         $users = json_decode(filter_input(INPUT_POST, 'users'),true);
-        $mensagem = filter_input(INPUT_POST, 'mensagem');
+        $mensagem_sms = filter_input(INPUT_POST, 'mensagem_sms');
 
-        send_sms($users, $mensagem);
+        send_sms($users, $mensagem_sms);
 
     break;
 

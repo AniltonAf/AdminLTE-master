@@ -29,7 +29,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
-function send_email($users,$assunto,$mensagem){
+function send_email($users,$assunto,$mensagem_email){
+  
   require $_SERVER['DOCUMENT_ROOT'].'/plugins/phpmailer/src/Exception.php';
   require $_SERVER['DOCUMENT_ROOT'].'/plugins/phpmailer/src/PHPMailer.php';
   require $_SERVER['DOCUMENT_ROOT'].'/plugins/phpmailer/src/SMTP.php';
@@ -72,14 +73,14 @@ function send_email($users,$assunto,$mensagem){
 
   $mail->isHTML(true);
   $mail->Subject = $assunto;
-  $mail->Body    = $mensagem;
+  $mail->Body    = $mensagem_email;
   //$mail->AltBody = 'Para visualizar essa mensagem acesse http://site.com.br/mail';
 
   if(!$mail->send()) {
-      $reponse['message']="Erro ao enviar mensagem";
+      $reponse['message']="Erro ao enviar mensagem(email) ";
       $reponse['status']=false;
       $response['erro']=$mail->ErrorInfo;
-  } else {
+    } else {
       $reponse['message']="Mensagem enviada";
       $reponse['status']=true;
   }
@@ -145,7 +146,7 @@ use Twilio\Exceptions\TwilioException;
 
 
 
-function send_sms($users, $mensagem){
+function send_sms($users, $mensagem_sms){
   require $_SERVER['DOCUMENT_ROOT'].'/plugins/twilio/src/Twilio/autoload.php';
   require $_SERVER['DOCUMENT_ROOT'].'/backend/sms/sql.php';
   
@@ -176,7 +177,7 @@ function send_sms($users, $mensagem){
 
           $client = new Client($twilioAccountSid, $twilioAuthToken);
       
-          $message = $client->messages->create($user['numero'],['from' => $fromNumber,'body' => $mensagem]);
+          $message = $client->messages->create($user['numero'],['from' => $fromNumber,'body' => $mensagem_sms]);
       }
 
       $response['status']=true;
