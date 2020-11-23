@@ -293,7 +293,7 @@ switch ($action) {
 	?>
 
 		<div class="retorno"></div>
-		<table class="table table-striped">
+		<table class="table table-striped table-responsive">
 			<tr>
 				<th>
 					Estado Gerador
@@ -342,18 +342,10 @@ switch ($action) {
 			</tr>
 			<tr>
 				<th>
-					Gerador ID
+					Auth
 				</th>
-				<td>
-					<?php echo $response['gerador_id']; ?>
-				</td>
-			</tr>
-			<tr>
-				<th>
-					Gerador Chave
-				</th>
-				<td>
-					<?php echo $response['key_auth']; ?>
+				<td style="max-width:fit-content">
+					<?php echo base64_encode($response['gerador_id'].':'.$response['key_auth']); ?>
 				</td>
 			</tr>
 		</table>

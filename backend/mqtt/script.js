@@ -4,7 +4,10 @@ var $ = jQuery.noConflict();
 
 $(document).ready(function () {
 
-	var controller_url = "backend/mqtt/controller.php";
+
+	
+
+	var controller_url = "backend/mqtt/controller";
 
 
 
@@ -51,7 +54,9 @@ $(document).ready(function () {
 	}
 
 	function getAll() {
-		$.post(controller_url, { action: 'form' }, function (retorno) {
+		$.post(controller_url, { action: 'form', test: 777 }, function (retorno) {
+			
+		alert(retorno)
 			$('form[name="mqttForm"]').html(retorno);
 		})
 	}

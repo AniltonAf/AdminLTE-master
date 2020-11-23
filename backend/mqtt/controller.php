@@ -2,7 +2,7 @@
 
 $action = filter_input(INPUT_POST, 'action');
 require 'sql.php';
-//require '../enviroment/function.php';
+require '../enviroment/function.php';
 
 
 $data = new Data();
@@ -106,28 +106,7 @@ switch ($action) {
 <?php
 		break;
 
-		case 'envioemail':
 
-			$response = $data->list();
-			$response = $response[0];
-
-			$emailde = filter_input(INPUT_POST, 'emailde');
-			$emailpara = filter_input(INPUT_POST, 'emailpara');
-
-			$host = $response['host'];;
-			$username = $response['username'];
-			$smtp_auth = $response['smtp_auth'];;
-			$port = $response['port'];;
-			$password = $response['password'];;
-			$ativo = $response['ativo'];;
-			$smtp_security = $response['smtp_security'];;
-			
-			//$response = testemail($host,$username,$smtp_auth,$port,$password,$ativo,$smtp_security,$emailde,$emailpara);
-
-			echo json_encode($response);
-	
-		break;
-	
 
 
 
