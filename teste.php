@@ -1,5 +1,14 @@
+<style>
+    .min{
+        min-width: 400px;
+    }
+</style>
 <?php
-    $temperature = $_POST["temperature"];
-    $write = "<p>Teplota: ".$temperature."</p>";
-    file_put_contents("teplota.php", $write);
+    `
+    
+    SELECT gerador_status,Count(gerador_status) as qtd FROM gerador_config GROUP BY gerador_status ORDER BY gerador_id
+
+    
+    
+    `
 ?>
