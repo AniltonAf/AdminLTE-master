@@ -84,7 +84,6 @@ $(document).ready(function(){
 		return false;
 	})
 
-
 	//evento de click editar
 	bodyTable.on('click','#btn-edit',function(){
 		var id=$(this).attr('data-id');

@@ -13,13 +13,17 @@
 	//
 	switch ($action) {
 
-		case 'count_estado': //listar grupos
+		case 'count_estado': //Contagem dos estados na tabela gerador config
 			 $response["gerador_status"]["on"] = $data->count_estado("gerador_status",true);
 			 $response["gerador_status"]["off"] = $data->count_estado("gerador_status",false);
 			 $response["gerador_avariado"]["on"] = $data->count_estado("avariado",true);
 			 $response["gerador_avariado"]["off"] = $data->count_estado("avariado",false);
 			 $response["rede_publica"]["on"] = $data->count_estado("rede_publica",true);
 			 $response["rede_publica"]["off"] = $data->count_estado("rede_publica",false);
+			 $response["qua_aut_trans"]["on"] = $data->count_estado("qua_aut_trans",true);
+			 $response["qua_aut_trans"]["off"] = $data->count_estado("qua_aut_trans",false);
+			 $response["low_fuel"]["on"] = $data->count_estado("low_fuel",true);
+			 $response["low_fuel"]["off"] = $data->count_estado("low_fuel",false);
 			echo json_encode($response);
 			break;
 

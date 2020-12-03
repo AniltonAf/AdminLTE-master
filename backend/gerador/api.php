@@ -38,9 +38,11 @@ class geradorAPI extends DbConnection
                 $gerador_status = $this->existeCampo('gerador_status');
                 $avariado = $this->existeCampo('avariado');
                 $rede_publica = $this->existeCampo('rede_publica');
-                $power_edificio = $this->existeCampo('power_edificio');
-                $power_RP = $this->existeCampo('power_RP');
-
+                //$power_edificio = $this->existeCampo('power_edificio');
+                $low_fuel = $this->existeCampo('low_fuel');
+                $qua_aut_trans= $this->existeCampo('qua_aut_trans');
+                
+          
                 $messagem_email = 'teste email';
                 $messagem_sms = 'teste sms';
                 $assunto = 'teste';
@@ -50,7 +52,7 @@ class geradorAPI extends DbConnection
                 $this->users = $this->getUsers($this->gerador['id_grupo']);
                 $gerador_id = $this->gerador['id'];
                 $key_auth = $key_auth = $_SERVER['PHP_AUTH_PW'];
-
+                
                 // Condições para envio de alertas Avaria Gerador
                 if($avariado){ //
                     $assunto='Avaria Gerador';
@@ -59,12 +61,13 @@ class geradorAPI extends DbConnection
                     $messagem_email=''.$this->gerador['descricao'].' em avaria, por favor deslocar ao gerador para a devida identificação da avaria';
                     send_sms($this->users, $messagem_sms);
                     send_email($this->users,$assunto,$messagem_email);
+                    //sleep(3);
                     
                 }
 
-
+/*
                 // Condições para envio de alertas na Avaria Rede Publica
-                elseif(!$rede_publica){
+                elseif($rede_publica){
                     $assunto='Avaria Rede Publica';
                     var_export($assunto);
                     $messagem_sms = 'Na Agênca'.$this->grupo['nome'].' avaria na rede de fornecimento de energia';
@@ -72,9 +75,11 @@ class geradorAPI extends DbConnection
                     send_sms($this->users, $messagem_sms);
                     send_email($this->users,$assunto,$messagem_email);
                 }
-
+*/
                 // Condições para envio de alertas Avaria QT
-                elseif(($gerador_status or $rede_publica) and !$power_edificio){
+                //elseif(($gerador_status or $rede_publica) and !$power_edificio){
+
+                if($qua_aut_trans){
                     $assunto='Avaria Quadro Transferencia';
                     var_export($assunto);
                     $messagem_sms = 'A Agênca'.$this->grupo['nome'].' com QT em avaria, por favor verificar';
@@ -97,9 +102,19 @@ class geradorAPI extends DbConnection
                     send_email($this->users,$assunto,$messagem_email);
                 }
 
-                $this->updateGeradorConfig($gerador_id, $key_auth, $gerador_status, $avariado, $rede_publica);
+                 // Alerta de nivel baixo de combustivel
+                 if($low_fuel){
+                    $assunto='Gerador Nivel Baixo Combustivel';
+                    var_export($assunto);
+                    $messagem_sms = 'Na Agênca'.$this->grupo['nome'].' gerador com nivel baixo de combustivel';
+                    $messagem_email='Na Agênca'.$this->grupo['nome'].' gerador com nivel baixo de combustivel, por favor Verificar';
+                    send_sms($this->users, $messagem_sms);
+                    send_email($this->users,$assunto,$messagem_email);
+                }
 
-                $this->historial_gerador($gerador_id, $gerador_status, $avariado, $rede_publica);
+                $this->updateGeradorConfig($gerador_id, $key_auth, $gerador_status, $avariado, $rede_publica, $qua_aut_trans, $low_fuel);
+
+                $this->historial_gerador($gerador_id, $gerador_status, $avariado, $rede_publica, $qua_aut_trans, $low_fuel);
 
                 break;
 
@@ -230,7 +245,7 @@ class geradorAPI extends DbConnection
     {
         try {
 
-            $res = $this->db->prepare('SELECT nome,email,telefone as numero FROM grupo_acesso as g JOIN utilizador as u on u.id=g.id_utilizador where id_grupo=:id_grupo');
+            $res = $this->db->prepare('SELECT nome,email,telefone,alerta_email,alerta_sms FROM grupo_acesso as g JOIN utilizador as u on u.id=g.id_utilizador where id_grupo=:id_grupo');
 
             $res->bindValue(':id_grupo', $id_grupo);
 
@@ -254,19 +269,21 @@ class geradorAPI extends DbConnection
     }
 
 
-    function updateGeradorConfig($gerador_id, $key_auth, $gerador_status, $avariado, $rede_publica)
+    function updateGeradorConfig($gerador_id, $key_auth, $gerador_status, $avariado, $rede_publica, $qua_aut_trans, $low_fuel)
     {
 
         $response = array();
         try {
 
-            $res = $this->db->prepare('UPDATE gerador_config SET gerador_status=:gerador_status, avariado=:avariado, rede_publica=:rede_publica WHERE gerador_id=:gerador_id and key_auth=:key_auth');
+            $res = $this->db->prepare('UPDATE gerador_config SET gerador_status=:gerador_status, avariado=:avariado, rede_publica=:rede_publica ,low_fuel=:low_fuel WHERE gerador_id=:gerador_id and key_auth=:key_auth');
 
             $res->bindValue(':gerador_id', $gerador_id);
             $res->bindValue(':key_auth', $key_auth);
             $res->bindValue(':gerador_status', $gerador_status);
             $res->bindValue(':avariado', $avariado);
             $res->bindValue(':rede_publica', $rede_publica);
+            $res->bindValue(':qua_aut_trans', $qua_aut_trans);
+            $res->bindValue(':low_fuel', $low_fuel);
 
             $res->execute();
 
@@ -279,16 +296,19 @@ class geradorAPI extends DbConnection
     }
 
 
-    function historial_gerador($gerador_id, $gerador_status, $avariado, $rede_publica)
+    function historial_gerador($gerador_id, $gerador_status, $avariado, $rede_publica, $qua_aut_trans, $low_fuel)
     {
+ 
         $response = array();
         try {
-            $res = $this->db->prepare('INSERT INTO gerador_historico (gerador_id,gerador_status,avariado,rede_publica) VALUES (:gerador_id,:gerador_status,:avariado,:rede_publica)');
+            $res = $this->db->prepare('INSERT INTO gerador_historico (gerador_id,gerador_status,avariado,rede_publica,qua_aut_trans,low_fuel) VALUES (:gerador_id,:gerador_status,:avariado,:rede_publica,:qua_aut_trans,:low_fuel)');
 
             $res->bindValue(':gerador_id', $gerador_id);
             $res->bindValue(':gerador_status', $gerador_status);
             $res->bindValue(':avariado', $avariado);
             $res->bindValue(':rede_publica', $rede_publica);
+            $res->bindValue(':qua_aut_trans', $qua_aut_trans);
+            $res->bindValue(':low_fuel', $low_fuel);
 
             $res->execute();
 

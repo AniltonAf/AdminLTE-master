@@ -316,6 +316,24 @@ switch ($action) {
 			</tr>
 			<tr>
 				<th>
+					Nivel Combustivel
+				</th>
+				<td>
+					<?php
+
+					if ($response["low_fuel"] == null) {
+						echo '<div class="badge badge-sm badge-warning">Não configurado</div>';
+					}
+					elseif ($response["low_fuel"]) {
+						echo '<div class="badge badge-sm badge-danger">Baixo nivel Combustivel</div>';
+					}else {
+						echo '<div class="badge badge-sm badge-success">Nivel Combustivel OK</div>';
+					}
+					?>
+				</td>
+			</tr>
+			<tr>
+				<th>
 					Rede Publica
 				</th>
 				<td>
@@ -349,6 +367,11 @@ switch ($action) {
 				</td>
 			</tr>
 		</table>
+		<div class="col-12 col-sm-6 col-md-9">
+			  <div class="info-box mb-3" id="map" style="height: 250px;">
+
+              </div>
+        </div>
 
 
 	<?php

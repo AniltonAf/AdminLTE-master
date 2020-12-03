@@ -36,6 +36,10 @@ $(document).ready(function () {
 			$('.gerador_avariado').html(response.gerador_avariado.on)
 			$('.rede_publica_on').html(response.rede_publica.on)
 			$('.rede_publica_off').html(response.rede_publica.off)
+			$('.qua_aut_trans_on').html(response.qua_aut_trans.on)
+			$('.qua_aut_trans_off').html(response.qua_aut_trans.off)
+			$('.low_fuel_on').html(response.low_fuel.on)
+			$('.low_fuel_off').html(response.low_fuel.off)
 
 		})
 	}

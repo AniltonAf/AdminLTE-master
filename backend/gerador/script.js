@@ -72,6 +72,8 @@ $(document).ready(function(){
 		$.post(controller_url,{action:'configPage',id:id},function(response){
 			body.html(response);
 			modal.modal();
+			getPosionGerador();
+			
 		})
 	})
 
@@ -248,6 +250,45 @@ $(document).ready(function(){
 	    });
 
 	    return indexed_array;
+	}
+
+	function getPosionGerador(){
+		//$.post(controller_url, { action: 'get_geradores' }, function (retorno) {
+			//console.log(retorno)
+			//var response=JSON.parse(retorno)
+			
+			// https://account.mapbox.com
+			mapboxgl.accessToken = 'pk.eyJ1IjoiaXZhbmlsZG9lZSIsImEiOiJja2hmYWwxcWkwYWptMnhwYzk2c3lmNWJxIn0.MG7-GSqPrk3JCepjLMSB9Q';
+			var map = new mapboxgl.Map({
+				container: 'map',
+				style: 'mapbox://styles/mapbox/streets-v8',
+				center: [-24.24721217421829, 15.905888745235975],
+				zoom: 7
+			});
+
+			map.on('load', function () {
+				map.on('click', 'places', function (e) {
+					var coordinates = e.features[0].geometry.coordinates.slice();
+					var description = e.features[0].properties.description;
+					while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+						coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+					}
+
+					new mapboxgl.Popup()
+						.setLngLat(coordinates)
+						.setHTML(description)
+						.addTo(map);
+				});
+
+				map.on('mouseenter', 'places', function () {
+					map.getCanvas().style.cursor = 'pointer';
+				});
+				map.on('mouseleave', 'places', function () {
+					map.getCanvas().style.cursor = '';
+				});
+			});
+		//}
+	
 	}
 
 });

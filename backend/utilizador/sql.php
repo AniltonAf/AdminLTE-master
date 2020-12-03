@@ -97,11 +97,11 @@ Class Data extends DbConnection{
 	}
 
 	// função para registar novos utilizadores
-	public function register($nome,$numero_funcionario,$departamento,$funcao,$email,$telefone,$id_perfil_permission,$password,$username,$foto,$estado,$create_ut){
+	public function register($nome,$numero_funcionario,$departamento,$funcao,$email,$telefone,$id_perfil_permission,$password,$username,$foto,$alerta_sms,$alerta_email,$estado,$create_ut){
 		$response=array();
 		try{
 
-			$res = $this->db->prepare('INSERT INTO utilizador (nome,numero_funcionario,departamento,funcao,email,telefone,id_perfil_permission,password,username,foto,estado,create_ut) VALUES (:nome,:numero_funcionario,:departamento,:funcao,:email,:telefone,:id_perfil_permission,:password,:username,:foto,:estado,:create_ut)');
+			$res = $this->db->prepare('INSERT INTO utilizador (nome,numero_funcionario,departamento,funcao,email,telefone,id_perfil_permission,password,username,foto,alerta_sms,alerta_email,estado,create_ut) VALUES (:nome,:numero_funcionario,:departamento,:funcao,:email,:telefone,:id_perfil_permission,:password,:username,:foto,:alerta_sms,:alerta_email,:estado,:create_ut)');
 
 			$res->bindValue(':nome',$nome);
 			$res->bindValue(':numero_funcionario',$numero_funcionario);
@@ -113,6 +113,8 @@ Class Data extends DbConnection{
 			$res->bindValue(':password',$password);
 			$res->bindValue(':username',$username);
 			$res->bindValue(':foto',$foto);
+			$res->bindValue(':alerta_email',$alerta_email);
+			$res->bindValue(':alerta_sms',$alerta_sms);
 			$res->bindValue(':estado',$estado);
 			$res->bindValue(':create_ut',$create_ut);
 
@@ -133,17 +135,17 @@ Class Data extends DbConnection{
 		return $response;
 	}
 	// função para editar utilizadores
-	public function edit($nome,$numero_funcionario,$departamento,$funcao,$email,$telefone,$id_perfil_permission,$foto,$id){
+	public function edit($nome,$numero_funcionario,$departamento,$funcao,$email,$telefone,$id_perfil_permission,$alerta_sms,$alerta_email,$foto,$id){
 		$response=array();
 		try{
 
 
 			if($foto){
-				$res = $this->db->prepare('UPDATE utilizador SET nome=:nome,numero_funcionario=:numero_funcionario,departamento=:departamento,funcao=:funcao,email=:email,telefone=:telefone,id_perfil_permission=:id_perfil_permission,foto=:foto WHERE id=:id');
+				$res = $this->db->prepare('UPDATE utilizador SET nome=:nome,numero_funcionario=:numero_funcionario,departamento=:departamento,funcao=:funcao,email=:email,telefone=:telefone,id_perfil_permission=:id_perfil_permission,alerta_sms=:alerta_sms,alerta_email=:alerta_email,foto=:foto WHERE id=:id');
 
 				$res->bindValue(':foto',$foto);
 			}else{
-				$res = $this->db->prepare('UPDATE utilizador SET nome=:nome,numero_funcionario=:numero_funcionario,departamento=:departamento,funcao=:funcao,email=:email,telefone=:telefone,id_perfil_permission=:id_perfil_permission WHERE id=:id');
+				$res = $this->db->prepare('UPDATE utilizador SET nome=:nome,numero_funcionario=:numero_funcionario,departamento=:departamento,funcao=:funcao,email=:email,telefone=:telefone,id_perfil_permission=:id_perfil_permission,alerta_sms=:alerta_sms,alerta_email=:alerta_email WHERE id=:id');
 			}
 
 			
@@ -155,6 +157,8 @@ Class Data extends DbConnection{
 			$res->bindValue(':email',$email);
 			$res->bindValue(':telefone',$telefone);
 			$res->bindValue(':id_perfil_permission',$id_perfil_permission);
+			$res->bindValue(':alerta_sms',$alerta_sms);
+			$res->bindValue(':alerta_email',$alerta_email);
 			$res->bindValue(':id',$id);
 
 			$res->execute();

@@ -100,13 +100,30 @@
               <div class="info-box mb-3">
                 <span class="info-box-icon bg-info"><i class="fas fa-bolt"></i></span><br>
                 <div class="info-box-content">
-                  <span class="info-box-text">QTA</span>
+                  <span class="info-box-text">QAT</span>
                   <div class="row">
                     <div class="col-sm-6">
-                      <span class="badge badge-success"><i class="fas fa-power-off"></i> 78</span>
+                      <span class="badge badge-success"><i class="fas fa-power-off"></i> <span class="qua_aut_trans_on"></span></span>
                     </div>
                     <div class="col-sm-6">
-                      <span class="badge badge-danger"><i class="fas fa-power-off"></i> 78</span>
+                      <span class="badge badge-danger"><i class="fas fa-power-off"></i> <span class="qua_aut_trans_off"></span></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-2">
+              <div class="info-box mb-3">
+                <span class="info-box-icon bg-info"><i class="fas fa-gas-pump"></i></span><br>
+                <div class="info-box-content">
+                  <span class="info-box-text">Nivel Baixo Combustivel</span>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <span class="badge badge-success"><i class="fas fa-power-off"></i> <span class="low_fuel_off"></span></span>
+                    </div>
+                    <div class="col-sm-6">
+                      <span class="badge badge-danger"><i class="fas fa-power-off"></i> <span class="low_fuel_on"></span></span>
                     </div>
                   </div>
                 </div>

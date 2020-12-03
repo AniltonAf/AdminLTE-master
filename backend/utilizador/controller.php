@@ -69,7 +69,7 @@
 			                		}
 			                	?>
 			                </select>
-			            </div>
+						</div>
 
 					</div>
 					<div class="col-sm-6">
@@ -89,13 +89,16 @@
 			                <label>Função</label>
 			                <input type="text" class="form-control" name="funcao" placeholder="Inserir função" required>
 			            <div class="form-group">
-			                <label>E-mail</label>
+							<label>E-mail</label>
+							<label><input type="checkbox" name="alerta_email"> Ativar envio de E-MAIL </label>
 			                <input type="email" class="form-control" name="email" placeholder="Inserir e-mail" required>
 			            </div>
 			            <div class="form-group">
-			                <label>Telefone</label>
+							<label>Telefone</label>
+							<label><input type="checkbox" name="alerta_sms"> Ativar envio de SMS </label>
 			                <input type="text" class="form-control" name="telefone" placeholder="Inserir telefone" required>
-			            </div>
+						</div>
+
 					</div>
 				</div>
 	              	            
@@ -119,6 +122,8 @@
 				$password=filter_input(INPUT_POST, 'password');
 				$password=hash('sha256', $password);
 				$username=filter_input(INPUT_POST, 'username');
+				$alerta_sms=filter_input(INPUT_POST, 'alerta_sms')?1:0;
+				$alerta_email=filter_input(INPUT_POST, 'alerta_email')?1:0;
 				//$foto_file=filter_input(INPUT_POST, 'foto_file');
 
 
@@ -130,7 +135,7 @@
 				}
 
 				$create_ut=date('d-m-y h:i:s');
-				$response=$data->register($nome,$numero_funcionario,$departamento,$funcao,$email,$telefone,$id_perfil_permission,$password,$username,$foto,$estado,$create_ut);
+				$response=$data->register($nome,$numero_funcionario,$departamento,$funcao,$email,$telefone,$id_perfil_permission,$password,$username,$foto,$estado,$alerta_sms,$alerta_email,$create_ut);
 
 				echo json_encode($response);
 				
@@ -175,10 +180,14 @@
 			                	?>
 			                </select>
 			            </div>
-			          <!--  <div class="form-group">
-			                <label>Perfil Utilizador</label>
-			                <input type="select" class="form-control" name="perfil_utilizador" placeholder="confirmar password" required>
-			            </div>-->
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" <?php echo $response['alerta_email']? 'checked':''; ?> name="alerta_email"> E-MAIL
+							</label>
+							<label>
+								<input type="checkbox" <?php echo $response['alerta_sms']? 'checked':''; ?> name="alerta_sms"> SMS
+							</label>
+						</div>
 					</div>
 					<div class="col-sm-6">
 						<div class="form-group">
@@ -203,7 +212,8 @@
 			            <div class="form-group">
 			                <label>Telefone</label>
 			                <input type="text" class="form-control" value="<?php echo $response['telefone']; ?>" name="telefone" placeholder="Inserir telefone" required>
-			            </div>
+						</div>
+
 					</div>
 				</div>
 	            <button type="submit" class="btn btn-primary">Editar</button>
@@ -247,6 +257,7 @@
 			break;
 
 		case 'edit':
+				$create_ut=date('d-m-y h:i:s');
 				$id=filter_input(INPUT_POST, 'id');
 				$nome=filter_input(INPUT_POST, 'nome');
 				$numero_funcionario=filter_input(INPUT_POST, 'numero_funcionario');
@@ -255,6 +266,8 @@
 				$email=filter_input(INPUT_POST, 'email');
 				$telefone=filter_input(INPUT_POST, 'telefone');
 				$id_perfil_permission=filter_input(INPUT_POST, 'id_perfil_permission');
+				$alerta_sms=filter_input(INPUT_POST, 'alerta_sms')?1:0;
+				$alerta_email=filter_input(INPUT_POST, 'alerta_email')?1:0;
 				//$foto_file=filter_input(INPUT_POST, 'foto_file');
 				$foto=false;
 
@@ -262,7 +275,7 @@
 					$foto=base64_encode(file_get_contents($_FILES['foto_file']['tmp_name']));
 				}
 
-				$response=$data->edit($nome,$numero_funcionario,$departamento,$funcao,$email,$telefone,$id_perfil_permission,$foto,$id);
+				$response=$data->edit($nome,$numero_funcionario,$departamento,$funcao,$email,$telefone,$id_perfil_permission,$foto,$alerta_sms,$alerta_email,$create_ut);;
 
 				echo json_encode($response);
 
