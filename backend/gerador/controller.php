@@ -23,14 +23,13 @@ switch ($action) {
 			$responseconfig = $data->getConfig($item['id']);
 			$responseconfig = $responseconfig[0];
 			if ($responseconfig["avariado"] == null) {
-				$estado= '<div class="badge badge-sm badge-warning">Não configurado</div>';
-			}
-			elseif ($responseconfig["avariado"] == 1) {
-				$estado= '<div class="badge badge-sm badge-danger">Avariado</div>';
-			}elseif ($responseconfig["gerador_status"]) {
-				$estado= '<div class="badge badge-sm badge-success">Funcional</div>';
-			}else {
-				$estado= '<div class="badge badge-sm badge-info">Desligado</div>';
+				$estado = '<div class="badge badge-sm badge-warning">Não configurado</div>';
+			} elseif ($responseconfig["avariado"] == 1) {
+				$estado = '<div class="badge badge-sm badge-danger">Avariado</div>';
+			} elseif ($responseconfig["gerador_status"]) {
+				$estado = '<div class="badge badge-sm badge-success">Funcional</div>';
+			} else {
+				$estado = '<div class="badge badge-sm badge-info">Desligado</div>';
 			}
 
 			$text .= '<tr>';
@@ -39,7 +38,7 @@ switch ($action) {
 			$text .= '<td>' . $item['fabricante'] . '</td>';
 			$text .= '<td>' . $item['descricao'] . '</td>';
 			$text .= '<td>' . $item['nome'] . '</td>';
-			$text .= '<td>' .$estado. '</td>';
+			$text .= '<td>' . $estado . '</td>';
 			$text .= '<td>';
 			if (hasRoles(['equipamentos_gerador_detalhes'])) //Verificação de permissão de acesso ao botão
 				$text .= '<button id="btn-detail" data-id="' . $item['id'] . '" class="btn btn-sm btn-action btn-info"><i class="fa fa-eye"></i></button>';
@@ -75,21 +74,21 @@ switch ($action) {
 		<div class="retorno"></div>
 		<form name='register'>
 			<div class="row">
-				<div class="col-sm-6">
+				<div class="col-sm-3">
 					<div class="form-group">
-						<label>Modelo</label>
+						<label>Modelo <span class="text-danger">*</span></label>
 						<input type="text" class="form-control" name="modelo" placeholder="Inserir Modelo" required>
 					</div>
 					<div class="form-group">
-						<label>Fabricante</label>
+						<label>Fabricante <span class="text-danger">*</span></label>
 						<input type="text" class="form-control" name="fabricante" placeholder="Inserir Fabricante" required>
 					</div>
 					<div class="form-group">
-						<label>Descrição</label>
+						<label>Descrição <span class="text-danger">*</span></label>
 						<input type="text" class="form-control" name="descricao" placeholder="Inserir Descrição" required>
 					</div>
 					<div class="form-group">
-						<label>Unidade Organica</label>
+						<label>Unidade Organica <span class="text-danger">*</span></label>
 						<select class="form-control" name="id_grupo">
 							<option>Selecione</option>
 							<?php
@@ -102,23 +101,33 @@ switch ($action) {
 					</div>
 
 				</div>
-				<div class="col-sm-6">
+				<div class="col-sm-3">
 					<div class="form-group">
-						<label>Potência(KW)</label>
-						<input type="text" class="form-control" name="potencia" placeholder="Inserir Potencia(KW)" not required>
-						<div class="form-group">
-							<label>Horas de trabalho</label>
-							<input type="text" class="form-control" name="hora_trabalho" placeholder="Inserir Horas de trabalho" required>
-						</div>
-						<div class="form-group">
-							<label>Data ultima manutenção</label>
-							<input type="date" class="form-control" name="data_manutencao" placeholder="Inserir Data Ultima Manutenção" required>
-						</div>
+						<label>Potência(KW) <span class="text-danger">*</span></label>
+						<input type="text" class="form-control" name="potencia" placeholder="Inserir Potencia(KW)" required>
+					</div>
+					<div class="form-group">
+						<label>Horas de trabalho <span class="text-danger">*</span></label>
+						<input type="text" class="form-control" name="hora_trabalho" placeholder="Inserir Horas de trabalho" required>
+					</div>
+					<div class="form-group">
+						<label>Data ultima manutenção <span class="text-danger">*</span></label>
+						<input type="date" class="form-control" name="data_manutencao" placeholder="Inserir Data Ultima Manutenção" required>
+					</div>
+					<div class="form-group">
+						<label>Latitude <span class="text-danger">*</span></label>
+						<input type="number" step="any" class="form-control" name="latitude" placeholder="Inserir Latitude" required>
+					</div>
+					<div class="form-group">
+						<label>Longitude <span class="text-danger">*</span></label>
+						<input type="number" step="any" class="form-control" name="longitude" placeholder="Longitude" required>
 					</div>
 				</div>
-
-				<button type="submit" class="btn btn-primary">Registar</button>
-
+				<div class="col-sm-6">
+				  <div id="map" style="width: 100%; min-height:300px"></div>
+				</div>
+			</div>
+			<button type="submit" class="btn btn-primary">Registar</button>
 		</form>
 
 	<?php
@@ -133,12 +142,14 @@ switch ($action) {
 		$hora_trabalho = filter_input(INPUT_POST, 'hora_trabalho');
 		$data_manutencao = filter_input(INPUT_POST, 'data_manutencao');
 		$id_grupo = filter_input(INPUT_POST, 'id_grupo');
+		$latitude = filter_input(INPUT_POST, 'latitude');
+		$longitude = filter_input(INPUT_POST, 'longitude');
 		$create_ut = date('d-m-y h:i:s');
 		$estado = 1;
-		$response = $data->register($modelo, $fabricante, $descricao, $potencia, $hora_trabalho, $data_manutencao, $id_grupo, $estado, $create_ut);
+		$response = $data->register($modelo, $fabricante, $descricao, $potencia, $hora_trabalho, $data_manutencao, $id_grupo, $latitude,$longitude,  $estado, $create_ut);
 
 		echo json_encode($response);
-
+		
 		break;
 
 
@@ -259,18 +270,18 @@ switch ($action) {
 				<div class="col-sm-6">
 					<div class="form-group">
 						<label>Potência(KW)</label>
-						<input type="text" class="form-control" value="<?php echo $response['potencia']; ?>" name="potencia" placeholder="Inserir Potencia(KW)" not required>
+						<input type="text" class="form-control" value="<?php echo $response['potencia']; ?>" name="potencia" placeholder="Inserir Potencia(KW)">
+					</div>
+					<div class="form-group">
+						<label>Horas de trabalho <span class="text-danger">*</span></label>
+						<input type="text" class="form-control" value="<?php echo $response['hora_trabalho']; ?>" name="hora_trabalho" placeholder="Inserir Horas de trabalho" required>
+					</div>
+					<div class="form-group">
+						<label>Endereço IP</label>
+						<input type="text" class="form-control" value="<?php echo $response['ip']; ?>" name="ip" placeholder="Inserir Endereço IP" required>
 						<div class="form-group">
-							<label>Horas de trabalho</label>
-							<input type="text" class="form-control" value="<?php echo $response['hora_trabalho']; ?>" name="hora_trabalho" placeholder="Inserir Horas de trabalho" required>
-						</div>
-						<div class="form-group">
-							<label>Endereço IP</label>
-							<input type="text" class="form-control" value="<?php echo $response['ip']; ?>" name="ip" placeholder="Inserir Endereço IP" required>
-							<div class="form-group">
-								<label>Data ultima manutenção</label>
-								<input type="date" class="form-control" value="<?php echo $response['data_manutencao']; ?>" name="data_manutencao" placeholder="Inserir Data Ultima Manutenção" required>
-							</div>
+							<label>Data ultima manutenção</label>
+							<input type="date" class="form-control" value="<?php echo $response['data_manutencao']; ?>" name="data_manutencao" placeholder="Inserir Data Ultima Manutenção" required>
 						</div>
 					</div>
 
@@ -303,12 +314,11 @@ switch ($action) {
 
 					if ($response["avariado"] == null) {
 						echo '<div class="badge badge-sm badge-warning">Não configurado</div>';
-					}
-					elseif ($response["avariado"] == 1) {
+					} elseif ($response["avariado"] == 1) {
 						echo '<div class="badge badge-sm badge-danger">Avariado</div>';
-					}elseif ($response["gerador_status"]) {
+					} elseif ($response["gerador_status"]) {
 						echo '<div class="badge badge-sm badge-success">Funcional</div>';
-					}else {
+					} else {
 						echo '<div class="badge badge-sm badge-info">Desligado</div>';
 					}
 					?>
@@ -323,10 +333,9 @@ switch ($action) {
 
 					if ($response["low_fuel"] == null) {
 						echo '<div class="badge badge-sm badge-warning">Não configurado</div>';
-					}
-					elseif ($response["low_fuel"]) {
+					} elseif ($response["low_fuel"]) {
 						echo '<div class="badge badge-sm badge-danger">Baixo nivel Combustivel</div>';
-					}else {
+					} else {
 						echo '<div class="badge badge-sm badge-success">Nivel Combustivel OK</div>';
 					}
 					?>
@@ -363,16 +372,10 @@ switch ($action) {
 					Auth
 				</th>
 				<td style="max-width:fit-content">
-					<?php echo base64_encode($response['gerador_id'].':'.$response['key_auth']); ?>
+					<?php echo base64_encode($response['gerador_id'] . ':' . $response['key_auth']); ?>
 				</td>
 			</tr>
 		</table>
-		<div class="col-12 col-sm-6 col-md-9">
-			  <div class="info-box mb-3" id="map" style="height: 250px;">
-
-              </div>
-        </div>
-
 
 	<?php
 		break;

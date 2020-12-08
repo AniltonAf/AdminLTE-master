@@ -112,7 +112,7 @@ Class Data extends DbConnection{
 	}
 
 	// função para registar novos gerador
-	public function register($modelo,$fabricante,$descricao,$potencia,$hora_trabalho,$data_manutencao,$id_grupo,$estado,$create_ut){
+	public function register($modelo, $fabricante, $descricao, $potencia, $hora_trabalho, $data_manutencao, $id_grupo, $latitude,$longitude,  $estado, $create_ut){
 		
 		$response=array();
 		try{
@@ -120,7 +120,7 @@ Class Data extends DbConnection{
 			$id=md5(microtime());
 			$key_auth=hash("sha256",microtime());
 
-			$res = $this->db->prepare('INSERT INTO gerador (id,modelo,fabricante,descricao,potencia,hora_trabalho,data_manutencao,estado,id_grupo,create_ut) VALUES (:id,:modelo,:fabricante,:descricao,:potencia,:hora_trabalho,:data_manutencao,:estado,:id_grupo,:create_ut)');
+			$res = $this->db->prepare('INSERT INTO gerador (id,modelo,fabricante,descricao,potencia,hora_trabalho,data_manutencao,latitude,longitude,estado,id_grupo,create_ut) VALUES (:id,:modelo,:fabricante,:descricao,:potencia,:hora_trabalho,:data_manutencao,:latitude,:longitude,:estado,:id_grupo,:create_ut)');
 
 			$res->bindValue(':id',$id);
 			$res->bindValue(':modelo',$modelo);
@@ -129,6 +129,8 @@ Class Data extends DbConnection{
 			$res->bindValue(':potencia',$potencia);
 			$res->bindValue(':hora_trabalho',$hora_trabalho);
 			$res->bindValue(':data_manutencao',$data_manutencao);
+			$res->bindValue(':latitude',$latitude);
+			$res->bindValue(':longitude',$longitude);
 			$res->bindValue(':estado',$estado);
 			$res->bindValue(':id_grupo',$id_grupo);
 			$res->bindValue(':create_ut',$create_ut);
@@ -147,7 +149,7 @@ Class Data extends DbConnection{
 
 
 		}catch(PDOException $e){
-			//echo $e->getMessage();
+			echo $e->getMessage();
 			$response['status']=false;
 		}
 		return $response;

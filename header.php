@@ -1,19 +1,19 @@
 <?php
 
-    session_start();
+  session_start();
 
-  require 'backend/enviroment/db_connection.php';
-  require 'backend/enviroment/function.php';
-
-  if(isset($_GET['logout']) && $_GET['logout']==true){
+   if(isset($_GET['logout']) && $_GET['logout']==true){
       session_unset();
       session_destroy();
+   }
+   else{
+    //require 'backend/enviroment/db_connection.php';
+    require 'backend/enviroment/function.php';
    }
   
   if(!isset($_SESSION['caixa_monitorizacao']))  header('Location: login.php');
 
 
-    $database = new DbConnection();
 
 ?>
 
@@ -134,7 +134,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Monitorização
+                Dashboard
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -207,7 +207,7 @@
             </ul>
           </li>
           <?php }?> 
-          <?php if(hasRoles(['reporte'])){?>
+          <?php //if(hasRoles(['reporte'])){?>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
@@ -220,7 +220,7 @@
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Eventos Alarme</p>
+                  <p>Eventos Estados</p>
                 </a>
               </li>
             </ul>
@@ -228,12 +228,12 @@
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>E-mails</p>
+                  <p>Alertas</p>
                 </a>
               </li>
             </ul>
           </li>
-          <?php }?>
+          <?php //}?>
           <?php //if(hasRoles(['reporte'])){?>
           <li class="nav-item">
             <a href="#" class="nav-link">

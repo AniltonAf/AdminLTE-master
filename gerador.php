@@ -74,7 +74,7 @@ if(!hasRoles(['equipamentos','equipamentos_gerador','equipamentos_gerador_adicio
 
 
         <div class="modal fade" id="modalAdd">
-          <div class="modal-dialog modal-lg">
+          <div class="modal-dialog modal-xl">
             <div class="modal-content">
               <div class="modal-header">
                 <h4 class="modal-title">Gerador</h4>
@@ -100,7 +100,8 @@ if(!hasRoles(['equipamentos','equipamentos_gerador','equipamentos_gerador_adicio
   </div>
 
 <?php require('footer.php'); ?>
-
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet"/>
 <script type="text/javascript" src="backend/gerador/script.js"></script>
 
 

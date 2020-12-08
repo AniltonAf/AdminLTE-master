@@ -32,11 +32,11 @@ class EMAIL extends DbConnection
 		//$estado=1;
 		try {
 
-			$res = $this->db->prepare('SELECT * FROM email_server');
+			$res = $this->db->query('SELECT * FROM email_server');
 
 			//$res->bindValue(':estado',$estado);
 
-			$res->execute();
+			//$res->execute();
 
 			return $this->data($res);
 		} catch (PDOException $e) {

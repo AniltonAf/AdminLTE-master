@@ -1,7 +1,7 @@
 <?php
 
 include_once '../enviroment/db_connection.php';
-require  '../enviroment/function.php';
+require  '../enviroment/functionApi.php';
 
 class geradorAPI extends DbConnection
 {
@@ -56,7 +56,6 @@ class geradorAPI extends DbConnection
                 // Condições para envio de alertas Avaria Gerador
                 if($avariado){ //
                     $assunto='Avaria Gerador';
-                    var_export($assunto);
                     $messagem_sms = ''.$this->gerador['descricao'].' em avaria, por favor verificar';
                     $messagem_email=''.$this->gerador['descricao'].' em avaria, por favor deslocar ao gerador para a devida identificação da avaria';
                     send_sms($this->users, $messagem_sms);
@@ -81,7 +80,6 @@ class geradorAPI extends DbConnection
 
                 if($qua_aut_trans){
                     $assunto='Avaria Quadro Transferencia';
-                    var_export($assunto);
                     $messagem_sms = 'A Agênca'.$this->grupo['nome'].' com QT em avaria, por favor verificar';
                     $messagem_email='A Agênca'.$this->grupo['nome'].' sem energia, avaria no Quadro de transferência, por favor Verificar';
                     send_sms($this->users, $messagem_sms);
@@ -95,7 +93,6 @@ class geradorAPI extends DbConnection
                 if($gerador_status && !$gerador_status){
                     $estado= ($gerador_status)? 'LIGADO': 'DESLIGADO';
                     $assunto='Gerador '.$estado;
-                    var_export($assunto);
                     $messagem_sms = 'Na Agênca'.$this->grupo['nome'].' gerador '.$estado;
                     $messagem_email='Na Agênca'.$this->grupo['nome'].' gerador '.$estado.', por favor Verificar';
                     send_sms($this->users, $messagem_sms);
@@ -105,7 +102,6 @@ class geradorAPI extends DbConnection
                  // Alerta de nivel baixo de combustivel
                  if($low_fuel){
                     $assunto='Gerador Nivel Baixo Combustivel';
-                    var_export($assunto);
                     $messagem_sms = 'Na Agênca'.$this->grupo['nome'].' gerador com nivel baixo de combustivel';
                     $messagem_email='Na Agênca'.$this->grupo['nome'].' gerador com nivel baixo de combustivel, por favor Verificar';
                     send_sms($this->users, $messagem_sms);
@@ -275,7 +271,7 @@ class geradorAPI extends DbConnection
         $response = array();
         try {
 
-            $res = $this->db->prepare('UPDATE gerador_config SET gerador_status=:gerador_status, avariado=:avariado, rede_publica=:rede_publica ,low_fuel=:low_fuel WHERE gerador_id=:gerador_id and key_auth=:key_auth');
+            $res = $this->db->prepare('UPDATE gerador_config SET gerador_status=:gerador_status, avariado=:avariado, rede_publica=:rede_publica ,low_fuel=:low_fuel,qua_aut_trans=:qua_aut_trans WHERE gerador_id=:gerador_id and key_auth=:key_auth');
 
             $res->bindValue(':gerador_id', $gerador_id);
             $res->bindValue(':key_auth', $key_auth);
@@ -290,6 +286,7 @@ class geradorAPI extends DbConnection
             $response['status'] = true;
         } catch (PDOException $e) {
             $response['status'] = false;
+            echo 'erro';
             echo $e->getMessage();
         }
         return $response;
