@@ -38,11 +38,9 @@ class geradorAPI extends DbConnection
                 $gerador_status = $this->existeCampo('gerador_status');
                 $avariado = $this->existeCampo('avariado');
                 $rede_publica = $this->existeCampo('rede_publica');
-                //$power_edificio = $this->existeCampo('power_edificio');
                 $low_fuel = $this->existeCampo('low_fuel');
                 $qua_aut_trans= $this->existeCampo('qua_aut_trans');
                 
-          
                 $messagem_email = 'teste email';
                 $messagem_sms = 'teste sms';
                 $assunto = 'teste';
@@ -57,11 +55,29 @@ class geradorAPI extends DbConnection
                 if($avariado){ //
                     $assunto='Avaria Gerador';
                     $messagem_sms = ''.$this->gerador['descricao'].' em avaria, por favor verificar';
-                    $messagem_email=''.$this->gerador['descricao'].' em avaria, por favor deslocar ao gerador para a devida identificação da avaria';
-                    send_sms($this->users, $messagem_sms);
-                    send_email($this->users,$assunto,$messagem_email);
-                    //sleep(3);
-                    
+                    $messagem_email =''.$this->gerador['descricao'].' em avaria, por favor deslocar ao gerador para a devida identificacao da avaria';
+
+                    $response=send_sms($this->users, $messagem_sms);
+                    //dados para tabela Historico_alertas sms                     
+                    $status = $response['status'];
+                    $menssage =$response['message'];
+                    $codigo =$response['codigo'];
+                    $menssagem = $response['messagem'];
+                    $tipo = 'sms';
+                    $user_send=json_encode($response['user_send']);
+                    $this->historial_alertas($user_send,$tipo,$menssagem, $status, $menssage, $codigo);
+
+
+                    $response=send_email($this->users,$assunto,$messagem_email);
+                    //dados para tabela Historico_alertas email  
+                    $status = $response['status'];
+                    $menssage =$response['message'];
+                    $codigo =$response['codigo'];
+                    $menssagem = $messagem_email;
+                    $tipo = 'email';
+                    $user_send=json_encode($response['user_send']);
+                    $this->historial_alertas($user_send,$tipo,$menssagem, $status, $menssage, $codigo);
+
                 }
 
 /*
@@ -80,10 +96,28 @@ class geradorAPI extends DbConnection
 
                 if($qua_aut_trans){
                     $assunto='Avaria Quadro Transferencia';
-                    $messagem_sms = 'A Agênca'.$this->grupo['nome'].' com QT em avaria, por favor verificar';
-                    $messagem_email='A Agênca'.$this->grupo['nome'].' sem energia, avaria no Quadro de transferência, por favor Verificar';
-                    send_sms($this->users, $messagem_sms);
-                    send_email($this->users,$assunto,$messagem_email);
+                    $messagem_sms = 'A Agenca'.$this->grupo['nome'].' com QT em avaria, por favor verificar';
+                    $messagem_email='A Agenca'.$this->grupo['nome'].' sem energia, avaria no Quadro de transferencia, por favor verificar';
+                    $response=send_sms($this->users, $messagem_sms);
+                    //dados para tabela Historico_alertas sms                     
+                    $status = $response['status'];
+                    $menssage =$response['message'];
+                    $codigo =$response['codigo'];
+                    $menssagem = $response['messagem'];
+                    $tipo = 'sms';
+                    $user_send=json_encode($response['user_send']);
+                    $this->historial_alertas($user_send,$tipo,$menssagem, $status, $menssage, $codigo);
+
+
+                    $response=send_email($this->users,$assunto,$messagem_email);
+                    //dados para tabela Historico_alertas email  
+                    $status = $response['status'];
+                    $menssage =$response['message'];
+                    $codigo =$response['codigo'];
+                    $menssagem = $messagem_email;
+                    $tipo = 'email';
+                    $user_send=json_encode($response['user_send']);
+                    $this->historial_alertas($user_send,$tipo,$menssagem, $status, $menssage, $codigo);
                     
                 }
 
@@ -93,19 +127,55 @@ class geradorAPI extends DbConnection
                 if($gerador_status && !$gerador_status){
                     $estado= ($gerador_status)? 'LIGADO': 'DESLIGADO';
                     $assunto='Gerador '.$estado;
-                    $messagem_sms = 'Na Agênca'.$this->grupo['nome'].' gerador '.$estado;
-                    $messagem_email='Na Agênca'.$this->grupo['nome'].' gerador '.$estado.', por favor Verificar';
-                    send_sms($this->users, $messagem_sms);
-                    send_email($this->users,$assunto,$messagem_email);
+                    $messagem_sms = 'Na Agenca'.$this->grupo['nome'].' gerador '.$estado;
+                    $messagem_email='Na Agenca'.$this->grupo['nome'].' gerador '.$estado.', por favor verificar';
+                    $response=send_sms($this->users, $messagem_sms);
+                    //dados para tabela Historico_alertas sms                     
+                    $status = $response['status'];
+                    $menssage =$response['message'];
+                    $codigo =$response['codigo'];
+                    $menssagem = $response['messagem'];
+                    $tipo = 'sms';
+                    $user_send=json_encode($response['user_send']);
+                    $this->historial_alertas($user_send,$tipo,$menssagem, $status, $menssage, $codigo);
+
+
+                    $response=send_email($this->users,$assunto,$messagem_email);
+                    //dados para tabela Historico_alertas email  
+                    $status = $response['status'];
+                    $menssage =$response['message'];
+                    $codigo =$response['codigo'];
+                    $menssagem = $messagem_email;
+                    $tipo = 'email';
+                    $user_send=json_encode($response['user_send']);
+                    $this->historial_alertas($user_send,$tipo,$menssagem, $status, $menssage, $codigo);
                 }
 
                  // Alerta de nivel baixo de combustivel
                  if($low_fuel){
                     $assunto='Gerador Nivel Baixo Combustivel';
-                    $messagem_sms = 'Na Agênca'.$this->grupo['nome'].' gerador com nivel baixo de combustivel';
-                    $messagem_email='Na Agênca'.$this->grupo['nome'].' gerador com nivel baixo de combustivel, por favor Verificar';
-                    send_sms($this->users, $messagem_sms);
-                    send_email($this->users,$assunto,$messagem_email);
+                    $messagem_sms = 'Na Agenca'.$this->grupo['nome'].' gerador com nivel baixo de combustivel';
+                    $messagem_email='Na Agenca'.$this->grupo['nome'].' gerador com nivel baixo de combustivel, por favor verificar';
+                    $response=send_sms($this->users, $messagem_sms);
+                    //dados para tabela Historico_alertas sms                     
+                    $status = $response['status'];
+                    $menssage =$response['message'];
+                    $codigo =$response['codigo'];
+                    $menssagem = $response['messagem'];
+                    $tipo = 'sms';
+                    $user_send=json_encode($response['user_send']);
+                    $this->historial_alertas($user_send,$tipo,$menssagem, $status, $menssage, $codigo);
+
+
+                    $response=send_email($this->users,$assunto,$messagem_email);
+                    //dados para tabela Historico_alertas email  
+                    $status = $response['status'];
+                    $menssage =$response['message'];
+                    $codigo =$response['codigo'];
+                    $menssagem = $messagem_email;
+                    $tipo = 'email';
+                    $user_send=json_encode($response['user_send']);
+                    $this->historial_alertas($user_send,$tipo,$menssagem, $status, $menssage, $codigo);
                 }
 
                 $this->updateGeradorConfig($gerador_id, $key_auth, $gerador_status, $avariado, $rede_publica, $qua_aut_trans, $low_fuel);
@@ -241,10 +311,10 @@ class geradorAPI extends DbConnection
     {
         try {
 
-            $res = $this->db->prepare('SELECT nome,email,telefone,alerta_email,alerta_sms FROM grupo_acesso as g JOIN utilizador as u on u.id=g.id_utilizador where id_grupo=:id_grupo');
+            $res = $this->db->prepare('SELECT u.id,nome,email,telefone,alerta_email,alerta_sms FROM grupo_acesso as g JOIN utilizador as u on u.id=g.id_utilizador where id_grupo=:id_grupo');
 
             $res->bindValue(':id_grupo', $id_grupo);
-
+            
             $res->execute();
 
             return $this->data($res);
@@ -337,6 +407,35 @@ class geradorAPI extends DbConnection
         }
         return $response;
     }
+
+    function historial_alertas($user_send,$tipo,$menssagem, $status, $menssage, $codigo)
+    {
+    
+        $response = array();
+        try {
+            $res = $this->db->prepare('INSERT INTO reporte_alertas (user_send,tipo,menssagem,status,menssage,codigo) VALUES (:user_send,:tipo,:menssagem,:status,:menssage,:codigo)');
+    
+            $res->bindValue(':user_send', $user_send);
+            $res->bindValue(':tipo', $tipo);
+            $res->bindValue(':menssagem', $menssagem);
+            $res->bindValue(':status', $status);
+            $res->bindValue(':menssage', $menssage);
+            $res->bindValue(':codigo', $codigo);
+    
+            $res->execute();
+    
+            $response['status'] = true;
+        } catch (PDOException $e) {
+            $response['status'] = false;
+            echo $e->getMessage();
+        }
+        return $response;
+    }
+    
+   
+
+
+
 }
 
 new geradorAPI();

@@ -1,6 +1,7 @@
 <?php
 
 
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
@@ -12,7 +13,6 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/backend/email/sql.php';
 require $_SERVER['DOCUMENT_ROOT'].'/backend/sms/sql.php';
 
 function send_email($users,$assunto,$mensagem_email){
-  
   $data = new EMAIL();
   $server = $data->list();
   $server = $server[0];
@@ -20,7 +20,9 @@ function send_email($users,$assunto,$mensagem_email){
 
   $response=[
       "status"=>false,
-      "message"=>""
+      "message"=>"",
+      "tipo"=>"email",
+      "codigo"=>""
   ];
 
 
@@ -43,26 +45,39 @@ function send_email($users,$assunto,$mensagem_email){
 
   $mail->setFrom($server['username'],'Sistema Monitorizacao');
 
+
+  $response['user_send']=[
+    "success"=>[],
+    "fail"=>[]
+  ];
+
   foreach($users as $user){
       if($user['alerta_email']){
           $mail->addAddress($user['email'], $user['nome']);
+
           $mail->isHTML(true);
           $mail->Subject = $assunto;
           $mail->Body    = $mensagem_email;
           //$mail->AltBody = 'Para visualizar essa mensagem acesse http://site.com.br/mail';
 
           if(!$mail->send()) {
-              $reponse['message']="Erro ao enviar email";
-              $reponse['status']=false;
+              $response['message']="Erro ao enviar email";
               $response['erro']=$mail->ErrorInfo;
+              $response['user_send']['fail'][]=$user['id'];    
+
             } else {
-              $reponse['message']="Email enviada";
-              $reponse['status']=true;
+              $response['message']="Email enviada";
+              $response['menssagem'] = $mensagem_email;
+              $response['status']=true;
+              $response['user_send']['success'][]=$user['id']; 
+              
           }
+          
     }
-      
+    
   }
-  echo json_encode($reponse);
+  echo json_encode($response);
+  return $response;
 }
 
 
@@ -124,7 +139,20 @@ require $_SERVER['DOCUMENT_ROOT'].'/plugins/twilio/src/Twilio/autoload.php';
 
 
 function send_sms($users, $mensagem_sms){
-  
+
+  $response=[
+    "status"=>false,
+    "message"=>"",
+    "codigo"=>""
+];
+
+
+$response['user_send']=[
+  "success"=>[],
+  "fail"=>[]
+];
+
+ 
   foreach($users as $user){
     if($user['alerta_sms']){
         try{
@@ -132,17 +160,12 @@ function send_sms($users, $mensagem_sms){
             $server = $data->list();
             $server = $server[0];
 
-            $response=[
-                "status"=>false,
-                "message"=>""
-            ];
 
             if(!$server['ativo']){
                 $response["message"]="O serviço de SMS encontra-se desativado";
                 echo json_encode($response);
                 return false;
             }
-
             $twilioAccountSid = $server['accountsid'];
             $twilioAuthToken = $server['authtoken'];
             $fromNumber = $server['numberfrom'];      
@@ -154,18 +177,23 @@ function send_sms($users, $mensagem_sms){
            
             $response['status']=true;
             $response['message']="SMS enviada";
+            $response['messagem']=$mensagem_sms;
+            $response['codigo']="";
+            $response['user_send']['success'][]=$user['id']; 
+
           break;
         }catch(TwilioException $e){
             $response['message']="Erro ao enviar SMS";
             $response['codigo']=$e->getCode();
-            $response['erro_message']=$e->getMessage();
+            $response['erro']=$e->getMessage();
+            $response['user_send']['fail'][]=$user['id'];  
         }
       }
     }
         
   echo json_encode($response);
+  return $response;
 }
-
 
 
 

@@ -26,12 +26,12 @@ switch ($action) {
 						<input type="text" value="<?php echo $response['server_mqtt']; ?>" name="server_mqtt" class="form-control" placeholder="Introduzir endereço Servidor" required>
 					</div>
 					<div class="form-group">
-						<label>Nome de utilizador</label>
-						<input type="text" value="<?php echo $response['username']; ?>" name="username" class="form-control" placeholder="Introduzir Nome de utilizador" required>
+						<label>Id do Cliente</label>
+						<input type="text" value="<?php echo $response['id_cliente']; ?>" name="id_cliente" class="form-control" placeholder="Introduzir ID do cliente" required>
 					</div>
 					<div class="checkbox">
 						<label>
-							<input type="checkbox" value="<?php echo $response['ativo_ws']; ?>" <?php echo $response['ativo_ws']? 'checked':''; ?> name="ativo_ws"> WS Ativo
+							<input type="checkbox" value="<?php echo $response['ativo_ws']; ?>" <?php echo $response['ativo_ws'] ? 'checked' : ''; ?> name="ativo_ws"> WS Ativo
 						</label>
 					</div>
 				</div>
@@ -41,29 +41,35 @@ switch ($action) {
 						<input type="number" value="<?php echo $response['port_ws']; ?>" name="port_ws" class="form-control" placeholder="Introduzir Porta WS" required>
 					</div>
 					<div class="form-group">
-						<label>Palavra-passe</label>
-						<input type="password" value="<?php echo $response['password']; ?>" name="password" class="form-control" placeholder="Introduzir Palavra-passe" required>
+						<label>Nome de utilizador</label>
+						<input type="text" value="<?php echo $response['username']; ?>" name="username" class="form-control" placeholder="Introduzir Nome de utilizador" required>
 					</div>
 					<div class="checkbox">
 						<label>
-							<input type="checkbox" value="<?php echo $response['ativo_mqtt']; ?>" <?php echo $response['ativo_mqtt']? 'checked':''; ?> name="ativo_mqtt"> MQTT Ativo
+							<input type="checkbox" value="<?php echo $response['ativo_mqtt']; ?>" <?php echo $response['ativo_mqtt'] ? 'checked' : ''; ?> name="ativo_mqtt"> MQTT Ativo
 						</label>
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div class="form-group">
-							<label>Porta MQTT</label>
-							<input type="number" value="<?php echo $response['port_mqtt']; ?>" name="port_mqtt" class="form-control" placeholder="Introduzir Porta MQTT" required>
-						</div>
+						<label>Porta MQTT</label>
+						<input type="number" value="<?php echo $response['port_mqtt']; ?>" name="port_mqtt" class="form-control" placeholder="Introduzir Porta MQTT" required>
 					</div>
+					<div class="form-group">
+						<label>Palavra-passe</label>
+						<input type="password" value="<?php echo $response['password']; ?>" name="password" class="form-control" placeholder="Introduzir Palavra-passe" required>
+					</div>
+				</div>
 			</div>
 		</div>
 		<!-- /.card-body -->
 		<div class="card-footer">
-			<button type="submit" class="btn btn-primary">Gravar</button>
+			<button type="submit" id="btnTestMqtt" class="btn btn-primary">Testar MQTT</button>
+			<button type="submit" id="btnTestSocket" class="btn btn-primary">Testar Socket</button>
+			<button type="submit" id="btnGravar" class="btn btn-primary">Gravar</button>
 		</div>
 
-	
+
 
 	<?php
 		break;
@@ -72,37 +78,38 @@ switch ($action) {
 	case 'update':
 		$server_mqtt = filter_input(INPUT_POST, 'server_mqtt');
 		$username = filter_input(INPUT_POST, 'username');
-		$port_mqtt = filter_input(INPUT_POST, 'port_mqtt')?filter_input(INPUT_POST, 'port_mqtt'):0;
+		$port_mqtt = filter_input(INPUT_POST, 'port_mqtt') ? filter_input(INPUT_POST, 'port_mqtt') : 0;
 		$port_ws = filter_input(INPUT_POST, 'port_ws');
 		$password = filter_input(INPUT_POST, 'password');
-		$ativo_ws = filter_input(INPUT_POST, 'ativo_ws')?filter_input(INPUT_POST, 'ativo_ws'):0;
+		$ativo_ws = filter_input(INPUT_POST, 'ativo_ws') ? filter_input(INPUT_POST, 'ativo_ws') : 0;
 		$port_mqtt = filter_input(INPUT_POST, 'port_mqtt');
-		$response = $data->update($server_mqtt, $username, $port_mqtt, $port_ws, $password, $ativo_ws, $port_mqtt);
+		$id_cliente = filter_input(INPUT_POST, 'id_cliente');
+		$response = $data->update($server_mqtt, $username, $port_mqtt, $port_ws, $id_cliente, $password, $ativo_ws, $port_mqtt);
 
-		
+
 		echo json_encode($response);
 
 		break;
 
-		case 'formtest';
-?>
-			<div class="card-body">
-				<div class="row">
-					<div class="col-md-4">
-						<div class="form-group">
+	case 'formtest';
+	?>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
 						<label>Email Para:</label>
 						<input type="email" class="form-control" name="emailpara" placeholder="Inserir e-mail teste" required>
-						</div>
 					</div>
-					<div class="col-md-4">
-						<div class="form-group">
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
 						<label></label><br>
 						<button type="submit" class="btn btn-primary">Testar Conexão</button>
-						</div>
 					</div>
 				</div>
 			</div>
-	  	  
+		</div>
+
 <?php
 		break;
 
