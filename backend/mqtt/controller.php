@@ -113,6 +113,38 @@ switch ($action) {
 <?php
 		break;
 
+	case 'teste_mqtt':
+
+		$server = filter_input(INPUT_POST, 'server');
+		$username = filter_input(INPUT_POST, 'username');
+		$password = filter_input(INPUT_POST, 'password');
+		$port = filter_input(INPUT_POST, 'port');
+		$id_cliente = filter_input(INPUT_POST, 'id_cliente');
+
+
+		require('../../plugins/mqtt-php/phpMQTT.php');
+
+		$mqtt = new Bluerhinos\phpMQTT($server, $port, $id_cliente);
+
+		//$mqtt->timeout=1;
+
+		$response=[
+			"message"=>"Erro ao conectar",
+			"status"=> false
+		];
+
+		if (@$mqtt->connect(true, NULL, $username, $password)) {
+			$mqtt->publish('teste', 'Hello World! at ' . date('r'), 0, false);
+			$response['message']='Conexão com mqtt estabelecida';
+			$response['status']=true;
+			$mqtt->close();
+		}
+
+		echo json_encode($response);
+
+
+		break;
+
 
 
 

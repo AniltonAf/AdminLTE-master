@@ -58,6 +58,41 @@ Class Data extends DbConnection{
 		}
 	}
 
+	public function getGerador($id){
+		$estado=1;
+		try{
+
+			$res = $this->db->prepare('SELECT * FROM gerador as g join gerador_config as gc on gc.gerador_id=g.id WHERE g.id=:id and estado=:estado');
+			
+			$res->bindValue(':estado',$estado);
+			$res->bindValue(':id',$id);
+			
+			$res->execute();
+
+			return $res->fetch(PDO::FETCH_ASSOC);			
+
+		}catch(PDOException $e){
+				echo $e->getMessage();
+		}
+	}
+
+	public function getServer(){
+		$estado=1;
+		try{
+
+			$res = $this->db->prepare('SELECT * FROM mqtt_server WHERE ativo_ws=:estado');
+			
+			$res->bindValue(':estado',$estado);
+			
+			$res->execute();
+
+			return $res->fetch(PDO::FETCH_ASSOC);			
+
+		}catch(PDOException $e){
+				echo $e->getMessage();
+		}
+	}
+
 	public function getItem($id){
 		try{
 
@@ -73,7 +108,7 @@ Class Data extends DbConnection{
 				echo $e->getMessage();
 		}
 	}
-
+/*
 	// função para deletar utilizadores
 	public function delete($id,$estado,$delete_ut){
 		$response=array();
@@ -233,6 +268,7 @@ Class Data extends DbConnection{
 		return $response;
 	}
 
+	*/
 }
 
 

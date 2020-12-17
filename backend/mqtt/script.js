@@ -44,7 +44,7 @@ $(document).ready(function () {
 
 			})
 		} else if (btnClick === 'btnTestSocket') {
-			$('button').attr('disabled',true)
+			$('button').attr('disabled', true)
 			let server = $('input[name="server_mqtt"]').val();
 			let port = $('input[name="port_ws"]').val()
 			let id_cliente = $('input[name="id_cliente"]').val()
@@ -56,20 +56,20 @@ $(document).ready(function () {
 			client.onConnectionLost = onConnectionLost;
 			client.onMessageArrived = onMessageArrived;
 
-			client.connect({ timeout:1,onSuccess: onConnect,onFailure:onFailure, userName: username, password: password });
+			client.connect({ timeout: 1, onSuccess: onConnect, onFailure: onFailure, userName: username, password: password });
 
 
 			// called when the client connects
 			function onConnect() {
 				// Once a connection has been made, make a subscription and send a message.
 				client.disconnect()
-				getMessage('success','Conexão estabelecida com o websocket');
-				$('button').attr('disabled',false)
+				getMessage('success', 'Conexão estabelecida com o websocket');
+				$('button').attr('disabled', false)
 			}
 
-			function onFailure(){
-				getMessage('danger','Conexão estabelecida com o websocket');
-				$('button').attr('disabled',false)
+			function onFailure() {
+				getMessage('danger', 'Conexão estabelecida com o websocket');
+				$('button').attr('disabled', false)
 			}
 
 			// called when the client loses its connection
@@ -83,6 +83,38 @@ $(document).ready(function () {
 			function onMessageArrived(message) {
 				console.log("onMessageArrived:" + message.payloadString);
 			}
+		}
+
+		else if (btnClick === 'btnTestMqtt') {
+			$('button').attr('disabled', true)
+			let server = $('input[name="server_mqtt"]').val();
+			let port = $('input[name="port_mqtt"]').val()
+			let id_cliente = $('input[name="id_cliente"]').val()
+			let username = $('input[name="username"]').val()
+			let password = $('input[name="password"]').val()
+
+
+			$.post(
+				controller_url,
+				{
+					action: 'teste_mqtt',
+					server: server,
+					port: port,
+					id_cliente: id_cliente,
+					username: username,
+					password: password
+				},
+				function (retorno) {
+					$('button').attr('disabled', false)
+					let res=JSON.parse(retorno);
+
+					if(res.status){
+						getMessage('success', res.message);
+					}else{
+						getMessage('danger', res.message);
+					}
+				}
+			)
 		}
 
 		return false;

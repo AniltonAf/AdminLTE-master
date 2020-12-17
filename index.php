@@ -20,7 +20,7 @@
   <!-- /.content-header -->
 
   <!-- Main content -->
-  
+
   <section class="content"><br>
     <div class="container-fluid">
 
@@ -33,75 +33,72 @@
         <div class="container-fluid">
           <!-- Info boxes -->
           <div class="row">
-            <div class="col-12 col-sm-6 col-md-2">
-              <div class="info-box">
-                <span class="info-box-icon bg-success elevation-1"><i class="fas fa-power-off"></i></span>
-
-                <div class="info-box-content">
-                  <span class="info-box-text">Geradores ON</span>
-                  <span class="info-box-number gerador_on">
-                  </span>
+            <div class="col-lg-2 col-6">
+              <div class="small-box bg-success">
+                <div class="inner">
+                  <h3 class="gerador_on"></h3>
+                  <p>Gerador On</p>
                 </div>
-                <!-- /.info-box-content -->
+                <div class="icon"><i class="fas fa-power-off"></i></div>
+                <a href="#" class="small-box-footer">
+                  Ver Lista <i class="fas fa-arrow-circle-right"></i>
+                </a>
               </div>
-              <!-- /.info-box -->
             </div>
 
-            <div class="col-12 col-sm-6 col-md-2">
-              <div class="info-box">
-                <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-power-off"></i></span>
-
-                <div class="info-box-content">
-                  <span class="info-box-text">Geradores OFF</span>
-                  <span class="info-box-number gerador_off">
-                  </span>
+            <div class="col-lg-2 col-6">
+              <div class="small-box bg-danger">
+                <div class="inner">
+                  <h3 class="gerador_off"></h3>
+                  <p>Gerador OFF</p>
                 </div>
-                <!-- /.info-box-content -->
+                <div class="icon"><i class="fas fa-power-off"></i></div>
+                <a href="#" class="small-box-footer">
+                  Ver Lista <i class="fas fa-arrow-circle-right"></i>
+                </a>
               </div>
-              <!-- /.info-box -->
             </div>
 
-            <!-- /.col -->
-            <div class="col-12 col-sm-6 col-md-2">
-              <div class="info-box mb-3">
-                <span class="info-box-icon bg-danger  elevation-1"><i class="fas fa-wrench"></i></span>
-
-                <div class="info-box-content">
-                  <span class="info-box-text">Gerador Avariado</span>
-                  <span class="info-box-number gerador_avariado"></span>
+            <div class="col-lg-2 col-6">
+              <div class="small-box bg-danger">
+                <div class="inner">
+                  <h3 class="gerador_avariado"></h3>
+                  <p>Gerador Avariado</p>
                 </div>
-                <!-- /.info-box-content -->
+                <div class="icon"><i class="fas fa-wrench"></i></div>
+                <a href="#" class="small-box-footer">
+                  Ver Lista <i class="fas fa-arrow-circle-right"></i>
+                </a>
               </div>
-              <!-- /.info-box -->
             </div>
-            <!-- /.col -->
 
-            <!-- fix for small devices only -->
-            <div class="clearfix hidden-md-up"></div>
-
-            <div class="col-12 col-sm-6 col-md-2">
-              <div class="info-box mb-3">
-                <span class="info-box-icon bg-info"><i class="fas fa-plug"></i></span><br>
-                <div class="info-box-content">
-                  <span class="info-box-text">Rede Publica</span>
-                  <div class="row">
+            <div class="col-lg-2 col-6">
+              <div class="small-box">
+                <div class="inner bg-light">
+                  <div class="row" style="font-size:20px;padding:5px">
                     <div class="col-sm-6">
                       <span class="badge badge-success"><i class="fas fa-power-off"></i> <span class="rede_publica_on"></span></span>
                     </div>
                     <div class="col-sm-6">
-                      <span class="badge badge-danger"><i class="fas fa-power-off"></i>  <span class="rede_publica_off"></span></span>
+                      <span class="badge badge-danger"><i class="fas fa-power-off"></i> <span class="rede_publica_off"></span></span>
                     </div>
                   </div>
+                  <p>Rede Publica</p>
                 </div>
+                <div class="icon" style="color:Lightblue"><i class="fas fa-plug"></i></div>
+                <a href="#" class="small-box-footer bg-info">
+                  Ver Lista <i class="fas fa-arrow-circle-right"></i>
+                </a>
               </div>
             </div>
 
-            <div class="col-12 col-sm-6 col-md-2">
-              <div class="info-box mb-3">
-                <span class="info-box-icon bg-info"><i class="fas fa-bolt"></i></span><br>
-                <div class="info-box-content">
-                  <span class="info-box-text">QAT</span>
-                  <div class="row">
+            <!-- fix for small devices only -->
+            <div class="clearfix hidden-md-up"></div>
+
+            <div class="col-lg-2 col-6">
+              <div class="small-box">
+                <div class="inner bg-light">
+                  <div class="row" style="font-size:20px;padding:5px">
                     <div class="col-sm-6">
                       <span class="badge badge-success"><i class="fas fa-power-off"></i> <span class="qua_aut_trans_on"></span></span>
                     </div>
@@ -109,35 +106,82 @@
                       <span class="badge badge-danger"><i class="fas fa-power-off"></i> <span class="qua_aut_trans_off"></span></span>
                     </div>
                   </div>
+                  <p>QAT</p>
+                </div>
+                <div class="icon" style="color:Lightblue"><i class="fas fa-bolt"></i></div>
+                <a href="#" class="small-box-footer bg-info">
+                  Ver Lista <i class="fas fa-arrow-circle-right"></i>
+                </a>
+              </div>
+            </div>
+
+            <div class="col-lg-2 col-6">
+              <div class="small-box">
+                <div class="inner bg-light">
+                  <div class="row" style="font-size:20px;padding:5px">
+                    <div class="col-md-6">
+                      <span class="badge badge-success"><i class="fas fa-power-off"></i> <span class="low_fuel_off"></span></span>
+                    </div>
+                    <div class="col-md-6">
+                      <span class="badge badge-danger"><i class="fas fa-power-off"></i> <span class="low_fuel_on"></span></span>
+                    </div>
+                  </div>
+                  <p>Nivel Combustivel</p>
+                </div>
+                <div class="icon" style="color:Lightblue"><i class="fas fa-gas-pump"></i></div>
+                <a href="#" class="small-box-footer bg-info">
+                  Ver Lista <i class="fas fa-arrow-circle-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-md-9">
+              <div class="card card-outline card-primary">
+                <div class="card-header">
+                  <h5 class="card-title">Pontos dos Geradores</h5>
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="card-body" id="map" style="height: 500px;">
                 </div>
               </div>
             </div>
 
-            <div class="col-12 col-sm-6 col-md-2">
-              <div class="info-box mb-3">
-                <span class="info-box-icon bg-info"><i class="fas fa-gas-pump"></i></span><br>
-                <div class="info-box-content">
-                  <span class="info-box-text">Nivel Baixo Combustivel</span>
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <span class="badge badge-success"><i class="fas fa-power-off"></i> <span class="low_fuel_off"></span></span>
+            <div class="col-md-3">
+              <div class="card card-outline card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">Notificações</h3>
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="card-body" style="display: block;min-height: 500px;">
+                  <div class="direct-chat-messages" style="height: 450px;">
+
+                    <div class="direct-chat-msg">
+                      <img class="direct-chat-img" src="../dist/img/user1-128x128.jpg">
+                      <div class="direct-chat-text">
+                        <span class="direct-chat-name float-left">Alexander Pierce</span><br>
+                        Is this template really for free? That's unbelievable!
+                        <span class="direct-chat-timestamp float-right">23 Jan 2:00 pm</span>
+                      </div>
                     </div>
-                    <div class="col-sm-6">
-                      <span class="badge badge-danger"><i class="fas fa-power-off"></i> <span class="low_fuel_on"></span></span>
-                    </div>
+                    <!-- /.direct-chat-msg -->
                   </div>
                 </div>
               </div>
             </div>
 
 
-
-
-
-            <div class="col-12 col-sm-6 col-md-9">
-              <div class="info-box mb-3" id="map" style="height: 500px;">
-              </div>
-            </div>
+          </div>
 
 
 
@@ -148,14 +192,12 @@
 
 
 
-
-
-            <!-- ===============================================================================
+          <!-- ===============================================================================
 ==================== END CODE WHERE
 ====================================================================================-->
 
-            <!-- /.row (main row) -->
-          </div><!-- /.container-fluid -->
+          <!-- /.row (main row) -->
+        </div><!-- /.container-fluid -->
       </section>
       <!-- /.content -->
     </div>
@@ -163,4 +205,5 @@
     <?php require('footer.php'); ?>
     <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
     <script src="backend/dashboard/script.js"></script>

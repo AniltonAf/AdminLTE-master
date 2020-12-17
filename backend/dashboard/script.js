@@ -13,6 +13,7 @@ $(document).ready(function () {
 
 	getMap();
 
+	initMqtt();
 
 
 	$('#modalAdd').on('click', '#btnAdd', function () {
@@ -26,11 +27,87 @@ $(document).ready(function () {
 		})
 	})
 
+	function initMqtt() {
+		$.post(controller_url, { action: 'get_server' }, function (retorno) {
+
+			let response = JSON.parse(retorno)
+
+			console.log(response)
+
+			if (response.status) {
+
+				let server = response.server
+
+
+				client = new Paho.MQTT.Client(server.server_mqtt, Number(server.port_ws), server.id_cliente + microtime(true));
+				client.onConnectionLost = onConnectionLost;
+				client.onMessageArrived = onMessageArrived;
+
+				client.connect({ timeout: 1, onSuccess: onConnect, onFailure: onFailure, userName: server.username, password: server.password });
+
+
+
+				function onConnect() {
+					client.subscribe(server.id_cliente, 2)
+					console.log('conectou')
+				}
+
+				function onFailure() {
+					console.log('falhou')
+				}
+
+				function onConnectionLost(responseObject) {
+					if (responseObject.errorCode !== 0) {
+						console.log("onConnectionLost:" + responseObject.errorMessage);
+					}
+				}
+
+				function onMessageArrived(message) {
+					let corpo_message = $('.direct-chat-messages')
+
+					let old_message = corpo_message.html();
+
+					response = JSON.parse(message.payloadString)
+
+
+					$.post(controller_url, { action: 'get_gerador', id: response.id_gerador }, function (res) {
+						let retorno = JSON.parse(res);
+
+
+						let status= response.servidor_status
+
+						if (retorno.status && retorno.gerador) {
+							let gerador = retorno.gerador
+
+							let new_message = `
+								<div class="direct-chat-msg">
+								<img class="direct-chat-img" src="../dist/img/user1-128x128.jpg">
+								<div class="direct-chat-text">
+									<span class="direct-chat-name float-left">`+ gerador.descricao+ `</span><br>
+									`+ response.msg + `                                               
+									<span class="direct-chat-timestamp float-right">`+retorno.time+`</span>
+								</div>
+								</div>
+							`;
+
+							corpo_message.html(new_message + old_message)
+						}
+
+					})
+
+
+
+
+					console.log("onMessageArrived:" + message.payloadString);
+				}
+			}
+		})
+	}
+
 
 	function getAll() {
 		$.post(controller_url, { action: 'count_estado' }, function (retorno) {
 			response = JSON.parse(retorno);
-			console.log(response)
 			$('.gerador_on').html(response.gerador_status.on)
 			$('.gerador_off').html(response.gerador_status.off)
 			$('.gerador_avariado').html(response.gerador_avariado.on)
@@ -46,9 +123,8 @@ $(document).ready(function () {
 
 	function getMap() {
 		$.post(controller_url, { action: 'get_geradores' }, function (retorno) {
-			console.log(retorno)
-			var response=JSON.parse(retorno)
-			
+			var response = JSON.parse(retorno)
+
 			// https://account.mapbox.com
 			mapboxgl.accessToken = 'pk.eyJ1IjoiaXZhbmlsZG9lZSIsImEiOiJja2hmYWwxcWkwYWptMnhwYzk2c3lmNWJxIn0.MG7-GSqPrk3JCepjLMSB9Q';
 			var map = new mapboxgl.Map({
@@ -63,7 +139,7 @@ $(document).ready(function () {
 					'type': 'geojson',
 					'data': {
 						'type': 'FeatureCollection',
-						'features': response.data
+						'features': response.data,
 					}
 				});
 				// Add a layer showing the places.
@@ -115,4 +191,29 @@ $(document).ready(function () {
 			$('.retorno').html('');
 		}, 4000)
 	}
+
+	function microtime(getAsFloat) {
+		var s, now, multiplier;
+
+		if (typeof performance !== 'undefined' && performance.now) {
+			now = (performance.now() + performance.timing.navigationStart) / 1000;
+			multiplier = 1e6; // 1,000,000 for microseconds
+		}
+		else {
+			now = (Date.now ? Date.now() : new Date().getTime()) / 1000;
+			multiplier = 1e3; // 1,000
+		}
+
+		// Getting microtime as a float is easy
+		if (getAsFloat) {
+			return now;
+		}
+
+		// Dirty trick to only get the integer part
+		s = now | 0;
+
+		return (Math.round((now - s) * multiplier) / multiplier) + ' ' + s;
+	}
+
+
 });

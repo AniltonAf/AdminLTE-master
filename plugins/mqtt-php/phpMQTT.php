@@ -50,6 +50,7 @@ class phpMQTT
     public $will;                /* stores the will of the client */
     protected $username;            /* stores username */
     protected $password;            /* stores password */
+    public $timeout=5;
 
     public $cafile;
     protected static $known_commands = [
@@ -145,9 +146,9 @@ class phpMQTT
                     ]
                 ]
             );
-            $this->socket = stream_socket_client('tls://' . $this->address . ':' . $this->port, $errno, $errstr, 60, STREAM_CLIENT_CONNECT, $socketContext);
+            $this->socket = stream_socket_client('tls://' . $this->address . ':' . $this->port, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $socketContext);
         } else {
-            $this->socket = stream_socket_client('tcp://' . $this->address . ':' . $this->port, $errno, $errstr, 60, STREAM_CLIENT_CONNECT);
+            $this->socket = stream_socket_client('tcp://' . $this->address . ':' . $this->port, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT);
         }
 
         if (!$this->socket) {
