@@ -120,11 +120,10 @@ class geradorAPI extends DbConnection
                     $this->historial_alertas($user_send,$tipo,$menssagem, $status, $menssage, $codigo);
                     
                 }
-
                 
 
                 // Alerta de Gerador ON ou OFF
-                if($gerador_status && !$gerador_status){
+                if($gerador_status || !$gerador_status){
                     $estado= ($gerador_status)? 'LIGADO': 'DESLIGADO';
                     $assunto='Gerador '.$estado;
                     $messagem_sms = 'Na Agenca'.$this->grupo['nome'].' gerador '.$estado;

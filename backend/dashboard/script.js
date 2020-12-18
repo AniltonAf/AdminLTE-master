@@ -63,11 +63,13 @@ $(document).ready(function () {
 				}
 
 				function onMessageArrived(message) {
+
 					let corpo_message = $('.direct-chat-messages')
 
 					let old_message = corpo_message.html();
 
 					response = JSON.parse(message.payloadString)
+				
 
 
 					$.post(controller_url, { action: 'get_gerador', id: response.id_gerador }, function (res) {
@@ -76,19 +78,108 @@ $(document).ready(function () {
 
 						let status= response.servidor_status
 
+
 						if (retorno.status && retorno.gerador) {
 							let gerador = retorno.gerador
-
-							let new_message = `
+							
+							let new_message = '';
+							
+							if(!response.rede_publica && !response.gerador_status && !response.power_edificio){
+								new_message = `
 								<div class="direct-chat-msg">
 								<img class="direct-chat-img" src="../dist/img/user1-128x128.jpg">
 								<div class="direct-chat-text">
 									<span class="direct-chat-name float-left">`+ gerador.descricao+ `</span><br>
-									`+ response.msg + `                                               
+									Retorno de energia da rede, gerador OFF             
 									<span class="direct-chat-timestamp float-right">`+retorno.time+`</span>
 								</div>
 								</div>
 							`;
+								
+							}
+
+							if(response.rede_publica && response.gerador_status && !response.power_edificio){
+								new_message = `
+								<div class="direct-chat-msg">
+								<img class="direct-chat-img" src="../dist/img/user1-128x128.jpg">
+								<div class="direct-chat-text">
+									<span class="direct-chat-name float-left">`+ gerador.descricao+ `</span><br>
+									Corte de energia, gerador ON e agencia com energia                                             
+									<span class="direct-chat-timestamp float-right">`+retorno.time+`</span>
+								</div>
+								</div>
+							`;
+								
+							}
+
+							if(response.low_fuel){
+								new_message = `
+								<div class="direct-chat-msg">
+								<img class="direct-chat-img" src="../dist/img/user1-128x128.jpg">
+								<div class="direct-chat-text">
+									<span class="direct-chat-name float-left">`+ gerador.descricao+ `</span><br>
+										Gerdor com baixo nivel de combustivel
+									<span class="direct-chat-timestamp float-right">`+retorno.time+`</span>
+								</div>
+								</div>
+							`;
+
+							}
+
+							if(response.avariado){
+								new_message = `
+								<div class="direct-chat-msg">
+								<img class="direct-chat-img" src="../dist/img/user1-128x128.jpg">
+								<div class="direct-chat-text">
+									<span class="direct-chat-name float-left">`+ gerador.descricao+ `</span><br>
+										Gerdor alguma avaria não identificada
+									<span class="direct-chat-timestamp float-right">`+retorno.time+`</span>
+								</div>
+								</div>
+							`;
+							}
+
+							if(response.qua_aut_trans){
+								new_message = `
+								<div class="direct-chat-msg">
+								<img class="direct-chat-img" src="../dist/img/user1-128x128.jpg">
+								<div class="direct-chat-text">
+									<span class="direct-chat-name float-left">`+ gerador.descricao+ `</span><br>
+									Agencia sem energia e com avaria no QTA                                              
+									<span class="direct-chat-timestamp float-right">`+retorno.time+`</span>
+								</div>
+								</div>
+							`;
+
+
+							if(response.gerador_status){
+								new_message = `
+								<div class="direct-chat-msg">
+								<img class="direct-chat-img" src="../dist/img/user1-128x128.jpg">
+								<div class="direct-chat-text">
+									<span class="direct-chat-name float-left">`+ gerador.descricao+ `</span><br>
+									Gerador ON                                              
+									<span class="direct-chat-timestamp float-right">`+retorno.time+`</span>
+								</div>
+								</div>
+							`;
+
+							} else{
+								new_message = `
+								<div class="direct-chat-msg">
+								<img class="direct-chat-img" src="../dist/img/user1-128x128.jpg">
+								<div class="direct-chat-text">
+									<span class="direct-chat-name float-left">`+ gerador.descricao+ `</span><br>
+									Gerador OFF                                              
+									<span class="direct-chat-timestamp float-right">`+retorno.time+`</span>
+								</div>
+								</div>
+							`;
+
+							}
+								
+							}
+
 
 							corpo_message.html(new_message + old_message)
 						}
