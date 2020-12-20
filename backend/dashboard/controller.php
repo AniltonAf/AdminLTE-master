@@ -109,6 +109,13 @@ switch ($action) {
 
 		break;
 
+	case 'last5';
+		$response = $data->last5event();
+		
+		echo json_encode($response);
+
+		break;
+
 
 	default:
 		# code...

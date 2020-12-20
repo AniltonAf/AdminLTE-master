@@ -9,10 +9,13 @@ $(document).ready(function () {
 	var controller_url = "backend/dashboard/controller";
 
 	//listar items
-	getAll();
-
+	setInterval(function(){
+		getAll();
+		
+	},2000);
 	getMap();
-
+	
+	getlast5();
 	initMqtt();
 
 
@@ -31,8 +34,6 @@ $(document).ready(function () {
 		$.post(controller_url, { action: 'get_server' }, function (retorno) {
 
 			let response = JSON.parse(retorno)
-
-			console.log(response)
 
 			if (response.status) {
 
@@ -83,98 +84,40 @@ $(document).ready(function () {
 							let gerador = retorno.gerador
 							
 							let new_message = '';
-							
+
+							let message_corpo=false;
+
+							if(response.gerador_status==1){
+								new_message =  messageCorpo('Gerador ON ',gerador.descricao,retorno.time,'success');
+
+							} 
+
 							if(!response.rede_publica && !response.gerador_status && !response.power_edificio){
-								new_message = `
-								<div class="direct-chat-msg">
-								<img class="direct-chat-img" src="../dist/img/user1-128x128.jpg">
-								<div class="direct-chat-text">
-									<span class="direct-chat-name float-left">`+ gerador.descricao+ `</span><br>
-									Retorno de energia da rede, gerador OFF             
-									<span class="direct-chat-timestamp float-right">`+retorno.time+`</span>
-								</div>
-								</div>
-							`;
+								new_message = messageCorpo('Retorno de energia da rede, gerador OFF ',gerador.descricao,retorno.time,'gray');
 								
 							}
 
 							if(response.rede_publica && response.gerador_status && !response.power_edificio){
-								new_message = `
-								<div class="direct-chat-msg">
-								<img class="direct-chat-img" src="../dist/img/user1-128x128.jpg">
-								<div class="direct-chat-text">
-									<span class="direct-chat-name float-left">`+ gerador.descricao+ `</span><br>
-									Corte de energia, gerador ON e agencia com energia                                             
-									<span class="direct-chat-timestamp float-right">`+retorno.time+`</span>
-								</div>
-								</div>
-							`;
+								new_message =  messageCorpo('Corte de energia, gerador ON e agencia com energia',gerador.descricao,retorno.time,'success'); 
 								
 							}
 
 							if(response.low_fuel){
-								new_message = `
-								<div class="direct-chat-msg">
-								<img class="direct-chat-img" src="../dist/img/user1-128x128.jpg">
-								<div class="direct-chat-text">
-									<span class="direct-chat-name float-left">`+ gerador.descricao+ `</span><br>
-										Gerdor com baixo nivel de combustivel
-									<span class="direct-chat-timestamp float-right">`+retorno.time+`</span>
-								</div>
-								</div>
-							`;
+								new_message = messageCorpo('Gerdor com baixo nivel de combustivel',gerador.descricao,retorno.time,'danger');
 
 							}
 
 							if(response.avariado){
-								new_message = `
-								<div class="direct-chat-msg">
-								<img class="direct-chat-img" src="../dist/img/user1-128x128.jpg">
-								<div class="direct-chat-text">
-									<span class="direct-chat-name float-left">`+ gerador.descricao+ `</span><br>
-										Gerdor alguma avaria não identificada
-									<span class="direct-chat-timestamp float-right">`+retorno.time+`</span>
-								</div>
-								</div>
-							`;
+								new_message = messageCorpo('Gerdor alguma avaria não identificada',gerador.descricao,retorno.time,'danger'); 
 							}
 
 							if(response.qua_aut_trans){
-								new_message = `
-								<div class="direct-chat-msg">
-								<img class="direct-chat-img" src="../dist/img/user1-128x128.jpg">
-								<div class="direct-chat-text">
-									<span class="direct-chat-name float-left">`+ gerador.descricao+ `</span><br>
-									Agencia sem energia e com avaria no QTA                                              
-									<span class="direct-chat-timestamp float-right">`+retorno.time+`</span>
-								</div>
-								</div>
-							`;
+								new_message = messageCorpo('Agencia sem energia e com avaria no QTA',gerador.descricao,retorno.time,'danger');
 
 
-							if(response.gerador_status){
-								new_message = `
-								<div class="direct-chat-msg">
-								<img class="direct-chat-img" src="../dist/img/user1-128x128.jpg">
-								<div class="direct-chat-text">
-									<span class="direct-chat-name float-left">`+ gerador.descricao+ `</span><br>
-									Gerador ON                                              
-									<span class="direct-chat-timestamp float-right">`+retorno.time+`</span>
-								</div>
-								</div>
-							`;
-
-							} else{
-								new_message = `
-								<div class="direct-chat-msg">
-								<img class="direct-chat-img" src="../dist/img/user1-128x128.jpg">
-								<div class="direct-chat-text">
-									<span class="direct-chat-name float-left">`+ gerador.descricao+ `</span><br>
-									Gerador OFF                                              
-									<span class="direct-chat-timestamp float-right">`+retorno.time+`</span>
-								</div>
-								</div>
-							`;
+							
+							if(response.gerador_status==0){
+								new_message = messageCorpo('Gerador OFF',gerador.descricao,retorno.time,'gray');
 
 							}
 								
@@ -196,6 +139,20 @@ $(document).ready(function () {
 	}
 
 
+
+	function messageCorpo(mensagem,descricao,time,status){
+			return `
+			<div class="direct-chat-msg ">
+			<div class="direct-chat-text bg-`+ status+ `" >
+				<span class="direct-chat-name float-left">`+ descricao+ `</span><br>
+				`+ mensagem+ `                                            
+				<span class="direct-chat-timestamp float-right">`+time+`</span>
+			</div>
+			</div>
+		`;
+	}
+
+
 	function getAll() {
 		$.post(controller_url, { action: 'count_estado' }, function (retorno) {
 			response = JSON.parse(retorno);
@@ -209,6 +166,75 @@ $(document).ready(function () {
 			$('.low_fuel_on').html(response.low_fuel.on)
 			$('.low_fuel_off').html(response.low_fuel.off)
 
+		})
+	}
+
+
+	function getlast5(){
+		$.post(controller_url, { action: 'last5' }, function (res) {
+			
+			let retorno = JSON.parse(res);
+
+			let item = '';
+
+			foreach (response as item) {
+
+				$.post(controller_url, { action: 'get_gerador', id: response.id_gerador }, function (res) {
+					let retorno = JSON.parse(res);
+
+
+					let status= response.servidor_status
+
+
+					if (retorno.status && retorno.gerador) {
+						let gerador = retorno.gerador
+						
+						let new_message = '';
+
+						let message_corpo=false;
+
+						if(response.gerador_status==1){
+							new_message =  messageCorpo('Gerador ON ',gerador.descricao,retorno.time,'success');
+
+						} 
+
+						if(!response.rede_publica && !response.gerador_status && !response.power_edificio){
+							new_message = messageCorpo('Retorno de energia da rede, gerador OFF ',gerador.descricao,retorno.time,'gray');
+							
+						}
+
+						if(response.rede_publica && response.gerador_status && !response.power_edificio){
+							new_message =  messageCorpo('Corte de energia, gerador ON e agencia com energia',gerador.descricao,retorno.time,'success'); 
+							
+						}
+
+						if(response.low_fuel){
+							new_message = messageCorpo('Gerdor com baixo nivel de combustivel',gerador.descricao,retorno.time,'danger');
+
+						}
+
+						if(response.avariado){
+							new_message = messageCorpo('Gerdor alguma avaria não identificada',gerador.descricao,retorno.time,'danger'); 
+						}
+
+						if(response.qua_aut_trans){
+							new_message = messageCorpo('Agencia sem energia e com avaria no QTA',gerador.descricao,retorno.time,'danger');
+
+
+						}
+						if(response.gerador_status==0){
+							new_message = messageCorpo('Gerador OFF',gerador.descricao,retorno.time,'gray');
+
+						}
+							
+						
+
+
+						corpo_message.html(new_message + old_message)
+					}
+
+				})
+			}
 		})
 	}
 

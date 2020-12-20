@@ -11,10 +11,7 @@ session_start();
 
 switch ($action) {
 
-	case 'list': //listar os perfil utilizadores
-
-
-
+	case 'list': //listar geradores
 
 
 		$response = $data->list();

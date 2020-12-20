@@ -108,6 +108,23 @@ Class Data extends DbConnection{
 				echo $e->getMessage();
 		}
 	}
+
+	public function last5event(){
+	
+		try{
+
+			$res = $this->db->prepare('SELECT * FROM gerador_historico LIMIT 5');
+			
+			//$res->bindValue(':estado',$estado);
+			
+			$res->execute();
+
+			return $this->data($res);			
+
+		}catch(PDOException $e){
+				echo $e->getMessage();
+		}
+	}
 /*
 	// função para deletar utilizadores
 	public function delete($id,$estado,$delete_ut){

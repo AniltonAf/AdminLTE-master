@@ -165,16 +165,6 @@
                 </div>
                 <div class="card-body" style="display: block;min-height: 500px;">
                   <div class="direct-chat-messages" style="height: 450px;">
-
-                    <div class="direct-chat-msg">
-                      <img class="direct-chat-img" src="../dist/img/user1-128x128.jpg">
-                      <div class="direct-chat-text">
-                        <span class="direct-chat-name float-left">Alexander Pierce</span><br>
-                        Is this template really for free? That's unbelievable!
-                        <span class="direct-chat-timestamp float-right">23 Jan 2:00 pm</span>
-                      </div>
-                    </div>
-                    <!-- /.direct-chat-msg -->
                   </div>
                 </div>
               </div>

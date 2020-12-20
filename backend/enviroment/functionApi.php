@@ -6,30 +6,31 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
-require $_SERVER['DOCUMENT_ROOT'].'/plugins/phpmailer/src/Exception.php';
-require $_SERVER['DOCUMENT_ROOT'].'/plugins/phpmailer/src/PHPMailer.php';
-require $_SERVER['DOCUMENT_ROOT'].'/plugins/phpmailer/src/SMTP.php';
-include_once $_SERVER['DOCUMENT_ROOT'].'/backend/email/sql.php';
-require $_SERVER['DOCUMENT_ROOT'].'/backend/sms/sql.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/plugins/phpmailer/src/Exception.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/plugins/phpmailer/src/PHPMailer.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/plugins/phpmailer/src/SMTP.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/backend/email/sql.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/backend/sms/sql.php';
 
-function send_email($users,$assunto,$mensagem_email){
+function send_email($users, $assunto, $mensagem_email)
+{
   $data = new EMAIL();
   $server = $data->list();
   $server = $server[0];
 
 
-  $response=[
-      "status"=>false,
-      "message"=>"",
-      "tipo"=>"email",
-      "codigo"=>""
+  $response = [
+    "status" => false,
+    "message" => "",
+    "tipo" => "email",
+    "codigo" => ""
   ];
 
 
-  if(!$server['ativo']){
-      $response["message"]="O serviço de email encontra-se desativado";
-      echo json_encode($response);
-      return false;
+  if (!$server['ativo']) {
+    $response["message"] = "O serviço de email encontra-se desativado";
+    echo json_encode($response);
+    return false;
   }
 
   $mail = new PHPMailer;
@@ -43,154 +44,155 @@ function send_email($users,$assunto,$mensagem_email){
   $mail->SMTPKeepAlive = true;
   //$mail->SMTPDebug = 2;
 
-  $mail->setFrom($server['username'],'Sistema Monitorizacao');
+  $mail->setFrom($server['username'], 'Sistema Monitorizacao');
 
 
-  $response['user_send']=[
-    "success"=>[],
-    "fail"=>[]
+  $response['user_send'] = [
+    "success" => [],
+    "fail" => []
   ];
 
-  foreach($users as $user){
-      if($user['alerta_email']){
-          $mail->addAddress($user['email'], $user['nome']);
-
-          $mail->isHTML(true);
-          $mail->Subject = $assunto;
-          $mail->Body    = $mensagem_email;
-          //$mail->AltBody = 'Para visualizar essa mensagem acesse http://site.com.br/mail';
-
-          if(!$mail->send()) {
-              $response['message']="Erro ao enviar email";
-              $response['erro']=$mail->ErrorInfo;
-              $response['user_send']['fail'][]=$user['id'];    
-
-            } else {
-              $response['message']="Email enviada";
-              $response['menssagem'] = $mensagem_email;
-              $response['status']=true;
-              $response['user_send']['success'][]=$user['id']; 
-              
-          }
-          
+  foreach ($users as $user) {
+    if ($user['alerta_email']) {
+      $mail->addAddress($user['email'], $user['nome']);      
     }
-    
+  }
+  $mail->isHTML(true);
+  $mail->Subject = $assunto;
+  $mail->Body    = $mensagem_email;
+  //$mail->AltBody = 'Para visualizar essa mensagem acesse http://site.com.br/mail';
+
+  if (!$mail->send()) {
+    $response['message'] = "Erro ao enviar email";
+    $response['erro'] = $mail->ErrorInfo;
+    $response['user_send']['fail'][] = $user['id'];
+  } else {
+    $response['message'] = "Email enviada";
+    $response['menssagem'] = $mensagem_email;
+    $response['status'] = true;
+    $response['user_send']['success'][] = $user['id'];
   }
   echo json_encode($response);
   return $response;
 }
 
 
-function test_email($host,$port,$username,$password){
-  require $_SERVER['DOCUMENT_ROOT'].'/plugins/phpmailer/src/Exception.php';
-  require $_SERVER['DOCUMENT_ROOT'].'/plugins/phpmailer/src/SMTP.php';
+function test_email($host, $port, $username, $password)
+{
+  require $_SERVER['DOCUMENT_ROOT'] . '/plugins/phpmailer/src/Exception.php';
+  require $_SERVER['DOCUMENT_ROOT'] . '/plugins/phpmailer/src/SMTP.php';
   $smtp = new SMTP;
-  $response=[
-      "status"=>false
+  $response = [
+    "status" => false
   ];
 
   //$smtp->do_debug = SMTP::DEBUG_CONNECTION;
   try {
-      //Connect to an SMTP server
-      if (!$smtp->connect($host, $port,6)) {
-          throw new Exception("Erro ao conectar a ".$host.":".$port);
+    //Connect to an SMTP server
+    if (!$smtp->connect($host, $port, 6)) {
+      throw new Exception("Erro ao conectar a " . $host . ":" . $port);
+    }
+    //Say hello
+    if (!$smtp->hello(gethostname())) {
+      throw new Exception("Servidor não responde");
+    }
+    //Get the list of ESMTP services the server offers
+    $e = $smtp->getServerExtList();
+
+    if (is_array($e) && array_key_exists('STARTTLS', $e)) {
+      $tlsok = $smtp->startTLS();
+      if (!$tlsok) {
+        throw new Exception('Erro no certicado de segurança');
       }
-      //Say hello
+      //Repeat EHLO after STARTTLS
       if (!$smtp->hello(gethostname())) {
-          throw new Exception("Servidor não responde");
+        throw new Exception('Servidor não responde');
       }
-      //Get the list of ESMTP services the server offers
+      //Get new capabilities list, which will usually now include AUTH if it didn't before
       $e = $smtp->getServerExtList();
+    }
 
-      if (is_array($e) && array_key_exists('STARTTLS', $e)) {
-          $tlsok = $smtp->startTLS();
-          if (!$tlsok) {
-              throw new Exception('Erro no certicado de segurança');
-          }
-          //Repeat EHLO after STARTTLS
-          if (!$smtp->hello(gethostname())) {
-              throw new Exception('Servidor não responde');
-          }
-          //Get new capabilities list, which will usually now include AUTH if it didn't before
-          $e = $smtp->getServerExtList();
+    //If server supports authentication, do it (even if no encryption)
+    if (is_array($e) && array_key_exists('AUTH', $e)) {
+      if ($smtp->authenticate($username, $password)) {
+        $response["message"] = "Conexão Ok";
+        $response["status"] = true;
+      } else {
+        throw new Exception("Nome de utilizador ou password incorreto");
       }
-
-      //If server supports authentication, do it (even if no encryption)
-      if (is_array($e) && array_key_exists('AUTH', $e)) {
-          if ($smtp->authenticate($username,$password)) {
-              $response["message"]="Conexão Ok";
-              $response["status"]=true;
-          } else {
-              throw new Exception("Nome de utilizador ou password incorreto");
-          }
-      }
+    }
   } catch (Exception $e) {
-      $response["message"]=$e->getMessage();
-      $response["status"]=false;
+    $response["message"] = $e->getMessage();
+    $response["status"] = false;
   }
 
   echo json_encode($response);
 }
 
 /****Bibliotecas */
+
 use Twilio\Rest\Client;
 use Twilio\Exceptions\TwilioException;
-require $_SERVER['DOCUMENT_ROOT'].'/plugins/twilio/src/Twilio/autoload.php';
+
+require $_SERVER['DOCUMENT_ROOT'] . '/plugins/twilio/src/Twilio/autoload.php';
 
 
-function send_sms($users, $mensagem_sms){
+function send_sms($users, $mensagem_sms)
+{
 
-  $response=[
-    "status"=>false,
-    "message"=>"",
-    "codigo"=>""
-];
-
-
-$response['user_send']=[
-  "success"=>[],
-  "fail"=>[]
-];
-
- 
-  foreach($users as $user){
-    if($user['alerta_sms']){
-        try{
-            $data = new SMS();
-            $server = $data->list();
-            $server = $server[0];
+  $response = [
+    "status" => false,
+    "message" => "",
+    "codigo" => ""
+  ];
 
 
-            if(!$server['ativo']){
-                $response["message"]="O serviço de SMS encontra-se desativado";
-                echo json_encode($response);
-                return false;
-            }
-            $twilioAccountSid = $server['accountsid'];
-            $twilioAuthToken = $server['authtoken'];
-            $fromNumber = $server['numberfrom'];      
+  $response['user_send'] = [
+    "success" => [],
+    "fail" => []
+  ];
 
-            $client = new Client($twilioAccountSid, $twilioAuthToken);
-                    
-            $message = $client->messages->create($user['telefone'],['from' => $fromNumber,'body' => $mensagem_sms]);
+  $data = new SMS();
+  $server = $data->list();
+  $server = $server[0];
 
-           
-            $response['status']=true;
-            $response['message']="SMS enviada";
-            $response['messagem']=$mensagem_sms;
-            $response['codigo']="";
-            $response['user_send']['success'][]=$user['id']; 
 
-          break;
-        }catch(TwilioException $e){
-            $response['message']="Erro ao enviar SMS";
-            $response['codigo']=$e->getCode();
-            $response['erro']=$e->getMessage();
-            $response['user_send']['fail'][]=$user['id'];  
-        }
+  if (!$server['ativo']) {
+    $response["message"] = "O serviço de SMS encontra-se desativado";
+    echo json_encode($response);
+    return $response;
+  }
+  $twilioAccountSid = $server['accountsid'];
+  $twilioAuthToken = $server['authtoken'];
+  $fromNumber = $server['numberfrom'];
+
+  $client = new Client($twilioAccountSid, $twilioAuthToken);
+
+
+  foreach ($users as $user) {
+    if ($user['alerta_sms']) {
+      try {
+
+
+        $message = $client->messages->create($user['telefone'], ['from' => $fromNumber, 'body' => $mensagem_sms]);
+
+
+        $response['status'] = true;
+        $response['message'] = "SMS enviada";
+        $response['messagem'] = $mensagem_sms;
+        $response['codigo'] = "";
+        $response['user_send']['success'][] = $user['id'];
+
+        break;
+      } catch (TwilioException $e) {
+        $response['message'] = "Erro ao enviar SMS";
+        $response['codigo'] = $e->getCode();
+        $response['erro'] = $e->getMessage();
+        $response['user_send']['fail'][] = $user['id'];
       }
     }
-        
+  }
+
   echo json_encode($response);
   return $response;
 }

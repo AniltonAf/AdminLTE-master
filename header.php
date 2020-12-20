@@ -22,7 +22,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Monitorização Gerador V1.0</title>
+  <title>SysMonitor v1.0</title>
   <link rel="shortcut icon" href="dist/img/CaixaLogo.png" >
 
   <!-- MapBox  -->
@@ -222,7 +222,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="reporteventos.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Eventos Estados</p>
                 </a>
