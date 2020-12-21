@@ -30,6 +30,30 @@
 			echo json_encode($response);
 
 			break;
+		
+		case 'desbloquear'://apagar utilizadores
+
+			$id=filter_input(INPUT_POST, 'id');
+			$estado=1;
+			$delete_ut=date('d-m-y h:i:s');
+			$response=$data->desbloquear($id,$estado,$delete_ut);
+
+			echo json_encode($response);
+
+			break;
+
+			case 'bloquear'://apagar utilizadores
+
+				$id=filter_input(INPUT_POST, 'id');
+				$estado=0;
+				$delete_ut=date('d-m-y h:i:s');
+				$response=$data->desbloquear($id,$estado,$delete_ut);
+	
+				echo json_encode($response);
+	
+				break;
+		
+			
 			//apresentar formulario de utilizadores
 		case 'addForm':
 			$perfil=$data->listPerfil();

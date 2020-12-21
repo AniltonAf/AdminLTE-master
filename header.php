@@ -121,7 +121,7 @@
     <!-- Brand Logo -->
     <a href="index.php" class="brand-link">
       <img src="dist/img/CaixaLogo.png" alt="Caixa Logo" class="brand-image img-rounded" style="opacity: .8">
-      <span class="brand-text font-weight-light">SysMONITOR</span>
+      <span class="brand-text font-weight-light">SysGER</span>
     </a>
 
     <!-- Sidebar -->

@@ -25,12 +25,13 @@ Class Data extends DbConnection{
 	}
 
 	public function list(){
-		$estado=1;
+		//$estado=1;
 		try{
 
-			$res = $this->db->prepare('SELECT * FROM utilizador WHERE estado=:estado');
+		//	$res = $this->db->prepare('SELECT * FROM utilizador WHERE estado=:estado');
+			$res = $this->db->prepare('SELECT * FROM utilizador');
 			
-			$res->bindValue(':estado',$estado);
+		//	$res->bindValue(':estado',$estado);
 			
 			$res->execute();
 
@@ -95,6 +96,50 @@ Class Data extends DbConnection{
 		}
 		return $response;
 	}
+
+
+		// função para desbloquear utilizadores
+		public function desbloquear($id,$estado,$delete_ut){
+			$response=array();
+			try{
+	
+				$res = $this->db->prepare('UPDATE utilizador SET estado=:estado, delete_ut=:delete_ut WHERE id=:id');
+	
+				$res->bindValue(':id',$id);
+				$res->bindValue(':estado',$estado);
+				$res->bindValue(':delete_ut',$delete_ut);
+	
+				$res->execute();
+	
+				$response['status']=true;		
+	
+			}catch(PDOException $e){
+				$response['status']=false;
+			}
+			return $response;
+		}
+
+
+		// função para desbloquear utilizadores
+		public function bloquear($id,$estado,$delete_ut){
+			$response=array();
+			try{
+	
+				$res = $this->db->prepare('UPDATE utilizador SET estado=:estado, delete_ut=:delete_ut WHERE id=:id');
+	
+				$res->bindValue(':id',$id);
+				$res->bindValue(':estado',$estado);
+				$res->bindValue(':delete_ut',$delete_ut);
+	
+				$res->execute();
+	
+				$response['status']=true;		
+	
+			}catch(PDOException $e){
+				$response['status']=false;
+			}
+			return $response;
+		}
 
 	// função para registar novos utilizadores
 	public function register($nome,$numero_funcionario,$departamento,$funcao,$email,$telefone,$id_perfil_permission,$password,$username,$foto,$alerta_sms,$alerta_email,$estado,$create_ut){

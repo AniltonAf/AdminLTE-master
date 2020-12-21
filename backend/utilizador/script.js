@@ -95,6 +95,8 @@ $(document).ready(function(){
 			modal.modal();
 		})
 	})
+		
+		
 	//evento submit form edit
 	$('#modalAdd').on('submit','form[name="edit"]',function(e){
 		e.preventDefault();
@@ -152,6 +154,54 @@ $(document).ready(function(){
 			}
 		});
 	})
+
+		////evento de desbloquear utilizador
+		bodyTable.on('click','#btn-desbloquear', function(){
+			var id=$(this).attr('data-id');
+			bootbox.confirm({
+				size:'small',
+				message:'Pretende Desbloquear utilizador selecionado?',
+				callback: function(result){
+					if(result==true)
+					{
+						$.post(controller_url,{action:'desbloquear',id:id},function(res){
+	
+							response = JSON.parse(res);
+	
+							if(response.status)
+							{
+								getAll();
+								
+							}
+						})
+					}
+				}
+			});
+		})
+
+		////evento de desbloquear utilizador
+		bodyTable.on('click','#btn-bloquear', function(){
+			var id=$(this).attr('data-id');
+			bootbox.confirm({
+				size:'small',
+				message:'Pretende bloquear utilizador selecionado?',
+				callback: function(result){
+					if(result==true)
+					{
+						$.post(controller_url,{action:'bloquear',id:id},function(res){
+	
+							response = JSON.parse(res);
+	
+							if(response.status)
+							{
+								getAll();
+								
+							}
+						})
+					}
+				}
+			});
+		})
 
 
 
@@ -211,7 +261,6 @@ $(document).ready(function(){
     	$.post(controller_url,{action:'list'}, function(retorno){
     		datatable.DataTable().destroy()
 			var data= JSON.parse(retorno);
-			$estado= 1;
 			var text="";
 			data.forEach(function(item){
 				text+='<tr>';
@@ -224,7 +273,13 @@ $(document).ready(function(){
 				text+='<td>'+item.telefone+'</td>';
 				text+='<td>';
 				text+='<button id="btn-edit" data-id="'+item.id+'" class="btn btn-sm btn-action btn-warning"><i class="fa fa-edit"></i></button>';
-				text+='<button id="btn-delete" data-id="'+item.id+'" class="btn btn-sm btn-action btn-danger"><i class="fa fa-trash"></i></button>';
+				text+='<button id="btn-delete" data-id="'+item.id+'" class="btn btn-sm btn-action btn-danger"><i class="fa fa-trash"></i></utton>';
+				if(item.estado==1){
+					text+='<button id="btn-bloquear" data-id="'+item.id+'" class="btn btn-sm btn-action btn-info"><i class="fa fa-lock"></i></utton>';
+				}else{
+					text+='<button id="btn-desbloquear" data-id="'+item.id+'" class="btn btn-sm btn-action btn-info"><i class="fa fa-lock-open"></i></utton>';
+				}
+				
 				text+='</td>';
 				text+='</tr>';
 				})
