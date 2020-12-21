@@ -54,12 +54,12 @@ if(!hasRoles(['utilizadores','utilizadores_utilizador','utilizadores_utilizador_
                     <tr>
                       <th>Gerador</th>
                       <th>Estado</th>
-                      <th>Avaria</th>
+                      <th>Avaria Gerador</th>
                       <th>Rede Publica</th>
-                      <th>Agência Com Energia</th>
+                      <th>Agência Energia</th>
                       <th>QTA</th>
                       <th>Nivel Combustivel</th>
-                      <th>Ocorreu em</th>
+                      <th>Ocorreu em:</th>
                     </tr>
                   </thead>
                   <tbody>

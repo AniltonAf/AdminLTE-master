@@ -211,7 +211,7 @@
             </ul>
           </li>
           <?php }?> 
-          <?php //if(hasRoles(['reporte'])){?>
+          <?php if(hasRoles(['reporte'])){?>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
@@ -237,8 +237,8 @@
               </li>
             </ul>
           </li>
-          <?php //}?>
-          <?php //if(hasRoles(['reporte'])){?>
+          <?php }?>
+          <?php if(hasRoles(['configuracao'])){?>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-wrench"></i>
@@ -272,7 +272,7 @@
               </li>
             </ul>
           </li>
-          <?php //}?>
+          <?php }?>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

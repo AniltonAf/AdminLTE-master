@@ -15,7 +15,7 @@ $(document).ready(function () {
 	},2000);
 	getMap();
 	
-	getlast5();
+	//getlast5();
 	initMqtt();
 
 
@@ -87,13 +87,15 @@ $(document).ready(function () {
 
 							let message_corpo=false;
 
+							console.log(response)
+
 							if(response.gerador_status==1){
-								new_message =  messageCorpo('Gerador ON ',gerador.descricao,retorno.time,'success');
+								new_message =  messageCorpo('Gerador ON',gerador.descricao,retorno.time,'success');
 
 							} 
 
 							if(!response.rede_publica && !response.gerador_status && !response.power_edificio){
-								new_message = messageCorpo('Retorno de energia da rede, gerador OFF ',gerador.descricao,retorno.time,'gray');
+								new_message = messageCorpo('Retorno de energia da rede, gerador OFF',gerador.descricao,retorno.time,'#808080');
 								
 							}
 
@@ -117,7 +119,7 @@ $(document).ready(function () {
 
 							
 							if(response.gerador_status==0){
-								new_message = messageCorpo('Gerador OFF',gerador.descricao,retorno.time,'gray');
+								new_message = messageCorpo('Gerador OFF',gerador.descricao,retorno.time,'#808080');
 
 							}
 								
@@ -170,6 +172,7 @@ $(document).ready(function () {
 	}
 
 
+/*
 	function getlast5(){
 		$.post(controller_url, { action: 'last5' }, function (res) {
 			
@@ -237,7 +240,7 @@ $(document).ready(function () {
 			}
 		})
 	}
-
+*/
 	function getMap() {
 		$.post(controller_url, { action: 'get_geradores' }, function (retorno) {
 			var response = JSON.parse(retorno)
