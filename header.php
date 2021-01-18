@@ -22,7 +22,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SysMonitor v1.0</title>
+  <title>SysGer v1.0</title>
   <link rel="shortcut icon" href="dist/img/CaixaLogo.png" >
 
   <!-- MapBox  -->
@@ -138,7 +138,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Dashboard
+                Monitorização
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
